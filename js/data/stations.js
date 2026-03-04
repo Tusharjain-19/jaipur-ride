@@ -86,7 +86,15 @@ export const translations = {
     noNearbyStation: "Could not find nearby station",
     smartCardFare: "Smart Card Fare",
     seniorCitizenFare: "Senior Citizen",
-    studentFare: "Student Fare"
+    studentFare: "Student Fare",
+    openMaps: "Open in Maps",
+    cancel: "Cancel",
+    away: "away",
+    locationUnavailable: "Location unavailable. Please try again.",
+    locationTimeout: "Location timed out. Please try again.",
+    navigateModalBody: "Navigate to",
+    metroStation: "Metro Station",
+    notice: "Notice"
   },
   hi: {
     appName: "जयपुर राइड",
@@ -150,7 +158,15 @@ export const translations = {
     noNearbyStation: "कोई पास का स्टेशन नहीं मिला",
     smartCardFare: "स्मार्ट कार्ड किराया",
     seniorCitizenFare: "वरिष्ठ नागरिक",
-    studentFare: "छात्र किराया"
+    studentFare: "छात्र किराया",
+    openMaps: "Maps में खोलें",
+    cancel: "रद्द करें",
+    away: "दूरी पर",
+    locationUnavailable: "लोकेशन उपलब्ध नहीं। दोबारा कोशिश करें।",
+    locationTimeout: "लोकेशन टाइम आउट। दोबारा कोशिश करें।",
+    navigateModalBody: "क्या आप",
+    metroStation: "मेट्रो स्टेशन जाना चाहते हैं?",
+    notice: "सूचना"
   }
 };
 

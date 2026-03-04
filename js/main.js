@@ -56,8 +56,8 @@ function showModal({ title, body, confirmText, cancelText, onConfirm }) {
     const xbtn = document.getElementById('modal-cancel-btn');
     if (!modal || !tEl || !bEl || !cbtn || !xbtn) return;
 
-    tEl.textContent = title || 'Notice';
-    bEl.textContent = body || '';
+    tEl.textContent = title || T('notice');
+    bEl.innerHTML = body || '';
     cbtn.textContent = confirmText || 'Confirm';
     xbtn.textContent = cancelText || 'Cancel';
 
@@ -563,7 +563,7 @@ function stopSim() {
 //  GEOLOCATION — "I am at..."
 // ═══════════════════════════════════════
 function locateMe() {
-    if (!navigator.geolocation) { toast('Geolocation not supported'); return; }
+    if (!navigator.geolocation) { toast(T('locationUnavailable')); return; }
     toast(T('detectingLocation'));
 
     navigator.geolocation.getCurrentPosition(pos => {
@@ -579,25 +579,27 @@ function locateMe() {
         });
 
         if (nearest) {
-            // Show distance smartly: meters if < 1km
+            // Show distance: meters if < 1km, km otherwise
             const distLabel = minDist < 1
                 ? `~${Math.round(minDist * 1000)} m`
                 : `~${minDist.toFixed(1)} km`;
 
-            toast(`${T('nearest') || 'Nearest'}: ${T_STATION(nearest.name)} (${distLabel})`);
-            
+            const stationName = T_STATION(nearest.name);
+            toast(`${T('nearest')}: ${stationName} (${distLabel})`);
+
             if (startDropdown) startDropdown.select(nearest.id);
 
-            // Use the station's pre-set exact Maps pin
+            // Use station's pre-verified Maps pin
             const url = nearest.maps_link
                 || `https://www.google.com/maps/search/?api=1&query=${nearest.lat},${nearest.lon}`;
 
             setTimeout(() => {
                 showModal({
-                    title: T('navigate') || 'Navigate',
-                    body: `${T('navigatePrompt') || 'Navigate to'} <b>${T_STATION(nearest.name)}</b> Metro Station<br><small style="color:var(--text-muted)">${distLabel} away</small>`,
-                    confirmText: currentLang === 'hi' ? 'Maps खोलें' : 'Open in Maps',
-                    cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+                    title: T('navigate'),
+                    body: `${T('navigateModalBody')} <b>${stationName}</b> ${T('metroStation')}<br>
+                           <small style="color:var(--text-muted);font-size:12px">${distLabel} ${T('away')}</small>`,
+                    confirmText: T('openMaps'),
+                    cancelText: T('cancel'),
                     onConfirm: () => window.open(url, '_blank')
                 });
             }, 500);
@@ -606,8 +608,8 @@ function locateMe() {
         }
     }, err => {
         if (err.code === 1) toast(T('locAccessDenied'));
-        else if (err.code === 2) toast('Location unavailable. Try again.');
-        else toast('Location timed out. Try again.');
+        else if (err.code === 2) toast(T('locationUnavailable'));
+        else toast(T('locationTimeout'));
     }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
 }
 
