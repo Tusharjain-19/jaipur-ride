@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover"/>
+  <meta name="theme-color" content="#FAF8F5"/>
+  <title>JaipurRide — Metro Companion</title>
+  <meta name="description" content="Unofficial Jaipur Metro companion. Plan routes, explore tourist spots, and simulate live journeys on the Pink Line."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div id="app">
+
+  <!-- ══ LIVE JOURNEY (full-screen dark overlay) ══ -->
+  <div id="journey-view" class="hidden jv-shell">
+    <!-- JV Header -->
+    <div class="jv-topbar">
+      <div class="jv-logo">Jaipur<span>Ride</span></div>
+      <div id="jv-clock" class="jv-clock"></div>
+      <button id="end-journey-btn" class="jv-exit-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <span id="end-journey-label">Exit Journey</span>
+      </button>
+    </div>
+    <!-- JV status bar -->
+    <div class="jv-status-bar" id="jv-status-bar">
+      <div class="jv-status-left">
+        <div class="jv-live-badge">
+          <span class="jv-live-dot"></span>
+          <span id="jv-live-label">Live Journey</span>
+        </div>
+        <div id="jv-direction" class="jv-direction"></div>
+        <div id="jv-time-remaining" class="jv-time-rem"></div>
+      </div>
+      <div id="jv-progress-ring-wrap" class="jv-ring-wrap">
+        <svg class="jv-ring" viewBox="0 0 36 36">
+          <circle class="jv-ring-bg" cx="18" cy="18" r="15.9" fill="none" stroke-width="3"/>
+          <circle class="jv-ring-fill" id="jv-ring-fill" cx="18" cy="18" r="15.9" fill="none" stroke-width="3" stroke-dasharray="100 100" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
+        </svg>
+        <span class="jv-ring-pct" id="jv-ring-pct">0%</span>
+      </div>
+    </div>
+    <!-- JV body: scrollable stop list -->
+    <div class="jv-body" id="journey-body"></div>
+    <!-- JV bottom: sim disclaimer -->
+    <div class="jv-sim-bar" id="simulated-label">Simulated · Not an official JMRC service</div>
+  </div>
+
+  <!-- ══ STATION DETAIL (full-screen) ══ -->
+  <div id="detail-view" class="hidden fullscreen-view">
+    <div class="fs-header">
+      <button id="back-from-detail" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15,18 9,12 15,6"/></svg>
+        <span id="back-label">Back</span>
+      </button>
+      <span id="tourist-badge" class="tourist-badge hidden">TOURIST STATION</span>
+    </div>
+    <div class="detail-body" id="detail-body"></div>
+  </div>
+
+  <!-- ══ NEAREST STATION (full-screen) ══ -->
+  <div id="nearest-view" class="hidden fullscreen-view">
+    <div class="fs-header">
+      <button id="back-from-nearest" class="back-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="15,18 9,12 15,6"/></svg>
+        <span>Back</span>
+      </button>
+      <span class="tourist-badge" style="background:rgba(39,174,96,0.12);color:var(--green);border-color:rgba(39,174,96,0.3)">FIND NEAREST</span>
+    </div>
+    <div class="detail-body" id="nearest-body">
+      <div class="nearest-loading" id="nearest-loading">
+        <div class="gps-spinner"></div>
+        <p class="nearest-status" id="nearest-status">Accessing your location…</p>
+        <p class="nearest-hint">Please allow location access when prompted</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MAIN APP ══ -->
+  <div id="main-app">
+    <header class="app-header">
+      <div class="logo">Jaipur<span class="logo-accent">Ride</span></div>
+      <div class="header-controls">
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="btn-com">COM</button>
+          <button class="mode-btn" id="btn-tour">TOUR</button>
+        </div>
+        <button class="lang-btn" id="lang-btn">EN</button>
+      </div>
+    </header>
+
+    <main class="main-content">
+      <!-- ROUTE TAB -->
+      <section id="tab-route" class="tab-panel active-panel">
+        <div class="pad">
+          <p class="section-eyebrow" id="route-eyebrow">Pink Line · 11 Stations</p>
+          <h1 class="screen-title" id="route-title">Plan Your Journey</h1>
+
+          <!-- Nearest Station CTA -->
+          <button class="nearest-cta" id="nearest-cta-btn">
+            <div class="nearest-cta-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12,2 L12,5 M12,19 L12,22 M2,12 L5,12 M19,12 L22,12"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 4"/></svg>
+            </div>
+            <div class="nearest-cta-text">
+              <span id="nearest-cta-title">Find Nearest Station</span>
+              <span id="nearest-cta-sub">Use GPS to locate you</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="9,6 15,12 9,18"/></svg>
+          </button>
+
+          <!-- Station Inputs -->
+          <div class="inputs-card">
+            <div class="input-row">
+              <span class="input-dot green-dot"></span>
+              <div class="input-fake" id="from-btn">
+                <span id="from-label" class="placeholder-text">From — Starting Station</span>
+              </div>
+              <button class="clear-btn hidden" id="from-clear" onclick="clearStation('from')">✕</button>
+            </div>
+            <div class="swap-row">
+              <div class="connector-line"></div>
+              <button class="swap-btn" id="swap-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polyline points="7,16 7,8 15,8"/><polyline points="17,8 17,16 9,16"/><polyline points="5,12 7,8 9,12"/><polyline points="15,12 17,16 19,12"/></svg>
+              </button>
+              <div class="connector-line"></div>
+            </div>
+            <div class="input-row">
+              <span class="input-dot saffron-dot"></span>
+              <div class="input-fake" id="to-btn">
+                <span id="to-label" class="placeholder-text">To — Destination Station</span>
+              </div>
+              <button class="clear-btn hidden" id="to-clear" onclick="clearStation('to')">✕</button>
+            </div>
+          </div>
+
+          <!-- Tourist chips -->
+          <div id="tourist-chips" class="tourist-chips hidden">
+            <p class="chips-label" id="chips-label">POPULAR WITH TOURISTS</p>
+            <div class="chips-scroll" id="chips-scroll"></div>
+          </div>
+
+          <!-- Route result -->
+          <div id="route-result" class="hidden"></div>
+
+          <!-- Empty hint -->
+          <div id="route-hint" class="route-hint">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--border)" stroke-width="1.5" stroke-linecap="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6,8 C6,14 18,10 18,16"/></svg>
+            <span id="route-hint-text" style="display:block;margin-top:10px">Select stations above to see the fastest route</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXPLORE TAB -->
+      <section id="tab-explore" class="tab-panel hidden">
+        <div class="pad">
+          <h1 class="screen-title" id="explore-title">Explore Jaipur</h1>
+          <p class="screen-subtitle" id="explore-sub">Tourist spots reachable by metro</p>
+          <p class="section-label" id="explore-label">TOURIST STATIONS</p>
+          <div id="explore-list"></div>
+        </div>
+      </section>
+
+      <!-- STATIONS TAB -->
+      <section id="tab-stations" class="tab-panel hidden">
+        <div class="pad">
+          <h1 class="screen-title" id="stations-title">All Stations</h1>
+          <p class="screen-subtitle" id="stations-sub">Pink Line · Mansarovar ↔ Badi Chaupar</p>
+          <div id="stations-list"></div>
+        </div>
+      </section>
+
+      <!-- SAFETY TAB -->
+      <section id="tab-safety" class="tab-panel hidden">
+        <div class="pad">
+          <h1 class="screen-title" id="safety-title">Safety &amp; Help</h1>
+          <p class="screen-subtitle" id="safety-sub">Emergency contacts and travel tips</p>
+          <p class="section-label" id="contacts-label">EMERGENCY CONTACTS</p>
+          <div id="contacts-list"></div>
+          <p class="section-label" style="margin-top:24px" id="tips-label">TRAVEL TIPS</p>
+          <div id="tips-list"></div>
+          <p class="disclaimer" id="disclaimer-text"></p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-tab="route" id="nav-route">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M6,8 C6,14 18,10 18,16"/></svg>
+        <span id="nav-route-label">Route</span>
+      </button>
+      <button class="nav-btn hidden" data-tab="explore" id="nav-explore">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polygon points="16,8 10,10 8,16 14,14" fill="currentColor" opacity="0.3" stroke="currentColor"/></svg>
+        <span id="nav-explore-label">Explore</span>
+      </button>
+      <button class="nav-btn" data-tab="stations" id="nav-stations">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><circle cx="12" cy="5" r="2.5"/><circle cx="12" cy="12" r="2" opacity="0.4" fill="currentColor"/><circle cx="12" cy="19" r="2.5"/></svg>
+        <span id="nav-stations-label">Stations</span>
+      </button>
+      <button class="nav-btn" data-tab="safety" id="nav-safety">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12,3 L20,7 L20,13 C20,17 16,21 12,22 C8,21 4,17 4,13 L4,7 Z"/><polyline points="9,12 11,15 15,9"/></svg>
+        <span id="nav-safety-label">Safety</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Station Picker Sheet -->
+  <div id="sheet-backdrop" class="sheet-backdrop hidden"></div>
+  <div id="station-sheet" class="station-sheet hidden">
+    <div class="sheet-handle"></div>
+    <div class="sheet-search-wrap">
+      <svg class="sheet-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/></svg>
+      <input type="text" id="sheet-search" class="sheet-search" placeholder="Search station..." autocomplete="off"/>
+    </div>
+    <div class="sheet-list" id="sheet-list"></div>
+  </div>
+
+</div>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

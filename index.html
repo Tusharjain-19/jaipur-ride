@@ -1,194 +1,228 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<!doctype html>
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#0F172A">
-
-    <!-- SEO & Metadata -->
-    <title>NammaRide</title>
-    <meta name="description"
-        content="The ultimate guide for Namma Metro (Bengaluru Metro). View interactive maps, calculate ticket prices, find train timings, and plan your journey across Purple, Green, and Yellow lines.">
-    <meta name="keywords"
-        content="bengaluru metro, metro map, blr metro, bengaluru metro map, metro fare calculator, namma metro price, bangalore metro map, purple line stations, green line, yellow line, bmrcl fare, metro map bengalore, namma metro, namma metro app, namma ride, namma ride map, namma metro price">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="NammaRide">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="NammaRide">
-    <meta property="og:description"
-        content="Plan your Bengaluru Metro trip with ease. Accurate fare calculator, live route maps, and station details for NammaRide.">
-    <meta property="og:site_name" content="NammaRide">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="NammaRide">
-    <meta name="twitter:description"
-        content="Navigate Bengaluru with NammaRide. Interactive Metro Map, Real-time Fare Calculator, and Route Planner.">
-
-    <meta name="google-site-verification" content="f03YoQquE88fbC9DVNGgGtjfTgjKO7ZhILGLgoZH2DY" />
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://nammaride.site/" />
-
-    <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "NammaRide",
-      "applicationCategory": "TravelApplication",
-      "description": "Comprehensive guide for Bengaluru Metro (Namma Metro). Features interactive maps, fare calculation, and route planning for all lines.",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "INR"
-      },
-      "featureList": "Metro Map, Fare Calculator, Station Lists, Journey Planner"
-    }
-    </script>
-
-    <!-- CSS Structure -->
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/metro-route.css">
-    <link rel="stylesheet" href="css/components.css">
-
-    <!-- External Libs -->
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <meta name="theme-color" content="#FFFFFF"/>
+    <link rel="icon" type="image/png" href="assets/images/logo1.png">
+    <title>JaipurRide</title>
+    <meta name="description" content="Plan your Jaipur Metro journey. Find routes, fares, and timings for the Pink Line."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css"/>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        slate: { 850: '#151e2e', 900: '#0f172a' }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <!-- Main Module -->
     <script type="module" src="js/main.js" defer></script>
 </head>
-
 <body>
+    <div id="app" class="app-shell">
 
-    <div id="app-container" class="app-container">
-
-        <div class="w-full flex-grow flex flex-col relative overflow-hidden">
-
-            <header class="app-header flex justify-between items-center bg-slate-900/90 border-b border-slate-800">
-                <h1 class="text-lg font-bold text-gray-100 tracking-wider flex items-center gap-2">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        class="text-indigo-500">
-                        <path d="M4 7h10a3 3 0 0 1 0 6H10a3 3 0 0 0 0 6h10" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <circle cx="4" cy="7" r="2" fill="currentColor" />
-                        <circle cx="10" cy="13" r="2" fill="currentColor" />
-                        <circle cx="20" cy="19" r="2" fill="currentColor" />
-                    </svg>
-                    <span data-lang-key="appName">NammaRide</span>
-                </h1>
-
-                <div class="flex items-center gap-3">
-                    <p id="live-clock"
-                        class="text-xs text-indigo-300 font-mono font-medium bg-slate-800/50 px-2 py-1 rounded"></p>
-                    <div class="relative">
-                        <select id="language-selector"
-                            class="appearance-none bg-slate-800 text-gray-300 text-xs py-1 px-2 pr-6 rounded border border-slate-700 focus:outline-none focus:border-indigo-500">
-                            <option value="en">EN</option>
-                            <option value="hi">HI</option>
-                            <option value="kn">KN</option>
-                        </select>
-                        <div
-                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 text-gray-400">
-                            <svg class="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                            </svg>
-                        </div>
-                    </div>
+        <!-- ═══ HEADER ═══ -->
+        <header class="app-header">
+            <div class="header-brand">
+                <img src="assets/images/logo1.png" alt="JaipurRide Logo" class="brand-logo">
+                <div class="branding-text">
+                    <h1 class="brand-title">Jaipur<span>Ride</span></h1>
+                    <p id="live-clock" class="brand-subtitle"></p>
                 </div>
-            </header>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+                    <i data-lucide="sun" class="w-18 h-18"></i>
+                </button>
+                <button id="lang-toggle" class="pill-btn">EN</button>
+            </div>
+        </header>
 
-            <section id="planner-view"
-                class="p-6 flex flex-col items-center justify-center flex-grow transition-opacity duration-300">
-                <div class="w-full">
-                    <h2 class="text-lg font-bold mb-4 text-indigo-300 text-center tracking-wide"
-                        data-lang-key="planYourTrip">Plan Your Trip</h2>
+        <!-- ═══ SCROLLABLE CONTENT ═══ -->
+        <main id="app-content" class="scroll-content">
 
-                    <!-- Compact Inputs Block -->
-                    <div id="planner-controls" class="flex flex-col gap-2 mb-6 relative">
-                        <!-- Origin -->
-                        <div class="relative z-20">
-                            <div id="start-station-dropdown" class="w-full"></div>
-                            <input type="hidden" id="start-station" value="">
-                        </div>
+            <!-- ── PLAN VIEW (Home) ── -->
+            <section id="plan-view" class="view active-view">
+                <div class="section-hero">
+                  
+                    <h2 class="hero-title" data-lang-key="heroTitle">Where to<br>today?</h2>
+                    
+                </div>
 
-                        <!-- Swap Button Overlapping -->
-                        <div
-                            class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-center z-30 pointer-events-none">
-                            <button id="swap-stations"
-                                class="swap-btn pointer-events-auto transform transition-transform active:rotate-180 bg-slate-800 border-slate-600"
-                                title="Swap Stations">
-                                <i data-lucide="arrow-down-up" class="w-4 h-4 text-gray-400"></i>
-                            </button>
-                        </div>
-
-                        <!-- Destination -->
-                        <div class="relative z-10 pt-1">
-                            <div id="end-station-dropdown" class="w-full"></div>
-                            <input type="hidden" id="end-station" value="">
-                        </div>
-                    </div>
-
-                    <div id="journey-summary-container"
-                        class="bg-slate-800/40 p-4 rounded-xl border border-slate-700/30 animate-fade-in mb-6">
-                        <div id="journey-summary" class="text-center text-sm text-gray-400 font-medium"
-                            data-lang-key="selectStationsHint">Select stations to see the fastest route.</div>
-                    </div>
-
-                    <div id="board-train-btn-container" class="mt-auto">
-                        <button id="board-train-btn" class="btn-primary hidden">
-                            <i data-lucide="send" class="w-4 h-4"></i>
-                            <span data-lang-key="startLiveJourney">Start Live Journey</span>
+                <!-- Station Picker Card -->
+                <div class="card card-picker">
+                    <input type="hidden" id="start-station">
+                    <input type="hidden" id="end-station">
+                    <div id="start-station-container" class="picker-slot"></div>
+                    <div class="swap-row">
+                        <div class="swap-line"></div>
+                        <button id="swap-stations-btn" class="swap-btn" aria-label="Swap stations">
+                            <i data-lucide="arrow-up-down" class="w-16 h-16"></i>
                         </button>
-                        <p class="text-center text-[10px] text-gray-500 mt-3" data-lang-key="disclaimer">Disclaimer:
-                            Timings and fare are estimates.</p>
-                        <p class="text-center text-[10px] text-gray-600 mt-1" data-lang-key="nonOfficialDisclaimer">This
-                            is not an official BMRCL website.</p>
-                        
-                        <!-- About Developer Link -->
-                        <div class="flex justify-center mt-8 mb-2">
-                            <a href="https://www.tusharjain.in/" target="_blank" rel="noopener noreferrer"
-                               class="inline-flex items-center gap-1.5 text-[9px] text-gray-500 hover:text-indigo-400 transition-colors duration-200 group">
-                                <i data-lucide="code" class="w-3 h-3 opacity-60 group-hover:opacity-100"></i>
-                                <span class="border-b border-transparent group-hover:border-indigo-400">Developed by Tushar Jain</span>
-                            </a>
-                        </div>
+                    </div>
+                    <div id="end-station-container" class="picker-slot"></div>
+                    <button id="find-route-btn" class="btn-primary mt-20">
+                        <i data-lucide="route" class="w-18 h-18"></i>
+                        <span data-lang-key="planYourTrip">Plan Route</span>
+                    </button>
+                </div>
+
+                <!-- Locate Me -->
+                <button id="locate-me-btn" class="card card-locate">
+                    <div class="locate-icon"><i data-lucide="navigation" class="w-20 h-20"></i></div>
+                    <div>
+                        <p class="locate-title" data-lang-key="iamat">I am at...</p>
+                        <p class="locate-sub" data-lang-key="findNearest">Find nearest station & navigate</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
+                </button>
+
+                <!-- Quick Actions -->
+                <div class="quick-grid">
+                    <button class="quick-item" id="ql-timings">
+                        <div class="quick-icon"><i data-lucide="clock" class="w-20 h-20"></i></div>
+                        <span data-lang-key="timings">Timings</span>
+                    </button>
+                    <button class="quick-item" id="ql-map">
+                        <div class="quick-icon"><i data-lucide="map-pin" class="w-20 h-20"></i></div>
+                        <span data-lang-key="stations">Stations</span>
+                    </button>
+                    <button class="quick-item" id="ql-safety">
+                        <div class="quick-icon"><i data-lucide="shield-check" class="w-20 h-20"></i></div>
+                        <span data-lang-key="safety">Safety</span>
+                    </button>
+                    <button class="quick-item" id="ql-explore">
+                        <div class="quick-icon"><i data-lucide="sparkles" class="w-20 h-20"></i></div>
+                        <span>Explore</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="results-view" class="view">
+                <button id="results-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
+                <div id="journey-summary" class="card"></div>
+                <ul id="route-list" class="route-timeline hidden"></ul>
+                <button id="board-train-btn" class="btn-primary mt-20 hidden" data-lang-key="startLiveJourney">Start Live Journey</button>
+                <p class="disclaimer" data-lang-key="simulationDisclaimer">Estimated times · Not an official JMRC app</p>
+            </section>
+
+            <!-- ── STATIONS VIEW ── -->
+            <section id="stations-view" class="view">
+                <h2 class="view-title" data-lang-key="stations">Stations</h2>
+                <p class="view-sub" data-lang-key="allStationsSub">Pink Line — All 11 stations</p>
+                <div id="stations-content"></div>
+            </section>
+
+            <!-- ── TIMINGS VIEW ── -->
+            <section id="timings-view" class="view">
+                <h2 class="view-title" data-lang-key="timings">Timings</h2>
+                <p class="view-sub" data-lang-key="timingsSub">Jaipur Metro schedule</p>
+                <div id="timings-content"></div>
+            </section>
+
+            <!-- ── SAFETY VIEW ── -->
+            <section id="safety-view" class="view">
+                <h2 class="view-title" data-lang-key="safetyHelp">Safety & Help</h2>
+                <p class="view-sub" data-lang-key="safetySub">Emergency contacts & useful info</p>
+                <div id="safety-content"></div>
+            </section>
+
+            <!-- ── EXPLORE VIEW ── -->
+            <section id="explore-view" class="view">
+                <h2 class="view-title">Explore Jaipur</h2>
+                <p class="view-sub">Top attractions near Pink Line stations</p>
+                <div id="explore-content" class="explore-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- ── STATION DETAIL VIEW (New) ── -->
+            <section id="station-detail-view" class="view">
+                <button id="detail-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
+                <div id="station-detail-header" class="station-header-hero">
+                    <!-- Dynamic content -->
+                </div>
+                
+                <div class="section-label" id="explore-label">Explore Near Station</div>
+                <div id="attractions-carousel" class="attractions-carousel">
+                    <!-- Dynamic cards -->
+                </div>
+
+                <div class="nearby-info-card">
+                    <div class="info-row">
+                        <div class="info-cell"><div class="info-label">Attractions</div><div class="info-value" id="attr-count">0</div></div>
+                        <div class="info-cell"><div class="info-label">Avg. Walk</div><div class="info-value" id="avg-walk">10 min</div></div>
+                        <div class="info-cell"><div class="info-label">Area</div><div class="info-value">Pink City</div></div>
                     </div>
                 </div>
             </section>
 
-            <section id="map-view" class="hidden flex-grow overflow-y-auto custom-scrollbar bg-slate-900/40 relative">
-                <div id="simulation-status"
-                    class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur border-b border-slate-800 p-3 shadow-md">
+        </main>
+
+        <!-- ═══ LIVE JOURNEY OVERLAY ═══ -->
+        <section id="journey-overlay" class="overlay hidden">
+            <div class="overlay-header">
+                <div class="header-brand">
+                    <img src="assets/images/logo1.png" alt="JaipurRide Logo" class="brand-logo" style="width: 32px; height: 32px;">
+                    <div>
+                        <h1 class="brand-title" style="font-size: 16px;">Jaipur<span>Ride</span></h1>
+                    </div>
                 </div>
+                <div class="overlay-actions">
+                    <span id="jv-clock" class="overlay-clock"></span>
+                    <button id="exit-journey-btn" class="overlay-exit-btn" data-lang-key="exit">Exit</button>
+                </div>
+            </div>
+            <div class="overlay-status">
+                <div class="live-badge"><span class="live-dot"></span> <span data-lang-key="liveJourneyUpper">LIVE JOURNEY</span></div>
+                <h3 id="jv-direction">Towards Badi Chaupar</h3>
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                    <p id="jv-eta" class="overlay-eta">- min remaining</p>
+                    <div id="jv-nearby-link" class="attractions-link hidden">See nearby (0)</div>
+                </div>
+                <div class="progress-bar"><div id="jv-progress-bar" class="progress-fill"></div></div>
+            </div>
+            <div id="sim-route-list" class="overlay-body"></div>
+            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated · Not an official JMRC service</div>
+        </section>
 
-                <ul id="route-list" class="route-timeline mt-4"></ul>
+        <!-- ═══ BOTTOM NAV ═══ -->
+        <nav class="bottom-nav">
+            <button id="nav-plan" class="nav-item active" data-view="plan-view">
+                <i data-lucide="compass" class="w-20 h-20"></i>
+                <span data-lang-key="navPlan">Plan</span>
+            </button>
+            <button id="nav-stations" class="nav-item" data-view="stations-view">
+                <i data-lucide="train-front" class="w-20 h-20"></i>
+                <span data-lang-key="navStations">Stations</span>
+            </button>
+            <button id="nav-timings" class="nav-item" data-view="timings-view">
+                <i data-lucide="clock" class="w-20 h-20"></i>
+                <span data-lang-key="timings">Timings</span>
+            </button>
+            <button id="nav-explore" class="nav-item" data-view="stations-view">
+                <i data-lucide="sparkles" class="w-20 h-20"></i>
+                <span data-lang-key="navExplore">Explore</span>
+            </button>
+            <button id="nav-safety" class="nav-item" data-view="safety-view">
+                <i data-lucide="shield-check" class="w-20 h-20"></i>
+                <span data-lang-key="navTools">Safety</span>
+            </button>
+        </nav>
 
-            </section>
+        <!-- Toast -->
+        <div id="toast" class="toast"><i data-lucide="info" class="w-16 h-16"></i><span id="toast-message"></span></div>
 
-        </div>
-        <div id="toast"
-            class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-4 py-2 rounded shadow-lg text-sm opacity-0 transition-opacity duration-300 z-50 border border-slate-700">
+        <!-- Custom Prompt Modal -->
+        <div id="custom-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-icon"><i data-lucide="navigation"></i></div>
+                    <h3 id="modal-title">Navigate</h3>
+                </div>
+                <p id="modal-body">Message goes here...</p>
+                <div class="modal-actions">
+                    <button id="modal-cancel-btn" class="modal-btn secondary">Cancel</button>
+                    <button id="modal-confirm-btn" class="modal-btn primary">Confirm</button>
+                </div>
+            </div>
         </div>
     </div>
-
 </body>
-
 </html>

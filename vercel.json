@@ -1,8 +1,8 @@
 {
   "redirects": [
     {
-      "source": "https://www.nammaride.site/:path*",
-      "destination": "https://nammaride.site/:path*",
+      "source": "https://www.jaipurride.site/:path*",
+      "destination": "https://jaipurride.site/:path*",
       "permanent": true
     }
   ],

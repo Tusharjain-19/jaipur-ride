@@ -1,461 +1,737 @@
-import { metroData, translations, stationTranslations, lineNameMap } from './data/stations.js';
+import { metroData, translations, stationTranslations, lineNameMap, calculateFare, safetyData } from './data/stations.js';
+import { stationAttractions } from './data/stationAttractions.js';
 import { CustomDropdown } from './ui/dropdown.js';
 import { renderLiveRoute, updateRouteVisuals } from './ui/route.js';
-import { calculateFare } from './logic/pricing.js';
 
-// --- App Configuration & State ---
-export const CONFIG = { INTERCHANGE_TIME_MINUTES: 5, AVERAGE_SPEED_KMPH: 35 };
+// ═══════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════
 let currentLang = localStorage.getItem('appLang') || 'en';
+let currentTheme = localStorage.getItem('theme') || 'light';
 let startDropdown, endDropdown;
 let currentJourney = null;
+let lastView = 'plan-view';
+const simulationState = { isActive: false, startTime: null, timeline: [], animFrameId: null };
+const precomputed = { stations: {}, graph: {} };
 
-// Tracks the status of the live journey simulation
-const simulationState = { isActive: false, journeyId: null, startTime: null, lastLocationUpdateTime: 0, locationWatcherId: null, timeline: [], animationFrameId: null, lastStationIndex: -1 };
-
-// Cache for station lookup and routing graph
-const precomputedData = { stations: {}, graph: {} };
-
-// --- Translation Helpers ---
-export function T(key) { return translations[currentLang][key] || key; }
-export function T_STATION(name) {
-    if (lineNameMap[name]) { const k = lineNameMap[name]; return (stationTranslations[k] && stationTranslations[k][currentLang]) ? stationTranslations[k][currentLang] : name; }
-    return (stationTranslations[name] && stationTranslations[name][currentLang]) ? stationTranslations[name][currentLang] : name;
+// ═══════════════════════════════════════
+//  TRANSLATION
+// ═══════════════════════════════════════
+export function T(key) {
+    return (translations[currentLang] && translations[currentLang][key]) || key;
 }
-export function formatTime(date) { return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }); }
-
-// Allow global access for dropdowns
+export function T_STATION(name) {
+    if (!name) return '';
+    if (lineNameMap[name]) {
+        const k = lineNameMap[name];
+        return (stationTranslations[k]?.[currentLang]) || name;
+    }
+    return (stationTranslations[name]?.[currentLang]) || name;
+}
+export function formatTime(d) {
+    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+}
 window.T_STATION = T_STATION;
-window.CONFIG = CONFIG;
+window.T = T;
 
-// --- Core Logic ---
+function getDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Radius of the earth in km
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c; // Distance in km
+}
 
+// ═══════════════════════════════════════
+//  MODAL SYSTEM
+// ═══════════════════════════════════════
+function showModal({ title, body, confirmText, cancelText, onConfirm }) {
+    const modal = document.getElementById('custom-modal');
+    const tEl = document.getElementById('modal-title');
+    const bEl = document.getElementById('modal-body');
+    const cbtn = document.getElementById('modal-confirm-btn');
+    const xbtn = document.getElementById('modal-cancel-btn');
+    if (!modal || !tEl || !bEl || !cbtn || !xbtn) return;
+
+    tEl.textContent = title || 'Notice';
+    bEl.textContent = body || '';
+    cbtn.textContent = confirmText || 'Confirm';
+    xbtn.textContent = cancelText || 'Cancel';
+
+    modal.classList.remove('hidden');
+    const close = () => modal.classList.add('hidden');
+    cbtn.onclick = () => { close(); if (onConfirm) onConfirm(); };
+    xbtn.onclick = () => { close(); };
+}
+
+// ═══════════════════════════════════════
+//  TOAST
+// ═══════════════════════════════════════
+function toast(msg) {
+    const el = document.getElementById('toast');
+    const txt = document.getElementById('toast-message');
+    if (!el || !txt) return;
+    txt.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+// ═══════════════════════════════════════
+//  THEME
+// ═══════════════════════════════════════
+function setTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    const btn = document.getElementById('theme-toggle');
+    if (btn) {
+        btn.innerHTML = theme === 'dark'
+            ? '<i data-lucide="moon" class="w-18 h-18"></i>'
+            : '<i data-lucide="sun" class="w-18 h-18"></i>';
+        if (window.lucide) window.lucide.createIcons();
+    }
+}
+
+// ═══════════════════════════════════════
+//  LANGUAGE
+// ═══════════════════════════════════════
 function setLanguage(lang) {
+    if (!translations[lang]) lang = 'en';
     currentLang = lang;
     localStorage.setItem('appLang', lang);
     document.documentElement.lang = lang;
-    document.querySelectorAll('[data-lang-key]').forEach(elem => {
-        const key = elem.getAttribute('data-lang-key');
-        if (translations[lang][key]) {
-            if (elem.tagName === 'INPUT' && elem.getAttribute('placeholder')) elem.setAttribute('placeholder', translations[lang][key]);
-            else elem.innerText = translations[lang][key];
-        }
+    document.querySelectorAll('[data-lang-key]').forEach(el => {
+        const key = el.getAttribute('data-lang-key');
+        if (translations[lang][key]) el.innerHTML = translations[lang][key];
     });
-
     if (startDropdown) startDropdown.refreshTranslations();
     if (endDropdown) endDropdown.refreshTranslations();
 
-    // Refresh journey view if active
-    if (currentJourney) {
-        displayJourneyResult(currentJourney);
-
-        // If in map view/simulation mode, refresh that too
-        if (simulationState.isActive) {
-            renderLiveRoute(currentJourney, document.getElementById('route-list'), simulationState);
-
-            // Refresh Header
-            const lastPart = currentJourney.parts[currentJourney.parts.length - 1];
-            const destinationName = lastPart ? T_STATION(lastPart.stations[lastPart.stations.length - 1].name) : '';
-            const totalMinutes = currentJourney.totalTime ? Math.ceil(currentJourney.totalTime / 60) : 0;
-
-            const simStatus = document.getElementById('simulation-status');
-            simStatus.innerHTML = `
-                <div class="w-full flex justify-between items-start bg-slate-900/50 p-1 -mx-1 rounded-lg">
-                    <div class="flex flex-col gap-0.5">
-                        <p class="font-bold text-white text-sm flex items-center gap-2">
-                            <i data-lucide="activity" class="w-3.5 h-3.5 text-green-400"></i>
-                            ${T('liveJourney') || 'Live Journey'}
-                        </p>
-                        <p class="text-xs text-gray-200 font-medium">${T('towards')} ${destinationName}</p>
-                        <p class="text-[10px] text-gray-500">${totalMinutes} ${T('minRemaining')}</p>
-                    </div>
-                    <button id="exit-journey-btn" class="bg-slate-800 border border-slate-700 text-gray-400 font-medium px-3 py-1.5 rounded-md text-xs hover:bg-slate-700 hover:text-white transition-colors mt-0.5">${T('exitJourney')}</button>
-                </div>`;
-            document.getElementById('exit-journey-btn').addEventListener('click', stopSimulation);
-            if (window.lucide) window.lucide.createIcons();
-        }
+    // Reset view rendering flags to force re-render on next visit
+    document.querySelectorAll('[data-rendered]').forEach(el => el.removeAttribute('data-rendered'));
+    
+    // Refresh current active view if it's one of the rendered ones
+    const activeView = document.querySelector('.view.active-view');
+    if (activeView) {
+        if (activeView.id === 'stations-view') renderStations();
+        if (activeView.id === 'safety-view') renderSafety();
+        if (activeView.id === 'timings-view') renderTimings();
     }
 }
 
-function precomputeJourneyData() {
+// ═══════════════════════════════════════
+//  GRAPH
+// ═══════════════════════════════════════
+function buildGraph() {
     Object.keys(metroData).forEach(lineKey => {
         const line = metroData[lineKey];
-        line.stations.forEach((station, index) => {
-            // Save station info with its line color and index for easy access later
-            precomputedData.stations[station.id] = { ...station, lineKey, color: line.color, lineName: line.name, index };
-            if (!precomputedData.graph[station.id]) precomputedData.graph[station.id] = [];
-
-            // Add connection to the Previous station
-            if (index > 0) {
-                const prev = line.stations[index - 1];
-                precomputedData.graph[station.id].push({ node: prev.id, weight: prev.timeToNext, distance: prev.distanceToNext, line: lineKey });
+        if (!line.stations) return;
+        line.stations.forEach((s, i) => {
+            precomputed.stations[s.id] = { ...s, lineKey, color: line.color, lineName: line.name, index: i };
+            if (!precomputed.graph[s.id]) precomputed.graph[s.id] = [];
+            if (i > 0) {
+                const prev = line.stations[i - 1];
+                precomputed.graph[s.id].push({ node: prev.id, weight: prev.timeToNext, distance: prev.distanceToNext, line: lineKey });
             }
-            // Add connection to the Next station
-            if (index < line.stations.length - 1) {
-                const next = line.stations[index + 1];
-                precomputedData.graph[station.id].push({ node: next.id, weight: station.timeToNext, distance: station.distanceToNext, line: lineKey });
-            }
-
-            // Handle Interchanges (connecting lines)
-            if (station.interchangeId) {
-                Object.keys(metroData).forEach(otherLineKey => {
-                    if (otherLineKey !== lineKey) {
-                        const match = metroData[otherLineKey].stations.find(s => s.interchangeId === station.interchangeId);
-                        if (match) {
-                            // Add a "virtual" walking edge between the two platforms
-                            precomputedData.graph[station.id].push({ node: match.id, weight: CONFIG.INTERCHANGE_TIME_MINUTES * 60, distance: 0, line: 'interchange' });
-                        }
-                    }
-                });
+            if (i < line.stations.length - 1) {
+                const next = line.stations[i + 1];
+                precomputed.graph[s.id].push({ node: next.id, weight: s.timeToNext, distance: s.distanceToNext, line: lineKey });
             }
         });
     });
 }
 
-function calculateJourney(startId, endId) {
-    // We use Dijkstra's Algorithm to find the fastest path
-    const distances = {}; const previous = {}; const queue = [];
-    Object.keys(precomputedData.stations).forEach(id => { distances[id] = Infinity; });
-    distances[startId] = 0;
-    queue.push({ id: startId, cost: 0 });
+// ═══════════════════════════════════════
+//  DIJKSTRA
+// ═══════════════════════════════════════
+function calcJourney(startId, endId) {
+    const dist = {}; const prev = {}; const q = [];
+    Object.keys(precomputed.stations).forEach(id => dist[id] = Infinity);
+    dist[startId] = 0;
+    q.push({ id: startId, cost: 0 });
 
-    while (queue.length > 0) {
-        queue.sort((a, b) => a.cost - b.cost);
-        const { id: currentId, cost } = queue.shift();
-        if (currentId === endId) break;
-        if (cost > distances[currentId]) continue;
-
-        const neighbors = precomputedData.graph[currentId] || [];
-        neighbors.forEach(neighbor => {
-            const newCost = cost + neighbor.weight;
-            if (newCost < distances[neighbor.node]) {
-                distances[neighbor.node] = newCost;
-                previous[neighbor.node] = { id: currentId, line: neighbor.line, distance: neighbor.distance };
-                queue.push({ id: neighbor.node, cost: newCost });
+    while (q.length) {
+        q.sort((a, b) => a.cost - b.cost);
+        const { id, cost } = q.shift();
+        if (id === endId) break;
+        if (cost > dist[id]) continue;
+        (precomputed.graph[id] || []).forEach(nb => {
+            const nc = cost + nb.weight;
+            if (nc < dist[nb.node]) {
+                dist[nb.node] = nc;
+                prev[nb.node] = { id, line: nb.line, distance: nb.distance };
+                q.push({ id: nb.node, cost: nc });
             }
         });
     }
+    if (dist[endId] === Infinity) return null;
 
-    if (distances[endId] === Infinity) return null;
+    const path = []; let c = endId; let totalDist = 0;
+    while (c) { path.unshift(c); if (prev[c]) { totalDist += (prev[c].distance || 0); c = prev[c].id; } else c = null; }
 
-    // Reconstruct path
-    const path = []; let curr = endId;
-    let totalDistanceKm = 0;
-    while (curr) {
-        path.unshift(curr);
-        if (previous[curr]) {
-            totalDistanceKm += (previous[curr].distance || 0);
-            curr = previous[curr] ? previous[curr].id : null;
-        } else {
-            curr = null;
-        }
-    }
-
-    // Build Journey Object
-    const parts = [];
-    let currentPart = null;
-
+    const parts = []; let part = null;
     for (let i = 0; i < path.length; i++) {
-        const stationId = path[i];
-        const stationData = precomputedData.stations[stationId];
-        const nextStationId = path[i + 1];
+        const sd = precomputed.stations[path[i]];
+        const nid = path[i + 1];
+        let lot = null;
+        if (nid) {
+            const edge = precomputed.graph[path[i]].find(e => e.node === nid);
+            lot = edge ? edge.line : sd.lineKey;
+        } else if (part) lot = part.stations[0].lineKey;
 
-        let lineOfTravel = null;
-        if (nextStationId) {
-            // Find edge to get line
-            const edge = precomputedData.graph[stationId].find(e => e.node === nextStationId);
-            lineOfTravel = edge ? edge.line : stationData.lineKey;
-        } else if (currentPart) {
-            lineOfTravel = currentPart.stations[0].lineKey; // Last station inherits previous line
-        }
-
-        // Handle interchange edge (virtual walk)
-        if (lineOfTravel === 'interchange') {
-            // Finish current part
-            if (currentPart) {
-                currentPart.stations.push(stationData);
-                // Don't add 'interchange' station to new part yet, the NEXT loop iteration will act as start of new part
+        if (!part || part.stations[0].lineKey !== lot) {
+            let dir = 'forward';
+            if (nid) { const nd = precomputed.stations[nid]; if (nd && nd.index < sd.index) dir = 'backward'; }
+            const plat = sd.platforms ? (sd.platforms[dir] || 1) : 1;
+            let term = 'Terminus';
+            if (metroData[lot]) {
+                const ls = metroData[lot].stations;
+                term = dir === 'forward' ? ls[ls.length - 1].name : ls[0].name;
             }
-            continue;
-        }
-
-        if (!currentPart || currentPart.stations[0].lineKey !== lineOfTravel) {
-            // Start new part
-            // If checking previous part ended, current node is start of new part
-            // But if we just walked interchange, this node is start.
-
-            // Heuristic for direction
-            let direction = 'forward'; // Default
-            if (nextStationId) {
-                const currentIdx = stationData.index;
-                const nextData = precomputedData.stations[nextStationId];
-                if (nextData && nextData.lineKey === lineOfTravel && nextData.index < currentIdx) direction = 'backward';
-            }
-
-            // Get platforms
-            const platform = (stationData.platforms) ? (stationData.platforms[direction] || 1) : 1;
-
-            // Determine journey direction name (Terminal station of line in that direction)
-            let termName = "Terminus";
-            if (metroData[lineOfTravel]) {
-                const lineStns = metroData[lineOfTravel].stations;
-                termName = direction === 'forward' ? lineStns[lineStns.length - 1].name : lineStns[0].name;
-            }
-
-            currentPart = {
-                stations: [stationData],
-                totalTime: 0,
-                startPlatform: platform,
-                journeyDirectionName: T_STATION(termName)
-            };
-            parts.push(currentPart);
-        } else {
-            currentPart.stations.push(stationData);
-        }
+            part = { stations: [sd], startPlatform: plat, journeyDirectionName: T_STATION(term) };
+            parts.push(part);
+        } else part.stations.push(sd);
     }
 
-    // Calculate Fare using strict Distance Slabs logic
-    const departureTime = getDepartureTime();
-    const fareDetails = calculateFare(totalDistanceKm, departureTime, 'TOKEN');
-
-    return {
-        id: `${startId}-${endId}`,
-        parts: parts,
-        totalTime: distances[endId],
-        fare: fareDetails.finalFare,
-        baseFare: fareDetails.baseFare,
-        distanceKm: totalDistanceKm.toFixed(2),
-        fareDetails: fareDetails,
-        departureTime: departureTime
-    };
+    const dep = new Date(Math.ceil(Date.now() / 300000) * 300000);
+    const stops = path.length - 1;
+    return { id: `${startId}-${endId}`, parts, totalTime: dist[endId], fare: calculateFare(stops), distanceKm: totalDist.toFixed(1), departureTime: dep, stops };
 }
 
-
-
-// Deprecated: Old time-based calculation removed.
-// function calculateFare(activeTimeSeconds) { ... }
-
-function getDepartureTime() {
-    const now = new Date();
-    // Round to next 5 min
-    const coeff = 1000 * 60 * 5;
-    return new Date(Math.ceil(now.getTime() / coeff) * coeff);
-}
-
-function displayJourneyResult(journey) {
-    const summaryContainer = document.getElementById('journey-summary-container');
-    const boardBtn = document.getElementById('board-train-btn');
-    const summaryText = document.getElementById('journey-summary');
-
-    if (!journey) {
-        summaryText.textContent = T('selectStationsHint');
-        summaryText.className = "text-center text-sm text-gray-400";
-        boardBtn.classList.add('hidden');
-        return;
-    }
-
+// ═══════════════════════════════════════
+//  DISPLAY RESULT
+// ═══════════════════════════════════════
+function showResult(journey) {
+    if (!journey) return;
     currentJourney = journey;
 
-    summaryText.className = "text-left";
-    let formattedTime = Math.ceil(journey.totalTime / 60) + " " + T('minutes');
-    if (journey.totalTime > 3600) {
-        const h = Math.floor(journey.totalTime / 3600);
-        const m = Math.ceil((journey.totalTime % 3600) / 60);
-        formattedTime = `${h} ${T('hr')} ${m} ${T('minutes')}`;
+    const sum = document.getElementById('journey-summary');
+    const board = document.getElementById('board-train-btn');
+    if (!sum || !board) return;
+
+    const mins = Math.ceil(journey.totalTime / 60);
+    const startName = T_STATION(journey.parts[0].stations[0].name);
+    const lastP = journey.parts[journey.parts.length - 1];
+    const endName = T_STATION(lastP.stations[lastP.stations.length - 1].name);
+
+    sum.innerHTML = `
+        <p style="font-size:12px;font-weight:700;color:var(--text-muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px">${T('route')}</p>
+        <p style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:16px;line-height:1.3">${startName} → ${endName}</p>
+        <div class="info-row">
+            <div class="info-cell"><div class="info-label">${T('totalTime')}</div><div class="info-value">${mins} <span style="font-size:12px;font-weight:500">${T('minutes')}</span></div></div>
+            <div class="info-cell" style="position:relative;">
+                <div class="info-label">${T('estFare')}</div>
+                <div class="info-value" style="color:var(--green)">₹${journey.fare}</div>
+                <div class="discount-pill">-${Math.floor(journey.fare * 0.1)} Card</div>
+            </div>
+            <div class="info-cell"><div class="info-label">${T('numStops')}</div><div class="info-value">${journey.stops}</div></div>
+        </div>
+        
+        <div class="fare-details">
+            <div class="fare-row"><span>${T('smartCardFare')}</span><span>₹${Math.floor(journey.fare * 0.9)}</span></div>
+            <div class="fare-row"><span>${T('seniorCitizenFare')} (-25%)</span><span>₹${Math.floor(journey.fare * 0.75)}</span></div>
+        </div>
+
+        <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--accent);background:var(--accent-soft);padding:10px 14px;border-radius:10px;font-weight:600;margin-top:16px">
+            <i data-lucide="clock" class="w-16 h-16"></i>
+            ${T('nextTrain')}: ${formatTime(journey.departureTime)}
+        </div>`;
+
+    // Add Top Nearby Attraction for Destination
+    const destStation = lastP.stations[lastP.stations.length - 1];
+    const attrs = stationAttractions[destStation.name] || [];
+    if (attrs.length > 0) {
+        const top = attrs[0];
+        const topCard = document.createElement('div');
+        topCard.className = 'top-nearby-box';
+        topCard.innerHTML = `
+            <img src="${top.image}" class="top-nearby-thumb" alt="${top.name}">
+            <div class="top-nearby-info">
+                <div class="top-nearby-title">${top.name}</div>
+                <div class="top-nearby-sub">${top.distance_km} km · ${top.walk_time_min} min walk</div>
+            </div>
+            <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
+        `;
+        topCard.onclick = () => showStationDetail(destStation.name);
+        sum.appendChild(topCard);
     }
 
-    summaryText.innerHTML = `
-        <div class="flex justify-between items-end mb-2">
-            <div>
-                <p class="text-xs text-gray-400 uppercase tracking-wide font-bold">${T('totalTime')}</p>
-                <p class="text-2xl font-bold text-white">${formattedTime}</p>
-            </div>
-            <div class="text-right">
-                <p class="text-xs text-gray-400 uppercase tracking-wide font-bold">${T('estFare')}</p>
-                <p class="text-2xl font-bold text-green-400">₹${journey.fare}</p>
-            </div>
-        </div>
-        <div class="flex items-center gap-2 text-xs text-indigo-300 bg-indigo-900/30 p-2 rounded border border-indigo-500/30">
-            <i data-lucide="clock" class="w-3.5 h-3.5"></i>
-            <span>${T('nextTrain')}: ${formatTime(journey.departureTime)} (${T('now')})</span>
-        </div>
+    board.textContent = T('startLiveJourney');
+    board.classList.remove('hidden');
+
+    showView('results-view');
+    if (window.lucide) window.lucide.createIcons();
+}
+
+// ═══════════════════════════════════════
+//  VIEW MANAGEMENT
+// ═══════════════════════════════════════
+function showView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active-view'));
+    const target = document.getElementById(viewId);
+    if (target) {
+        // Track history for back buttons, but don't track detail view itself as "last"
+        const currentActive = document.querySelector('.view.active-view');
+        if (currentActive && currentActive.id !== 'station-detail-view' && viewId === 'station-detail-view') {
+            lastView = currentActive.id;
+        } else if (viewId !== 'station-detail-view') {
+            lastView = viewId;
+        }
+        target.classList.add('active-view');
+    }
+
+    const content = document.getElementById('app-content');
+    if (content) content.scrollTop = 0;
+
+    // Update nav
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    const navMap = { 
+        'plan-view': 'nav-plan', 
+        'results-view': 'nav-plan', 
+        'stations-view': 'nav-stations', 
+        'timings-view': 'nav-timings', 
+        'explore-view': 'nav-explore',
+        'station-detail-view': 'nav-explore',
+        'safety-view': 'nav-safety' 
+    };
+    const nb = document.getElementById(navMap[viewId]);
+    if (nb) nb.classList.add('active');
+
+    // Lazy render
+    if (viewId === 'stations-view') renderStations();
+    if (viewId === 'safety-view') renderSafety();
+    if (viewId === 'timings-view') renderTimings();
+    if (viewId === 'explore-view') renderExplore();
+
+    if (window.lucide) window.lucide.createIcons();
+}
+window.showView = showView;
+
+function showStationDetail(stationName) {
+    const data = stationAttractions[stationName] || [];
+    const header = document.getElementById('station-detail-header');
+    const carousel = document.getElementById('attractions-carousel');
+    const label = document.getElementById('explore-label');
+    const aCount = document.getElementById('attr-count');
+    const aWalk = document.getElementById('avg-walk');
+
+    if (!header || !carousel) return;
+
+    // Header
+    header.innerHTML = `
+        <div class="hero-line-badge">Pink Line</div>
+        <h2>${T_STATION(stationName)}</h2>
+        <p>${data.length} Nearby Places to Visit</p>
     `;
 
-    boardBtn.classList.remove('hidden');
-
-    // Auto-scroll to summary on mobile
-    if (window.innerWidth < 640) {
-        boardBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Carousel
+    if (data.length === 0) {
+        carousel.innerHTML = '<p style="padding:20px;color:var(--text-muted);font-size:13px">No major attractions listed nearby.</p>';
+        label.textContent = 'Explore';
+    } else {
+        label.textContent = `Explore Near ${T_STATION(stationName)}`;
+        carousel.innerHTML = data.map(a => `
+            <div class="attr-card">
+                <div class="attr-img-container">
+                    <img src="${a.image}" class="attr-img" alt="${a.name}">
+                    <div class="attr-type-badge">${a.type}</div>
+                </div>
+                <div class="attr-body">
+                    <div class="attr-name">${currentLang === 'hi' && a.nameHi ? a.nameHi : a.name}</div>
+                    <div class="attr-desc">${a.description}</div>
+                    <div class="attr-meta">
+                        <div class="meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</div>
+                        <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
+                        ${a.best_time ? `<div class="meta-item" style="color:var(--green)"><i data-lucide="sun" style="color:var(--green)"></i> ${a.best_time}</div>` : ''}
+                    </div>
+                    <div class="attr-footer">
+                        <button class="btn-attr btn-attr-primary" onclick="window.open('${a.maps_link}', '_blank')"><i data-lucide="map-pin" class="w-14 h-14"></i> Navigate</button>
+                        ${a.entry_fee ? `<div class="btn-attr btn-attr-secondary" style="border-style:dashed;flex:0.6">${a.entry_fee}</div>` : ''}
+                    </div>
+                </div>
+            </div>
+        `).join('');
     }
 
+    // Stats
+    aCount.textContent = data.length;
+    let totalWalk = 0;
+    data.forEach(a => totalWalk += a.walk_time_min);
+    aWalk.textContent = data.length > 0 ? Math.round(totalWalk / data.length) + ' min' : '-';
+
+    // If called from live overlay, hide the overlay first
+    const overlay = document.getElementById('journey-overlay');
+    if (overlay && !overlay.classList.contains('hidden')) {
+        // We don't stop the sim, just hide overlay to peek at station
+        overlay.classList.add('hidden');
+        // Update back button to show overlay again? 
+        // For now, simpler to just hide it.
+    }
+
+    showView('station-detail-view');
+    if (window.lucide) window.lucide.createIcons();
+}
+window.showStationDetail = showStationDetail;
+
+// ═══════════════════════════════════════
+//  RENDERERS
+// ═══════════════════════════════════════
+function renderStations() {
+    const el = document.getElementById('stations-content');
+    if (!el || el.dataset.rendered) return;
+    el.dataset.rendered = '1';
+
+    let html = '';
+    Object.values(metroData).forEach(line => {
+        html += `<div class="section-label" style="display:flex;align-items:center;gap:8px"><span style="width:10px;height:10px;border-radius:50%;background:${line.color}"></span>${T_STATION(line.name)}</div>`;
+        line.stations.forEach((s, i) => {
+            const isFirst = i === 0, isLast = i === line.stations.length - 1;
+            const dotClass = isFirst ? 'first' : isLast ? 'last' : 'mid';
+            const hi = stationTranslations[s.name]?.hi || '';
+            html += `<div class="stn-card" onclick="showStationDetail('${s.name}')"><span class="stn-dot ${dotClass}"></span><div><div class="stn-name">${T_STATION(s.name)}</div><div class="stn-name-hi">${hi}</div></div><span class="stn-idx">${s.id}</span></div>`;
+        });
+    });
+    el.innerHTML = html;
+}
+
+function renderExplore() {
+    const el = document.getElementById('explore-content');
+    if (!el || el.dataset.rendered) return;
+    el.dataset.rendered = '1';
+
+    let html = '';
+    // Collect all attractions
+    const all = [];
+    Object.entries(stationAttractions).forEach(([stn, attrs]) => {
+        attrs.forEach(a => all.push({ ...a, station: stn }));
+    });
+
+    // Filter to top ones or just show all in a nice grid
+    html = all.map(a => `
+        <div class="card attr-summary-card" onclick="showStationDetail('${a.station}')">
+            <img src="${a.image}" alt="${a.name}" class="explore-thumb">
+            <div class="explore-info">
+                <div class="explore-title">${a.name}</div>
+                <div class="explore-station"><i data-lucide="map-pin" class="w-10 h-10"></i> ${T_STATION(a.station)}</div>
+                <div class="explore-meta">${a.type} · ${a.walk_time_min} min walk</div>
+            </div>
+        </div>
+    `).join('');
+
+    el.innerHTML = html;
     if (window.lucide) window.lucide.createIcons();
 }
 
-function switchView(viewId) {
-    document.getElementById('planner-view').classList.add('hidden');
-    document.getElementById('map-view').classList.add('hidden');
-    document.getElementById(viewId).classList.remove('hidden');
+function renderTimings() {
+    const el = document.getElementById('timings-content');
+    if (!el || el.dataset.rendered) return;
+    el.dataset.rendered = '1';
 
-    if (viewId === 'planner-view') {
-        simulationState.isActive = false;
-        if (simulationState.animationFrameId) cancelAnimationFrame(simulationState.animationFrameId);
-    }
+    el.innerHTML = `
+        <div class="info-row">
+            <div class="info-cell"><div class="info-label">First Train</div><div class="info-value">5:50 AM</div></div>
+            <div class="info-cell"><div class="info-label">Last Train</div><div class="info-value">11:00 PM</div></div>
+            <div class="info-cell"><div class="info-label">Frequency</div><div class="info-value">7-10 min</div></div>
+        </div>
+        <div class="section-label">Peak Hours</div>
+        <table class="timetable">
+            <thead><tr><th>Period</th><th>Time</th><th>Frequency</th></tr></thead>
+            <tbody>
+                <tr><td>Morning Peak</td><td>8:00 – 10:00 AM</td><td>5–7 min</td></tr>
+                <tr><td>Midday</td><td>10:00 AM – 5:00 PM</td><td>8–10 min</td></tr>
+                <tr><td>Evening Peak</td><td>5:00 – 8:00 PM</td><td>5–7 min</td></tr>
+                <tr><td>Night</td><td>8:00 – 11:00 PM</td><td>10–15 min</td></tr>
+            </tbody>
+        </table>
+        <div class="section-label">Station-wise First / Last Train</div>
+        <table class="timetable">
+            <thead><tr><th>Station</th><th>First ↓</th><th>First ↑</th></tr></thead>
+            <tbody>
+                <tr><td>Mansarovar</td><td>5:50 AM</td><td>6:10 AM</td></tr>
+                <tr><td>Sindhi Camp</td><td>6:04 AM</td><td>5:56 AM</td></tr>
+                <tr><td>Badi Chaupar</td><td>6:10 AM</td><td>5:50 AM</td></tr>
+            </tbody>
+        </table>
+        <p class="disclaimer">Timings are approximate · Verify at station</p>`;
 }
 
-// --- Simulation Logic ---
+function renderSafety() {
+    const el = document.getElementById('safety-content');
+    if (!el || el.dataset.rendered) return;
+    el.dataset.rendered = '1';
 
-function generateTimeline(journey) {
-    // Convert parts to linear timeline
-    const timeline = [];
-    let currentTime = 0; // seconds from start
+    let html = '<div class="section-label">Emergency Contacts</div>';
+    safetyData.emergencyNumbers.forEach(c => {
+        const name = currentLang === 'hi' ? c.nameHi : c.name;
+        html += `<a href="tel:${c.number}" class="contact-card"><div class="contact-icon"><i data-lucide="phone" class="w-18 h-18"></i></div><div><div class="contact-name">${name}</div><div class="contact-num">${c.number}</div></div><span class="contact-badge">${c.available}</span></a>`;
+    });
 
+    html += `
+        <div class="section-label">Metro Info</div>
+        <div class="info-row">
+            <div class="info-cell"><div class="info-label">First Train</div><div class="info-value">5:50 AM</div></div>
+            <div class="info-cell"><div class="info-label">Last Train</div><div class="info-value">11:00 PM</div></div>
+            <div class="info-cell"><div class="info-label">Frequency</div><div class="info-value">7–10 min</div></div>
+        </div>
+        <div class="section-label">Travel Tips</div>
+        <div class="card" style="font-size:13px;color:var(--text-sub);line-height:1.7">
+            <p style="margin-bottom:10px">• Women's coach is the <b>first coach</b> from Mansarovar end</p>
+            <p style="margin-bottom:10px">• Keep token ready at exit gates</p>
+            <p style="margin-bottom:10px">• No photography inside trains</p>
+            <p style="margin-bottom:10px">• Carry water in summer (May–Sept)</p>
+            <p>• Prepaid autos available at Railway Station exit</p>
+        </div>
+        <p class="disclaimer">Unofficial app · Not affiliated with JMRC</p>`;
+
+    el.innerHTML = html;
+    if (window.lucide) window.lucide.createIcons();
+}
+
+// ═══════════════════════════════════════
+//  SIMULATION
+// ═══════════════════════════════════════
+function makeTimeline(journey) {
+    const tl = []; let t = 0;
     journey.parts.forEach(part => {
         part.stations.forEach((s, i) => {
-            // departureTime = arrival + dwell
-            const isLast = i === part.stations.length - 1;
-
-            // Time to next?
-            let travelTime = 0;
-            if (!isLast) {
-                const nextS = part.stations[i + 1];
-                // find edge
-                const weight = Math.abs(nextS.timeToNext || 90); // default
-                travelTime = weight;
-            }
-
-            timeline.push({
-                stationId: s.id,
-                stationName: T_STATION(s.name),
-                arrivalTime: currentTime,
-                departureTime: currentTime + 30, // 30s dwell
-                color: s.color,
-                lat: s.lat,
-                lon: s.lon
-            });
-
-            currentTime += (travelTime + 30);
+            const travel = (i < part.stations.length - 1) ? (s.timeToNext || 90) : 0;
+            tl.push({ stationId: s.id, stationName: T_STATION(s.name), stationNameRaw: s.name, arrivalTime: t, color: s.color, lat: s.lat, lon: s.lon });
+            t += travel + 30;
         });
-
-        // Add interchange walking time if not last part
-        currentTime += (CONFIG.INTERCHANGE_TIME_MINUTES * 60);
     });
-    return timeline;
+    return tl;
 }
 
-// Live tracking algorithm removed. Static view only.
-
-function startSimulation(journey, useLiveLocation, startTimeOverride) {
+function startSim(journey) {
     if (!journey) return;
-    switchView('map-view');
-
-    // Set state primarily for navigation/back-button logic, but no active tracking
     simulationState.isActive = true;
-    simulationState.journeyId = journey.id;
-    // No timeline generation needed for static view unless used for simulation, 
-    // but renderLiveRoute needs structure. We keep data, but stop "live" updates.
-    simulationState.timeline = generateTimeline(journey);
+    simulationState.startTime = Date.now();
+    simulationState.timeline = makeTimeline(journey);
 
-    sessionStorage.setItem('activeJourney', JSON.stringify(journey));
+    const overlay = document.getElementById('journey-overlay');
+    if (overlay) overlay.classList.remove('hidden');
 
-    // Render the static route list
-    renderLiveRoute(journey, document.getElementById('route-list'), simulationState);
+    renderLiveRoute(journey, document.getElementById('sim-route-list'), simulationState);
 
-    // Static Header
-    // Get destination from the last station of the last part
-    const lastPart = journey.parts[journey.parts.length - 1];
-    const destinationName = lastPart ? T_STATION(lastPart.stations[lastPart.stations.length - 1].name) : '';
-    const totalMinutes = journey.totalTime ? Math.ceil(journey.totalTime / 60) : 0;
+    const lastP = journey.parts[journey.parts.length - 1];
+    const dest = lastP ? T_STATION(lastP.stations[lastP.stations.length - 1].name) : '';
+    const mins = Math.ceil(journey.totalTime / 60);
+    const dirEl = document.getElementById('jv-direction');
+    const etaEl = document.getElementById('jv-eta');
+    if (dirEl) dirEl.textContent = T('towards') + ' ' + dest;
+    if (etaEl) etaEl.textContent = mins + ' ' + T('minRemaining');
 
-    const simStatus = document.getElementById('simulation-status');
-    simStatus.innerHTML = `
-        <div class="w-full flex justify-between items-start bg-slate-900/50 p-1 -mx-1 rounded-lg">
-            <div class="flex flex-col gap-0.5">
-                <p class="font-bold text-white text-sm flex items-center gap-2">
-                    <i data-lucide="activity" class="w-3.5 h-3.5 text-green-400"></i>
-                    ${T('liveJourney') || 'Live Journey'}
-                </p>
-                <p class="text-xs text-gray-200 font-medium">${T('towards')} ${destinationName}</p>
-                <p class="text-[10px] text-gray-500">${totalMinutes} ${T('minRemaining')}</p>
-            </div>
-            <button id="exit-journey-btn" class="bg-slate-800 border border-slate-700 text-gray-400 font-medium px-3 py-1.5 rounded-md text-xs hover:bg-slate-700 hover:text-white transition-colors mt-0.5">${T('exitJourney')}</button>
-        </div>`;
-    document.getElementById('exit-journey-btn').addEventListener('click', stopSimulation);
+    const loop = () => {
+        if (!simulationState.isActive) return;
+        const res = updateRouteVisuals(simulationState);
+        
+        // Update Attractions Link for current station
+        const nbLink = document.getElementById('jv-nearby-link');
+        if (nbLink && res.currentStationName) {
+            const attrs = stationAttractions[res.currentStationName] || [];
+            if (attrs.length > 0) {
+                nbLink.textContent = `See nearby (${attrs.length})`;
+                nbLink.classList.remove('hidden');
+                nbLink.onclick = () => showStationDetail(res.currentStationName);
+            } else {
+                nbLink.classList.add('hidden');
+            }
+        }
 
+        const elapsed = (Date.now() - simulationState.startTime) / 1000;
+        const total = simulationState.timeline[simulationState.timeline.length - 1]?.arrivalTime || 1;
+        const bar = document.getElementById('jv-progress-bar');
+        if (bar) bar.style.width = Math.min((elapsed / total) * 100, 100) + '%';
+        simulationState.animFrameId = requestAnimationFrame(loop);
+    };
+    loop();
     if (window.lucide) window.lucide.createIcons();
 }
 
-function stopSimulation() {
+function stopSim() {
     simulationState.isActive = false;
-    if (simulationState.animationFrameId) cancelAnimationFrame(simulationState.animationFrameId);
-    if (simulationState.locationWatcherId) navigator.geolocation.clearWatch(simulationState.locationWatcherId);
-    sessionStorage.removeItem('activeJourney');
-    sessionStorage.removeItem('simulationState');
-    switchView('planner-view');
+    if (simulationState.animFrameId) cancelAnimationFrame(simulationState.animFrameId);
+    const overlay = document.getElementById('journey-overlay');
+    if (overlay) overlay.classList.add('hidden');
+    showView('plan-view');
 }
 
-function handleJourneyUpdate() {
-    const startVal = document.getElementById('start-station').value;
-    const endVal = document.getElementById('end-station').value;
-    if (startVal && endVal) {
-        const j = calculateJourney(startVal, endVal);
-        displayJourneyResult(j);
+// ═══════════════════════════════════════
+//  GEOLOCATION — "I am at..."
+// ═══════════════════════════════════════
+function locateMe() {
+    if (!navigator.geolocation) { toast('Geolocation not supported'); return; }
+    toast(T('detectingLocation'));
+
+    navigator.geolocation.getCurrentPosition(pos => {
+        const lat = pos.coords.latitude;
+        const lon = pos.coords.longitude;
+        let nearest = null; let minDist = Infinity;
+
+        Object.values(metroData).forEach(line => {
+            line.stations.forEach(s => {
+                const d = getDistance(lat, lon, s.lat, s.lon);
+                if (d < minDist) { minDist = d; nearest = s; }
+            });
+        });
+
+        if (nearest) {
+            const km = minDist.toFixed(1);
+            toast(`${T('nearest') || 'Nearest'}: ${T_STATION(nearest.name)} (~${km} km)`);
+            
+            if (startDropdown) startDropdown.select(nearest.id);
+
+            const url = `https://www.google.com/maps/dir/${lat},${lon}/${nearest.lat},${nearest.lon}`;
+            setTimeout(() => {
+                showModal({
+                    title: T('navigate') || 'Navigate',
+                    body: `${T('navigatePrompt') || 'Navigate to'} ${T_STATION(nearest.name)} station? (~${km} km away)`,
+                    confirmText: currentLang === 'hi' ? 'खोलें' : 'Open Maps',
+                    cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+                    onConfirm: () => window.open(url, '_blank')
+                });
+            }, 500);
+        } else {
+            toast(T('noNearbyStation'));
+        }
+    }, err => {
+        toast(T('locAccessDenied'));
+    }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+// ═══════════════════════════════════════
+//  FARE CALCULATOR
+// ═══════════════════════════════════════
+function showFareCalc() {
+    const sv = document.getElementById('start-station')?.value;
+    const ev = document.getElementById('end-station')?.value;
+    if (!sv || !ev) {
+        toast(T('selectBothStations'));
+        return;
     }
+    if (sv === ev) { toast(T('startAndEndDifferent')); return; }
+    const j = calcJourney(sv, ev);
+    if (j) showResult(j);
+    else toast(T('noRouteFound'));
 }
 
-function initializeApp() {
-    startDropdown = new CustomDropdown('start-station-dropdown', 'Select Start Station', 'start', (val) => {
-        document.getElementById('start-station').value = val;
-        handleJourneyUpdate();
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
+function init() {
+    console.log('JaipurRide: Starting...');
+    buildGraph();
+
+    // Theme
+    setTheme(currentTheme);
+
+    // Dropdowns
+    startDropdown = new CustomDropdown('start-station-container', 'fromPlaceholder', 'start', val => {
+        const el = document.getElementById('start-station');
+        if (el) el.value = val;
+    });
+    endDropdown = new CustomDropdown('end-station-container', 'toPlaceholder', 'end', val => {
+        const el = document.getElementById('end-station');
+        if (el) el.value = val;
     });
 
-    endDropdown = new CustomDropdown('end-station-dropdown', 'Select Destination', 'end', (val) => {
-        document.getElementById('end-station').value = val;
-        handleJourneyUpdate();
-    });
-
-    document.getElementById('language-selector').value = currentLang;
-    document.getElementById('language-selector').addEventListener('change', (e) => setLanguage(e.target.value));
+    // Language
     setLanguage(currentLang);
 
-    precomputeJourneyData();
+    // Wire everything
+    wire();
 
-    document.getElementById('swap-stations').addEventListener('click', () => {
-        if (simulationState.isActive) return;
-        const startVal = document.getElementById('start-station').value;
-        const endVal = document.getElementById('end-station').value;
-        if (startVal && endVal) {
-            startDropdown.selectById(endVal);
-            endDropdown.selectById(startVal);
-        }
-    });
-
-    document.getElementById('board-train-btn').addEventListener('click', () => {
-        if (currentJourney) startSimulation(currentJourney, false); // Simulation mode
-    });
-
-    // Restore state
-    const savedJourneyJSON = sessionStorage.getItem('activeJourney');
-    const savedSimStateJSON = sessionStorage.getItem('simulationState');
-    if (savedJourneyJSON && savedSimStateJSON) {
-        try {
-            const savedJourney = JSON.parse(savedJourneyJSON);
-            const savedSimState = JSON.parse(savedSimStateJSON);
-            savedJourney.departureTime = new Date(savedJourney.departureTime);
-            const startId = savedJourney.id.split('-')[0];
-            const endId = savedJourney.id.split('-')[1];
-            startDropdown.selectById(startId);
-            endDropdown.selectById(endId);
-            startSimulation(savedJourney, savedSimState.useLiveLocation, savedSimState.startTime);
-        } catch (e) { console.error("Restore failed", e); }
-    } else {
-        switchView('planner-view');
-    }
-
+    // Clock
     setInterval(() => {
-        document.getElementById('live-clock').textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const now = new Date();
+        const el = document.getElementById('live-clock');
+        if (el) el.textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true }).toUpperCase();
+        const jvC = document.getElementById('jv-clock');
+        if (jvC) jvC.textContent = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
     }, 1000);
 
     if (window.lucide) window.lucide.createIcons();
+    console.log('JaipurRide: Ready!');
 }
 
-// Start
-document.addEventListener('DOMContentLoaded', initializeApp);
+function wire() {
+    // Theme
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.addEventListener('click', () => setTheme(currentTheme === 'light' ? 'dark' : 'light'));
+
+    // Lang
+    const langBtn = document.getElementById('lang-toggle');
+    if (langBtn) langBtn.addEventListener('click', () => {
+        const next = currentLang === 'en' ? 'hi' : 'en';
+        setLanguage(next);
+        langBtn.textContent = next.toUpperCase();
+    });
+
+    // Swap
+    const swapBtn = document.getElementById('swap-stations-btn');
+    if (swapBtn) swapBtn.addEventListener('click', () => {
+        if (!startDropdown || !endDropdown) return;
+        const s = startDropdown.selectedValue, e = endDropdown.selectedValue;
+        if (s && e) {
+            startDropdown.select(e); endDropdown.select(s);
+            document.getElementById('start-station').value = e;
+            document.getElementById('end-station').value = s;
+        }
+    });
+
+    // Find route
+    const findBtn = document.getElementById('find-route-btn');
+    if (findBtn) findBtn.addEventListener('click', () => {
+        const sv = document.getElementById('start-station')?.value;
+        const ev = document.getElementById('end-station')?.value;
+        if (!sv || !ev) { toast(T('selectBothStations')); return; }
+        if (sv === ev) { toast(T('startAndEndDifferent')); return; }
+        const j = calcJourney(sv, ev);
+        if (j) showResult(j);
+        else toast(T('noRouteFound'));
+    });
+
+    // Back from results
+    const backBtn = document.getElementById('results-back');
+    if (backBtn) backBtn.addEventListener('click', () => showView('plan-view'));
+
+    const detailBackBtn = document.getElementById('detail-back');
+    if (detailBackBtn) detailBackBtn.addEventListener('click', () => {
+        showView(lastView || 'stations-view');
+    });
+
+    // Board train
+    const boardBtn = document.getElementById('board-train-btn');
+    if (boardBtn) boardBtn.addEventListener('click', () => { if (currentJourney) startSim(currentJourney); });
+
+    // Exit journey
+    const exitBtn = document.getElementById('exit-journey-btn');
+    if (exitBtn) exitBtn.addEventListener('click', stopSim);
+
+    // Bottom nav
+    document.querySelectorAll('.nav-item[data-view]').forEach(btn => {
+        btn.addEventListener('click', () => showView(btn.dataset.view));
+    });
+
+    // Quick links
+    const ql = { 
+        'ql-fare': showFareCalc, 
+        'ql-timings': () => showView('timings-view'), 
+        'ql-map': () => showView('stations-view'), 
+        'ql-safety': () => showView('safety-view'),
+        'ql-explore': () => showView('explore-view')
+    };
+    Object.entries(ql).forEach(([id, fn]) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', fn);
+    });
+
+    // Locate me
+    const locBtn = document.getElementById('locate-me-btn');
+    if (locBtn) locBtn.addEventListener('click', locateMe);
+}
+
+document.addEventListener('DOMContentLoaded', init);

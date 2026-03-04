@@ -1,73 +1,196 @@
+/* ─────────────────────────────────────────
+   JAIPUR RIDE — UNIFIED DESIGN SYSTEM
+   Primary: Pink (#EC4899)  |  Dark Ink (#1A1A2E)
+   Background: Warm Cream / Glassmorphism
+   ───────────────────────────────────────── */
 :root {
-    --bg-color: #0F172A;
-    /* Slate 900 - Dark Neutral */
-    --text-primary: #F1F5F9;
-    /* Slate 100 */
-    --text-secondary: #94A3B8;
-    /* Slate 400 */
-    --line-purple: #9B59B6;
-    --line-green: #2ECC71;
-    --line-yellow: #F1C40F;
-    --line-default: #334155;
-    /* Slate 700 */
-    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Core Colors */
+  --white:          #FFFFFF;
+  --off-white:      #FDF9F7;       /* Warm cream */
+  --ink:            #1A1A2E;       /* Deep navy-black for high contrast */
+  --ink-light:      #3D3D5C;       /* Secondary text */
+  --stone:          #8A8A9A;       /* Muted labels */
+
+  /* Primary Brand — Jaipur Pink */
+  --pink:           #EC4899;
+  --pink-light:     #FCE7F3;
+  --pink-dark:      #BE185D;
+  --pink-glow:      rgba(236, 72, 153, 0.25);
+
+  /* Secondary — Warm Saffron (accents only) */
+  --saffron:        #EC4899;       /* Remapped to pink for consistency */
+  --saffron-vibrant:#EC4899;
+
+  /* Semantic */
+  --success-green:  #22C55E;
+  --warning:        #F59E0B;
+
+  /* Borders & Surfaces */
+  --border-subtle:  rgba(236, 72, 153, 0.12);
+  --border-card:    rgba(255, 255, 255, 0.4);
+  --input-border:   #E8E0F0;       /* Subtle lavender-tinted border */
+
+  /* Glass Surfaces */
+  --glass-white:    rgba(255, 255, 255, 0.72);
+  --glass-card:     rgba(255, 255, 255, 0.55);
+  --glass-subtle:   rgba(255, 255, 255, 0.35);
+  --blur:           20px;
+  --blur-heavy:     32px;
+
+  /* Shadows */
+  --shadow-soft:    0 4px 20px rgba(26, 26, 46, 0.06);
+  --shadow-medium:  0 10px 32px rgba(26, 26, 46, 0.12);
+  --shadow-premium: 0 20px 60px rgba(26, 26, 46, 0.18);
+  --shadow-pink:    0 8px 24px rgba(236, 72, 153, 0.3);
+
+  /* Fonts */
+  --font-heading: 'Cormorant Garamond', serif;
+  --font-body:    'DM Sans', sans-serif;
 }
 
+/* ── Body ── */
 body {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    font-family: var(--font-family);
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
-
-    background-image: url('../assets/images/vidhan-bengaluru.jpg');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    position: relative;
+  background-image: url('../assets/images/try2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-color: #1A1A2E;
+  color: var(--ink);
+  font-family: var(--font-body);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
+  overflow: hidden;
 }
 
+/* Rich dark-warm overlay for the Jaipur palace image */
 body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: rgba(15, 23, 42, 0.85);
-    z-index: -1;
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(26, 26, 46, 0.55) 0%,
+    rgba(100, 20, 60, 0.35) 50%,
+    rgba(26, 26, 46, 0.6) 100%
+  );
+  z-index: -1;
 }
 
-h1,
-h2,
-h3,
-h4,
-.font-bold {
-    letter-spacing: -0.02em;
+/* ── Typography ── */
+h1 { font-family: var(--font-heading); font-size: 22px; color: var(--ink); }
+h2 { font-family: var(--font-heading); font-size: 30px; color: var(--ink); }
+h3 { font-family: var(--font-heading); font-size: 24px; color: var(--ink); }
+
+.font-heading {
+  font-family: var(--font-heading);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.2;
+}
+.font-body {
+  font-family: var(--font-body);
+  line-height: 1.5;
 }
 
-.text-gray-100 {
-    color: #f3f4f6;
+/* ── Global Utilities ── */
+.text-ink    { color: var(--ink)   !important; }
+.text-stone  { color: var(--stone) !important; }
+.text-saffron, .text-pink { color: var(--pink) !important; }
+.bg-off-white { background-color: var(--off-white) !important; }
+.bg-white     { background-color: var(--white)     !important; }
+
+/* ── Scrollbar ── */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); border-radius: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* ── Inputs ── */
+input, select {
+  height: 52px;
+  background-color: rgba(255,255,255,0.9);
+  border: 1.5px solid var(--input-border);
+  border-radius: 14px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--ink);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+input:focus, select:focus {
+  border-color: var(--pink);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--pink-glow);
+}
+::placeholder { color: var(--stone); font-size: 14px; }
+/* iOS zoom fix */
+input[type], select, textarea { font-size: 16px !important; }
+
+/* ── Buttons ── */
+button.primary {
+  height: 52px;
+  background: var(--ink);
+  color: var(--white);
+  border: none;
+  border-radius: 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+button.primary:hover  { background: #2a2a4a; }
+button.primary:active { transform: scale(0.98); }
+
+/* ── Toast ── */
+#toast {
+  background: var(--ink);
+  color: var(--white);
+  font-size: 13px;
+  padding: 12px 24px;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  border: 1px solid rgba(236, 72, 153, 0.3);
 }
 
-/* Tailwind overrides */
-.text-gray-400 {
-    color: #9ca3af;
+/* ── Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+.animate-fade-in { animation: fadeIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0);    }
+}
+.animate-slide-up .modal-content-wrapper {
+  animation: slideUp 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.text-indigo-300 {
-    color: #a5b4fc;
-}
+/* ── Nav Active State ── */
+.nav-item { transition: all 0.2s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.nav-item:active { transform: scale(0.9); }
+.nav-item.active-saffron { color: var(--pink) !important; }
+.nav-item.active-saffron span { color: var(--pink) !important; }
+.nav-item.active-saffron i { color: var(--pink) !important; stroke-width: 2.5px; }
+.active-saffron { color: var(--pink) !important; }
 
-.text-indigo-400 {
-    color: #818cf8;
+/* ── Burst effect ── */
+.selection-burst {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: var(--pink-glow);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1000;
+  animation: burst 0.6s ease-out forwards;
 }
-
-.text-green-400 {
-    color: #4ade80;
-}
-
-.text-red-400 {
-    color: #f87171;
+@keyframes burst {
+  0%   { transform: scale(0.5); opacity: 1; }
+  100% { transform: scale(4);   opacity: 0; }
 }

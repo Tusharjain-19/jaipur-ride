@@ -1,243 +1,148 @@
-/* Timeline / Route Container */
+/* ─────────────────────────────────────────
+   JAIPUR RIDE — METRO ROUTE TIMELINE
+   Light & Dark variants with pink branding
+   ───────────────────────────────────────── */
+
+/* ══ LIGHT THEME TIMELINE (Journey Results) ══ */
 .route-timeline {
-    position: relative;
-    padding: 0 1.5rem;
-    /* Space for the line */
-    padding-bottom: 4rem;
-    /* Bottom spacing */
-    margin-top: 1rem;
-    list-style: none;
+  position: relative;
+  padding: 0 20px;
+  padding-bottom: 64px;
+  margin-top: 16px;
+  list-style: none;
 }
 
 .station-item {
-    position: relative;
-    padding-left: 2rem;
-    /* Space for dot */
-    padding-bottom: 2rem;
-    /* Spacing between stations */
+  position: relative;
+  padding-left: 36px;
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid rgba(236, 72, 153, 0.07);
+  -webkit-tap-highlight-color: transparent;
 }
+.station-item:last-child { border-bottom: none; }
 
-.station-item:last-child {
-    padding-bottom: 0;
-    border-left-color: transparent;
-}
-
-/* The Line Segment */
+/* Vertical line */
 .station-item::before {
-    content: '';
-    position: absolute;
-    left: 7px;
-    /* Align center of 16px dot: 8px center. Line width 2px. Left = 8 - 1 = 7px */
-    top: 24px;
-    /* Start below the dot */
-    bottom: -8px;
-    /* Extend to next dot */
-    width: 2px;
-    background-color: var(--line-default);
-    z-index: 0;
+  content: '';
+  position: absolute;
+  left: 4px; top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(236, 72, 153, 0.15);
+  z-index: 0;
 }
+.station-item:first-child::before { top: 50%; }
+.station-item:last-child::before  { height: 50%; bottom: auto; }
 
-/* Line Colors */
-.line-purple .station-item::before {
-    background-color: var(--line-purple);
-}
-
-.line-green .station-item::before {
-    background-color: var(--line-green);
-}
-
-.line-yellow .station-item::before {
-    background-color: var(--line-yellow);
-}
-
-/* The Dot */
+/* Dots */
 .station-dot {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background-color: var(--bg-color);
-    /* Cutout effect */
-    border: 3px solid var(--line-default);
-    z-index: 10;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid rgba(236, 72, 153, 0.4);
+  z-index: 10;
 }
-
-.line-purple .station-dot {
-    border-color: var(--line-purple);
-}
-
-.line-green .station-dot {
-    border-color: var(--line-green);
-}
-
-.line-yellow .station-dot {
-    border-color: var(--line-yellow);
-}
-
-/* Station States */
-.station-item.completed .station-dot {
-    background-color: var(--line-default);
-    /* Solid muted */
-    border-color: var(--line-default);
-    opacity: 0.6;
-}
-
-.station-item.completed .station-content {
-    opacity: 0.6;
-}
-
 .station-item.current .station-dot {
-    width: 20px;
-    height: 20px;
-    left: -2px;
-    /* Center adjustment */
-    top: -2px;
-    background-color: var(--bg-color);
-    border-width: 4px;
-    box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.1);
-    /* Subtle ring */
+  background: var(--pink, #EC4899);
+  border-color: var(--pink, #EC4899);
+  width: 14px; height: 14px;
+  left: -2px;
+  box-shadow: 0 0 0 4px rgba(236,72,153,0.15);
+}
+.station-item.completed::before { background: var(--pink, #EC4899); opacity: 0.4; }
+.station-item.completed .station-dot {
+  background: var(--pink, #EC4899);
+  border-color: var(--pink, #EC4899);
 }
 
-/* Interchange Node */
-.station-item.interchange .station-dot {
-    width: 24px;
-    height: 24px;
-    left: -4px;
-    top: -4px;
-    border-width: 4px;
-    background-color: #fff;
-    /* Default interchange */
-    z-index: 20;
+/* Station text */
+.station-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
-/* Dual-Line Interchange Node (Purple <-> Green) */
-.station-item.interchange-purple-green .station-dot,
-.station-item.interchange-green-purple .station-dot {
-    background: conic-gradient(var(--line-purple) 0deg 180deg, var(--line-green) 180deg 360deg);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 0 2px var(--bg-color);
-    /* Separation ring */
-}
-
-/* Dual-Line Interchange Node (Green <-> Yellow) */
-.station-item.interchange-green-yellow .station-dot,
-.station-item.interchange-yellow-green .station-dot {
-    background: conic-gradient(var(--line-green) 0deg 180deg, var(--line-yellow) 180deg 360deg);
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 0 2px var(--bg-color);
-    /* Separation ring */
-}
-
-/* Inner hole for split ring effect */
-.station-item.interchange-purple-green .station-dot::after,
-.station-item.interchange-green-purple .station-dot::after,
-.station-item.interchange-green-yellow .station-dot::after,
-.station-item.interchange-yellow-green .station-dot::after {
-    content: '';
-    width: 14px;
-    height: 14px;
-    background-color: var(--bg-color);
-    border-radius: 50%;
-    display: block;
-}
-
-/* Fix interchange info border color for specific transition */
-.station-item.interchange-purple-green .interchange-info {
-    border-left-color: var(--line-green);
-}
-
-.station-item.interchange-green-purple .interchange-info {
-    border-left-color: var(--line-purple);
-}
-
-.station-item.interchange-green-yellow .interchange-info {
-    border-left-color: var(--line-yellow);
-}
-
-.station-item.interchange-yellow-green .interchange-info {
-    border-left-color: var(--line-green);
-}
+.station-name-block { flex: 1; padding: 12px 0; }
 
 .station-name {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--text-primary);
-    line-height: 1.2;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1A2E;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.station-name:hover { color: #EC4899; }
+.station-name span { color: #8A8A9A; font-size: 12px; font-weight: 400; display: block; margin-top: 2px; }
+
+/* Chevron */
+.chevron-wrapper {
+  width: 44px; height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: rgba(236,72,153,0.3);
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
-.station-meta {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
+/* Badges */
+.badge-board {
+  background: #1A1A2E;
+  color: #FFFFFF;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.badge-exit {
+  background: #FFF5FB;
+  color: #EC4899;
+  border: 1.5px solid rgba(236,72,153,0.3);
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
 }
 
-/* Inline Interchange Styles (New) */
+/* Interchange */
 .interchange-info {
-    margin-top: 0.5rem;
-    padding-left: 0.25rem;
-    border-left: 2px solid var(--line-yellow);
-    /* Default accent */
-    margin-left: 2px;
-    /* Align with text */
-    padding-left: 8px;
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(236, 72, 153, 0.04);
+  border-radius: 10px;
+  border-left: 3px solid #EC4899;
 }
 
-.line-purple .interchange-info {
-    border-left-color: var(--line-purple);
+/* ══ DARK THEME TIMELINE (Live Journey Takeover) ══ */
+.station-item-dark {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.line-green .interchange-info {
-    border-left-color: var(--line-green);
+.station-name-dark {
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: color 0.2s ease;
 }
 
-.line-yellow .interchange-info {
-    border-left-color: var(--line-yellow);
+/* No-scrollbar helper */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animate-in for info boxes in dark mode */
+@keyframes jvSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-
-.interchange-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.8rem;
-    color: var(--text-secondary);
-}
-
-.interchange-meta {
-    font-size: 0.75rem;
-    color: #64748B;
-    /* Slate 500 */
-    margin-top: 2px;
-    margin-left: 1.35rem;
-    /* Align under text */
-}
-
-.station-pulse {
-    animation: pulse 1s ease-out;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
-    }
-
-    50% {
-        transform: scale(1.2);
-        box-shadow: 0 0 5px 10px rgba(255, 255, 255, 0);
-    }
-
-    100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-}
+.animate-slide-up { animation: jvSlideUp 0.4s ease-out forwards; }
