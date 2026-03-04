@@ -1,9 +1,8 @@
 {
-  "redirects": [
+  "rewrites": [
     {
-      "source": "https://www.jaipurride.site/:path*",
-      "destination": "https://jaipurride.site/:path*",
-      "permanent": true
+      "source": "/(.*)",
+      "destination": "/"
     }
   ],
   "headers": [
