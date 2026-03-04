@@ -11,8 +11,8 @@ body {
   -webkit-font-smoothing: antialiased; 
   overflow: hidden; 
   background-image: url('../assets/images/hawa_mahal.jpg');
-  background-size: 100% 100%; /* Fully zoomed out */
-  background-position: center center;
+  background-size: cover;
+  background-position: center top;
   background-attachment: fixed;
   background-repeat: no-repeat;
   min-height: 100vh;
@@ -25,9 +25,14 @@ body::before {
   content: "";
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: var(--body-overlay);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: linear-gradient(
+    160deg,
+    rgba(255, 220, 200, 0.18) 0%,
+    rgba(180, 60, 80, 0.22) 50%,
+    rgba(80, 20, 40, 0.45) 100%
+  );
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   z-index: -1;
 }
 button { cursor: pointer; border: none; background: none; font-family: inherit; }
