@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8"/>
@@ -17,7 +17,7 @@
 <body>
     <div id="app" class="app-shell">
 
-        <!-- ═══ HEADER ═══ -->
+        <!-- â•â•â• HEADER â•â•â• -->
         <header class="app-header">
             <div class="header-brand">
                 <img src="assets/images/logo1.png" alt="JaipurRide Logo" class="brand-logo">
@@ -34,10 +34,10 @@
             </div>
         </header>
 
-        <!-- ═══ SCROLLABLE CONTENT ═══ -->
+        <!-- â•â•â• SCROLLABLE CONTENT â•â•â• -->
         <main id="app-content" class="scroll-content">
 
-            <!-- ── PLAN VIEW (Home) ── -->
+            <!-- â”€â”€ PLAN VIEW (Home) â”€â”€ -->
             <section id="plan-view" class="view active-view">
                 <div class="section-hero">
                   
@@ -89,7 +89,7 @@
                     </button>
                     <button class="quick-item" id="ql-explore">
                         <div class="quick-icon"><i data-lucide="sparkles" class="w-20 h-20"></i></div>
-                        <span>Explore</span>
+                        <span data-lang-key="navExplore">Explore</span>
                     </button>
                 </div>
             </section>
@@ -99,47 +99,47 @@
                 <div id="journey-summary" class="card"></div>
                 <ul id="route-list" class="route-timeline hidden"></ul>
                 <button id="board-train-btn" class="btn-primary mt-20 hidden" data-lang-key="startLiveJourney">Start Live Journey</button>
-                <p class="disclaimer" data-lang-key="simulationDisclaimer">Estimated times · Not an official JMRC app</p>
+                <p class="disclaimer" data-lang-key="simulationDisclaimer">Estimated times Â· Not an official JMRC app</p>
             </section>
 
-            <!-- ── STATIONS VIEW ── -->
+            <!-- â”€â”€ STATIONS VIEW â”€â”€ -->
             <section id="stations-view" class="view">
                 <h2 class="view-title" data-lang-key="stations">Stations</h2>
-                <p class="view-sub" data-lang-key="allStationsSub">Pink Line — All 11 stations</p>
+                <p class="view-sub" data-lang-key="allStationsSub">Pink Line â€” All 11 stations</p>
                 <div id="stations-content"></div>
             </section>
 
-            <!-- ── TIMINGS VIEW ── -->
+            <!-- â”€â”€ TIMINGS VIEW â”€â”€ -->
             <section id="timings-view" class="view">
                 <h2 class="view-title" data-lang-key="timings">Timings</h2>
                 <p class="view-sub" data-lang-key="timingsSub">Jaipur Metro schedule</p>
                 <div id="timings-content"></div>
             </section>
 
-            <!-- ── SAFETY VIEW ── -->
+            <!-- â”€â”€ SAFETY VIEW â”€â”€ -->
             <section id="safety-view" class="view">
                 <h2 class="view-title" data-lang-key="safetyHelp">Safety & Help</h2>
                 <p class="view-sub" data-lang-key="safetySub">Emergency contacts & useful info</p>
                 <div id="safety-content"></div>
             </section>
 
-            <!-- ── EXPLORE VIEW ── -->
+            <!-- â”€â”€ EXPLORE VIEW â”€â”€ -->
             <section id="explore-view" class="view">
-                <h2 class="view-title">Explore Jaipur</h2>
-                <p class="view-sub">Top attractions near Pink Line stations</p>
+                <h2 class="view-title" data-lang-key="exploreJaipur">Explore Jaipur</h2>
+                <p class="view-sub" data-lang-key="exploreSub">Top attractions near Pink Line stations</p>
                 <div id="explore-content" class="explore-grid">
                     <!-- Dynamic content -->
                 </div>
             </section>
 
-            <!-- ── STATION DETAIL VIEW (New) ── -->
+            <!-- â”€â”€ STATION DETAIL VIEW (New) â”€â”€ -->
             <section id="station-detail-view" class="view">
                 <button id="detail-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
                 <div id="station-detail-header" class="station-header-hero">
                     <!-- Dynamic content -->
                 </div>
                 
-                <div class="section-label" id="explore-label">Explore Near Station</div>
+                <div class="section-label" id="explore-label" data-lang-key="exploreNear">Explore Near Station</div>
                 <div id="attractions-carousel" class="attractions-carousel">
                     <!-- Dynamic cards -->
                 </div>
@@ -155,7 +155,7 @@
 
         </main>
 
-        <!-- ═══ LIVE JOURNEY OVERLAY ═══ -->
+        <!-- â•â•â• LIVE JOURNEY OVERLAY â•â•â• -->
         <section id="journey-overlay" class="overlay hidden">
             <div class="overlay-header">
                 <div class="header-brand">
@@ -179,10 +179,10 @@
                 <div class="progress-bar"><div id="jv-progress-bar" class="progress-fill"></div></div>
             </div>
             <div id="sim-route-list" class="overlay-body"></div>
-            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated · Not an official JMRC service</div>
+            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated Â· Not an official JMRC service</div>
         </section>
 
-        <!-- ═══ BOTTOM NAV ═══ -->
+        <!-- â•â•â• BOTTOM NAV â•â•â• -->
         <nav class="bottom-nav">
             <button id="nav-plan" class="nav-item active" data-view="plan-view">
                 <i data-lucide="compass" class="w-20 h-20"></i>
@@ -196,7 +196,7 @@
                 <i data-lucide="clock" class="w-20 h-20"></i>
                 <span data-lang-key="timings">Timings</span>
             </button>
-            <button id="nav-explore" class="nav-item" data-view="stations-view">
+            <button id="nav-explore" class="nav-item" data-view="explore-view">
                 <i data-lucide="sparkles" class="w-20 h-20"></i>
                 <span data-lang-key="navExplore">Explore</span>
             </button>
@@ -226,3 +226,5 @@
     </div>
 </body>
 </html>
+
+
