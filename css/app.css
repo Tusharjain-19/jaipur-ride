@@ -121,8 +121,8 @@ body {
   .app-shell {
     width: 100vw;
     max-width: 100%;
-    height: 100dvh;
-    height: 100vh; /* fallback */
+    height: 100svh; /* small viewport - excludes browser chrome */
+    height: 100dvh; /* dynamic - best for mobile browsers */
     border-radius: 0;
     border: none;
     box-shadow: none;
@@ -213,7 +213,7 @@ body {
 .scroll-content::-webkit-scrollbar { display: none; }
 
 /* ── VIEWS ── */
-.view { display: none; padding: 20px 16px 100px; animation: fadeIn 0.3s ease; }
+.view { display: none; padding: 20px 16px 110px; animation: fadeIn 0.3s ease; }
 .view.active-view { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -488,13 +488,14 @@ body {
 /* ── BOTTOM NAV ── */
 .bottom-nav {
   position: sticky; bottom: 0;
-  height: calc(60px + env(safe-area-inset-bottom));
+  min-height: 62px;
+  height: auto;
+  padding-bottom: max(env(safe-area-inset-bottom), 8px);
   background: var(--bg-nav);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
   display: flex;
-  padding-bottom: env(safe-area-inset-bottom);
   z-index: 100; flex-shrink: 0;
 }
 .nav-item {
@@ -502,8 +503,10 @@ body {
   align-items: center; justify-content: center;
   gap: 4px; color: var(--text-muted);
   transition: all 0.2s;
+  padding: 8px 0;
+  min-height: 54px;
 }
-.nav-item span { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
+.nav-item span { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; line-height: 1; }
 .nav-item.active { color: var(--accent); }
 .nav-item:active { transform: scale(0.9); }
 
