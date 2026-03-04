@@ -6,8 +6,8 @@
 
     <!-- Home / Main App (Single Page Application) -->
     <url>
-        <loc>https://jaipurride.site/</loc>
-        <lastmod>2026-02-07</lastmod>
+        <loc>https://jaipurride.vercel.app/</loc>
+        <lastmod>2026-03-04</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
