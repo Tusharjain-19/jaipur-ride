@@ -579,17 +579,24 @@ function locateMe() {
         });
 
         if (nearest) {
-            const km = minDist.toFixed(1);
-            toast(`${T('nearest') || 'Nearest'}: ${T_STATION(nearest.name)} (~${km} km)`);
+            // Show distance smartly: meters if < 1km
+            const distLabel = minDist < 1
+                ? `~${Math.round(minDist * 1000)} m`
+                : `~${minDist.toFixed(1)} km`;
+
+            toast(`${T('nearest') || 'Nearest'}: ${T_STATION(nearest.name)} (${distLabel})`);
             
             if (startDropdown) startDropdown.select(nearest.id);
 
-            const url = `https://www.google.com/maps/dir/${lat},${lon}/${nearest.lat},${nearest.lon}`;
+            // Use station name search — more reliable & opens correct JMRC pin
+            const stationQuery = encodeURIComponent(`${nearest.name} Metro Station Jaipur`);
+            const url = `https://www.google.com/maps/dir/${lat},${lon}/${stationQuery}`;
+
             setTimeout(() => {
                 showModal({
                     title: T('navigate') || 'Navigate',
-                    body: `${T('navigatePrompt') || 'Navigate to'} ${T_STATION(nearest.name)} station? (~${km} km away)`,
-                    confirmText: currentLang === 'hi' ? 'खोलें' : 'Open Maps',
+                    body: `${T('navigatePrompt') || 'Navigate to'} <b>${T_STATION(nearest.name)}</b> Metro Station<br><small style="color:var(--text-muted)">${distLabel} away</small>`,
+                    confirmText: currentLang === 'hi' ? 'Maps खोलें' : 'Open in Maps',
                     cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
                     onConfirm: () => window.open(url, '_blank')
                 });
@@ -598,8 +605,10 @@ function locateMe() {
             toast(T('noNearbyStation'));
         }
     }, err => {
-        toast(T('locAccessDenied'));
-    }, { enableHighAccuracy: true, timeout: 10000 });
+        if (err.code === 1) toast(T('locAccessDenied'));
+        else if (err.code === 2) toast('Location unavailable. Try again.');
+        else toast('Location timed out. Try again.');
+    }, { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
 }
 
 // ═══════════════════════════════════════
