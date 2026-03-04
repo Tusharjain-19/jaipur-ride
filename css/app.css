@@ -118,14 +118,19 @@ body {
 
 /* ── MOBILE: full screen ── */
 @media (max-width: 480px) {
+  body {
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
   .app-shell {
     width: 100vw;
     max-width: 100%;
-    height: 100svh; /* small viewport - excludes browser chrome */
-    height: 100dvh; /* dynamic - best for mobile browsers */
+    height: 100svh;
+    height: 100dvh;
     border-radius: 0;
     border: none;
     box-shadow: none;
+    margin: 0;
   }
 }
 
@@ -506,7 +511,7 @@ body {
   padding: 8px 0;
   min-height: 54px;
 }
-.nav-item span { font-size: 10px; font-weight: 700; letter-spacing: 0.3px; line-height: 1; }
+.nav-item span { font-size: 11px; font-weight: 700; letter-spacing: 0.2px; line-height: 1.2; }
 .nav-item.active { color: var(--accent); }
 .nav-item:active { transform: scale(0.9); }
 
