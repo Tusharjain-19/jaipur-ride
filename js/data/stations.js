@@ -8,17 +8,17 @@ export const metroData = {
     name: "Pink Line",
     color: "#EC4899",
     stations: [
-      { id: "J01", name: "Mansarovar",        lat: 26.883800, lon: 75.819800, timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J02", name: "New Aatish Market",  lat: 26.880308, lon: 75.764602, timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
-      { id: "J03", name: "Vivek Vihar",        lat: 26.888952, lon: 75.768499, timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J04", name: "Shyam Nagar",        lat: 26.896487, lon: 75.770602, timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
-      { id: "J05", name: "Ram Nagar",          lat: 26.901944, lon: 75.774652, timeToNext: 125, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J06", name: "Civil Lines",        lat: 26.909585, lon: 75.781277, timeToNext: 130, distanceToNext: 1.3, platforms: { forward: 2, backward: 1 } },
-      { id: "J07", name: "Railway Station",    lat: 26.918559, lon: 75.789903, timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J08", name: "Sindhi Camp",        lat: 26.922563, lon: 75.799747, timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J09", name: "Chandpole",          lat: 26.926370, lon: 75.807456, timeToNext: 105, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J10", name: "Chhoti Chaupar",     lat: 26.924720, lon: 75.818456, timeToNext:  95, distanceToNext: 0.9, platforms: { forward: 2, backward: 1 } },
-      { id: "J11", name: "Badi Chaupar",       lat: 26.922960, lon: 75.826814, timeToNext:   0, distanceToNext: 0,   platforms: { forward: 2, backward: 1 } }
+      { id: "J01", name: "Mansarovar",        lat: 26.879531, lon: 75.749971, maps_link: "https://www.google.com/maps/search/?api=1&query=26.879531,75.749971", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J02", name: "New Aatish Market",  lat: 26.880308, lon: 75.764602, maps_link: "https://www.google.com/maps/search/?api=1&query=26.880308,75.764602", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
+      { id: "J03", name: "Vivek Vihar",        lat: 26.888952, lon: 75.768499, maps_link: "https://www.google.com/maps/search/?api=1&query=26.888952,75.768499", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J04", name: "Shyam Nagar",        lat: 26.896650, lon: 75.770667, maps_link: "https://www.google.com/maps/search/?api=1&query=26.896650,75.770667", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
+      { id: "J05", name: "Ram Nagar",          lat: 26.901944, lon: 75.774652, maps_link: "https://www.google.com/maps/search/?api=1&query=26.901944,75.774652", timeToNext: 125, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J06", name: "Civil Lines",        lat: 26.909585, lon: 75.781277, maps_link: "https://www.google.com/maps/search/?api=1&query=26.909585,75.781277", timeToNext: 130, distanceToNext: 1.3, platforms: { forward: 2, backward: 1 } },
+      { id: "J07", name: "Railway Station",    lat: 26.918559, lon: 75.789903, maps_link: "https://www.google.com/maps/search/?api=1&query=26.918559,75.789903", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J08", name: "Sindhi Camp",        lat: 26.922563, lon: 75.799747, maps_link: "https://www.google.com/maps/search/?api=1&query=26.922563,75.799747", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J09", name: "Chandpole",          lat: 26.926370, lon: 75.807456, maps_link: "https://www.google.com/maps/search/?api=1&query=26.926370,75.807456", timeToNext: 105, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J10", name: "Chhoti Chaupar",     lat: 26.924720, lon: 75.818456, maps_link: "https://www.google.com/maps/search/?api=1&query=26.924720,75.818456", timeToNext:  95, distanceToNext: 0.9, platforms: { forward: 2, backward: 1 } },
+      { id: "J11", name: "Badi Chaupar",       lat: 26.922960, lon: 75.826814, maps_link: "https://www.google.com/maps/search/?api=1&query=26.922960,75.826814", timeToNext:   0, distanceToNext: 0,   platforms: { forward: 2, backward: 1 } }
     ]
   }
 };

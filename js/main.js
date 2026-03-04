@@ -588,9 +588,9 @@ function locateMe() {
             
             if (startDropdown) startDropdown.select(nearest.id);
 
-            // Use station name search — more reliable & opens correct JMRC pin
-            const stationQuery = encodeURIComponent(`${nearest.name} Metro Station Jaipur`);
-            const url = `https://www.google.com/maps/dir/${lat},${lon}/${stationQuery}`;
+            // Use the station's pre-set exact Maps pin
+            const url = nearest.maps_link
+                || `https://www.google.com/maps/search/?api=1&query=${nearest.lat},${nearest.lon}`;
 
             setTimeout(() => {
                 showModal({
