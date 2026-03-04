@@ -53,7 +53,7 @@ export const translations = {
     navStations: "Stations",
     navTools: "Safety",
     normalService: "Normal Service",
-    heroTitle: "Where to today?",
+    heroTitle: "Where to<br>go today?",
     iamat: "I am at...",
     findNearest: "Find nearest station & navigate",
     fare: "Fare",
