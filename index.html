@@ -1,0 +1,271 @@
+﻿<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
+    <meta name="theme-color" content="#FFFFFF"/>
+    <link rel="icon" type="image/png" href="assets/images/logo1.png">
+    <title>JaipurRide</title>
+    <meta name="description" content="Plan your Jaipur Metro journey. Find routes, fares, and timings for the Pink Line."/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/app.css"/>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" src="js/main.js" defer></script>
+</head>
+<body>
+    <div id="app" class="app-shell">
+
+        
+        <header class="app-header">
+            <div class="header-brand">
+                <img src="assets/images/logo1.png" alt="JaipurRide Logo" class="brand-logo">
+                <div class="branding-text">
+                    <h1 class="brand-title">Jaipur<span>Ride</span></h1>
+                    <p id="live-clock" class="brand-subtitle"></p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="theme-toggle" class="icon-btn" aria-label="Toggle dark mode">
+                    <i data-lucide="sun" class="w-18 h-18"></i>
+                </button>
+                <button id="lang-toggle" class="pill-btn">EN</button>
+            </div>
+        </header>
+
+        <!-- â•â•â• SCROLLABLE CONTENT â•â•â• -->
+        <main id="app-content" class="scroll-content">
+
+            <!-- â”€â”€ PLAN VIEW (Home) â”€â”€ -->
+            <section id="plan-view" class="view active-view">
+                <div class="section-hero">
+                  
+                    <h2 class="hero-title" data-lang-key="heroTitle">Where to<br>go today?</h2>
+                    
+                </div>
+
+                <!-- Station Picker Card -->
+                <div class="card card-picker">
+                    <input type="hidden" id="start-station">
+                    <input type="hidden" id="end-station">
+                    <div id="start-station-container" class="picker-slot"></div>
+                    <div class="swap-row">
+                        <div class="swap-line"></div>
+                        <button id="swap-stations-btn" class="swap-btn" aria-label="Swap stations">
+                            <i data-lucide="arrow-up-down" class="w-16 h-16"></i>
+                        </button>
+                    </div>
+                    <div id="end-station-container" class="picker-slot"></div>
+                    <button id="find-route-btn" class="btn-primary mt-20">
+                        <i data-lucide="route" class="w-18 h-18"></i>
+                        <span data-lang-key="planYourTrip">Plan Route</span>
+                    </button>
+                </div>
+
+                <!-- Locate Me -->
+                <button id="locate-me-btn" class="card card-locate">
+                    <div class="locate-icon"><i data-lucide="navigation" class="w-20 h-20"></i></div>
+                    <div>
+                        <p class="locate-title" data-lang-key="iamat">I am at...</p>
+                        <p class="locate-sub" data-lang-key="findNearest">Find nearest station & navigate</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
+                </button>
+
+                <!-- Quick Actions -->
+                <div class="quick-grid">
+                    <button class="quick-item" id="ql-timings">
+                        <div class="quick-icon"><i data-lucide="clock" class="w-20 h-20"></i></div>
+                        <span data-lang-key="timings">Timings</span>
+                    </button>
+                    <button class="quick-item" id="ql-map">
+                        <div class="quick-icon"><i data-lucide="map-pin" class="w-20 h-20"></i></div>
+                        <span data-lang-key="stations">Stations</span>
+                    </button>
+                    <button class="quick-item" id="ql-safety">
+                        <div class="quick-icon"><i data-lucide="shield-check" class="w-20 h-20"></i></div>
+                        <span data-lang-key="safety">Safety</span>
+                    </button>
+                    <button class="quick-item" id="ql-explore">
+                        <div class="quick-icon"><i data-lucide="sparkles" class="w-20 h-20"></i></div>
+                        <span data-lang-key="navExplore">Explore</span>
+                    </button>
+                </div>
+            </section>
+
+            <section id="results-view" class="view">
+                <button id="results-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
+                <div id="journey-summary" class="card"></div>
+                <ul id="route-list" class="route-timeline hidden"></ul>
+                <button id="board-train-btn" class="btn-primary mt-20 hidden" data-lang-key="startLiveJourney">Start Live Journey</button>
+                <p class="disclaimer" data-lang-key="simulationDisclaimer">Estimated times Â· Not an official JMRC app</p>
+            </section>
+
+            <!-- â”€â”€ STATIONS VIEW â”€â”€ -->
+            <section id="stations-view" class="view">
+                <h2 class="view-title" data-lang-key="stations">Stations</h2>
+                <p class="view-sub" data-lang-key="allStationsSub">Pink Line — Tap any station for facilities and info</p>
+                <div id="stations-content"></div>
+            </section>
+
+            <!-- â”€â”€ TIMINGS VIEW â”€â”€ -->
+            <section id="timings-view" class="view">
+                <h2 class="view-title" data-lang-key="timings">Timings</h2>
+                <p class="view-sub" data-lang-key="timingsSub">Jaipur Metro schedule</p>
+                <div id="timings-content"></div>
+            </section>
+
+            <!-- â”€â”€ SAFETY VIEW â”€â”€ -->
+            <section id="safety-view" class="view">
+                <h2 class="view-title" data-lang-key="safetyHelp">Safety & Help</h2>
+                <p class="view-sub" data-lang-key="safetySub">Emergency contacts & useful info</p>
+                <div id="safety-content"></div>
+            </section>
+
+            <!-- â”€â”€ EXPLORE VIEW â”€â”€ -->
+            <section id="explore-view" class="view">
+                <h2 class="view-title" data-lang-key="exploreJaipur">Explore Jaipur</h2>
+                <p class="view-sub" data-lang-key="exploreSub">Top attractions near Pink Line stations</p>
+                <div id="explore-content" class="explore-grid">
+                    <!-- Dynamic content -->
+                </div>
+            </section>
+
+            <!-- ── STATION INFO VIEW (From Stations Tab) ── -->
+            <section id="station-info-view" class="view">
+                <button id="info-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
+                
+                <div id="station-info-header" class="station-header-hero">
+                    <!-- Dynamic content -->
+                </div>
+                
+                <div class="detail-sections-grid">
+                    <!-- Station Facilities -->
+                    <div class="detail-section-card">
+                        <div class="section-header-row">
+                            <div class="section-icon-box"><i data-lucide="door-open"></i></div>
+                            <h3 class="section-card-title">Station Facilities</h3>
+                        </div>
+                        <p class="section-card-desc">Amenities available inside the station</p>
+                        <div id="info-facilities" class="tags-grid"></div>
+                    </div>
+
+                    <!-- Connectivity -->
+                    <div class="detail-section-card">
+                        <div class="section-header-row">
+                            <div class="section-icon-box" style="background:var(--green-soft); color:var(--green)"><i data-lucide="bus"></i></div>
+                            <h3 class="section-card-title">Connectivity</h3>
+                        </div>
+                        <p class="section-card-desc">Transport options outside building</p>
+                        <div id="info-connectivity" class="tags-grid"></div>
+                    </div>
+
+                    <!-- Metro Info -->
+                    <div class="detail-section-card">
+                        <div class="section-header-row">
+                            <div class="section-icon-box" style="background:var(--accent-soft); color:var(--accent)"><i data-lucide="info"></i></div>
+                            <h3 class="section-card-title">Metro Travel Info</h3>
+                        </div>
+                        <div id="info-metro" class="meta-list"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ── EXPLORE DETAIL VIEW (From Explore Tab) ── -->
+            <section id="explore-detail-view" class="view">
+                <button id="explore-detail-back" class="back-btn"><i data-lucide="arrow-left" class="w-16 h-16"></i> <span data-lang-key="back">Back</span></button>
+                
+                <div id="explore-detail-header" class="station-header-hero">
+                    <!-- Dynamic content -->
+                </div>
+
+                <div class="section-label" id="explore-label" data-lang-key="exploreNear">Explore Near Station</div>
+                <div id="explore-attractions-carousel" class="attractions-carousel">
+                    <!-- Dynamic cards -->
+                </div>
+
+                <div class="nearby-info-card">
+                    <div class="info-row">
+                        <div class="info-cell"><div class="info-label">Attractions</div><div class="info-value" id="exp-attr-count">0</div></div>
+                        <div class="info-cell"><div class="info-label">Avg. Walk</div><div class="info-value" id="exp-avg-walk">10 min</div></div>
+                        <div class="info-cell"><div class="info-label">Line</div><div class="info-value">Pink</div></div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- â•â•â• LIVE JOURNEY OVERLAY â•â•â• -->
+        <section id="journey-overlay" class="overlay hidden">
+            <div class="overlay-header">
+                <div class="header-brand">
+                    <img src="assets/images/logo1.png" alt="JaipurRide Logo" class="brand-logo" style="width: 32px; height: 32px;">
+                    <div>
+                        <h1 class="brand-title" style="font-size: 16px;">Jaipur<span>Ride</span></h1>
+                    </div>
+                </div>
+                <div class="overlay-actions">
+                    <span id="jv-clock" class="overlay-clock"></span>
+                    <button id="exit-journey-btn" class="overlay-exit-btn" data-lang-key="exit">Exit</button>
+                </div>
+            </div>
+            <div class="overlay-status">
+                <div class="live-badge"><span class="live-dot"></span> <span data-lang-key="liveJourneyUpper">LIVE JOURNEY</span></div>
+                <h3 id="jv-direction">Towards Badi Chaupar</h3>
+                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                    <p id="jv-eta" class="overlay-eta">- min remaining</p>
+                    <div id="jv-nearby-link" class="attractions-link hidden">See nearby (0)</div>
+                </div>
+                <div class="progress-bar"><div id="jv-progress-bar" class="progress-fill"></div></div>
+            </div>
+            <div id="sim-route-list" class="overlay-body"></div>
+            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated Â· Not an official JMRC service</div>
+        </section>
+
+        <!-- â•â•â• BOTTOM NAV â•â•â• -->
+        <nav class="bottom-nav">
+            <button id="nav-plan" class="nav-item active" data-view="plan-view">
+                <i data-lucide="compass" class="w-20 h-20"></i>
+                <span data-lang-key="navPlan">Plan</span>
+            </button>
+            <button id="nav-stations" class="nav-item" data-view="stations-view">
+                <i data-lucide="train-front" class="w-20 h-20"></i>
+                <span data-lang-key="navStations">Stations</span>
+            </button>
+            <button id="nav-timings" class="nav-item" data-view="timings-view">
+                <i data-lucide="clock" class="w-20 h-20"></i>
+                <span data-lang-key="timings">Timings</span>
+            </button>
+            <button id="nav-explore" class="nav-item" data-view="explore-view">
+                <i data-lucide="sparkles" class="w-20 h-20"></i>
+                <span data-lang-key="navExplore">Explore</span>
+            </button>
+            <button id="nav-safety" class="nav-item" data-view="safety-view">
+                <i data-lucide="shield-check" class="w-20 h-20"></i>
+                <span data-lang-key="navTools">Safety</span>
+            </button>
+        </nav>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"><i data-lucide="info" class="w-16 h-16"></i><span id="toast-message"></span></div>
+
+        <!-- Custom Prompt Modal -->
+        <div id="custom-modal" class="modal-overlay hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-icon"><i data-lucide="navigation"></i></div>
+                    <h3 id="modal-title">Navigate</h3>
+                </div>
+                <p id="modal-body">Message goes here...</p>
+                <div class="modal-actions">
+                    <button id="modal-cancel-btn" class="modal-btn secondary">Cancel</button>
+                    <button id="modal-confirm-btn" class="modal-btn primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+

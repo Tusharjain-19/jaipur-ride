@@ -1,0 +1,148 @@
+/* ─────────────────────────────────────────
+   JAIPUR RIDE — METRO ROUTE TIMELINE
+   Light & Dark variants with pink branding
+   ───────────────────────────────────────── */
+
+/* ══ LIGHT THEME TIMELINE (Journey Results) ══ */
+.route-timeline {
+  position: relative;
+  padding: 0 20px;
+  padding-bottom: 64px;
+  margin-top: 16px;
+  list-style: none;
+}
+
+.station-item {
+  position: relative;
+  padding-left: 36px;
+  min-height: 62px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid rgba(236, 72, 153, 0.07);
+  -webkit-tap-highlight-color: transparent;
+}
+.station-item:last-child { border-bottom: none; }
+
+/* Vertical line */
+.station-item::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 0; bottom: 0;
+  width: 2px;
+  background: rgba(236, 72, 153, 0.15);
+  z-index: 0;
+}
+.station-item:first-child::before { top: 50%; }
+.station-item:last-child::before  { height: 50%; bottom: auto; }
+
+/* Dots */
+.station-dot {
+  position: absolute;
+  left: 0; top: 50%;
+  transform: translateY(-50%);
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid rgba(236, 72, 153, 0.4);
+  z-index: 10;
+}
+.station-item.current .station-dot {
+  background: var(--pink, #EC4899);
+  border-color: var(--pink, #EC4899);
+  width: 14px; height: 14px;
+  left: -2px;
+  box-shadow: 0 0 0 4px rgba(236,72,153,0.15);
+}
+.station-item.completed::before { background: var(--pink, #EC4899); opacity: 0.4; }
+.station-item.completed .station-dot {
+  background: var(--pink, #EC4899);
+  border-color: var(--pink, #EC4899);
+}
+
+/* Station text */
+.station-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.station-name-block { flex: 1; padding: 12px 0; }
+
+.station-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1A2E;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.station-name:hover { color: #EC4899; }
+.station-name span { color: #8A8A9A; font-size: 12px; font-weight: 400; display: block; margin-top: 2px; }
+
+/* Chevron */
+.chevron-wrapper {
+  width: 44px; height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: rgba(236,72,153,0.3);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+/* Badges */
+.badge-board {
+  background: #1A1A2E;
+  color: #FFFFFF;
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+.badge-exit {
+  background: #FFF5FB;
+  color: #EC4899;
+  border: 1.5px solid rgba(236,72,153,0.3);
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+/* Interchange */
+.interchange-info {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background: rgba(236, 72, 153, 0.04);
+  border-radius: 10px;
+  border-left: 3px solid #EC4899;
+}
+
+/* ══ DARK THEME TIMELINE (Live Journey Takeover) ══ */
+.station-item-dark {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.station-name-dark {
+  font-family: 'DM Sans', sans-serif;
+  line-height: 1.25;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+/* No-scrollbar helper */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Animate-in for info boxes in dark mode */
+@keyframes jvSlideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up { animation: jvSlideUp 0.4s ease-out forwards; }

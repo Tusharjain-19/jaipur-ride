@@ -1,0 +1,166 @@
+﻿<div align="center">
+
+<img src="assets/images/logo1.png" alt="JaipurRide Logo" width="90" height="90" style="border-radius:16px"/>
+
+# 🚇 JaipurRide
+
+### The unofficial Jaipur Metro companion app for tourists & daily commuters
+
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-JaipurRide-EC4899?style=for-the-badge)](https://jaipurride.vercel.app)
+[![Made with Love](https://img.shields.io/badge/Made_with-❤️_in_Jaipur-FF6B6B?style=for-the-badge)](#)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+
+</div>
+
+---
+
+## ✨ Overview
+
+**JaipurRide** is a beautiful, offline-first web app that helps you navigate the **Jaipur Metro Pink Line** with ease. Whether you're a tourist exploring the Pink City or a daily commuter, JaipurRide gives you real-time journey planning, live simulation, fare info, and curated tourist attractions — all in one elegant interface.
+
+> _Not affiliated with JMRC. Timings and fares are estimates._
+
+---
+
+## 📸 Preview
+
+<div align="center">
+<img src="assets/images/hawa_mahal.jpg" alt="App Background — Hawa Mahal, Jaipur" width="400"/>
+</div>
+
+---
+
+## 🚀 Features
+
+| Feature                        | Description                                                       |
+| ------------------------------ | ----------------------------------------------------------------- |
+| 🗺️ **Route Planner**           | Select origin & destination — get the fastest route instantly     |
+| 🎫 **Smart Fare Calculator**   | Cash, Smart Card, Student & Senior Citizen fares (Jan 2025 rates) |
+| 🔴 **Live Journey Simulation** | Real-time progress tracker as you ride the metro                  |
+| 🏛️ **Explore Nearby**          | Curated tourist attractions near each station with walk times     |
+| 🕌 **Station Detail View**     | Tap any station to discover its hidden gems                       |
+| 🕐 **Metro Timings**           | First/last train & peak-hour frequency at a glance                |
+| 🛡️ **Safety & Emergency**      | One-tap access to metro helpline, police, ambulance & more        |
+| 🌐 **Bilingual**               | Full English & Hindi support                                      |
+| 🌙 **Dark / Light Mode**       | Seamless theme toggle                                             |
+| 📴 **Offline-First**           | All data is bundled locally — no internet needed                  |
+
+---
+
+## 🏛️ Tourist Attractions Covered
+
+JaipurRide maps the best sights to their nearest metro station:
+
+| Station             | Attractions                                                    |
+| ------------------- | -------------------------------------------------------------- |
+| **Badi Chaupar**    | Hawa Mahal, City Palace, Jantar Mantar (UNESCO), Johari Bazaar |
+| **Chhoti Chaupar**  | Bapu Bazaar, Albert Hall Museum                                |
+| **Chandpole**       | Nahargarh Fort, Chandpole Bazaar                               |
+| **Sindhi Camp**     | Raj Mandir Cinema, Nehru Bazaar                                |
+| **Railway Station** | MI Road                                                        |
+| **Civil Lines**     | Birla Mandir, Central Park, Statue Circle                      |
+| **Mansarovar**      | ISKCON Temple, Patrika Gate                                    |
+
+---
+
+## 🛤️ Metro Line Coverage
+
+```
+Pink Line  ·  11 Stations
+Mansarovar → New Aatish Market → Vivek Vihar → Shyam Nagar
+→ Ram Nagar → Civil Lines → Railway Station → Sindhi Camp
+→ Chandpole → Chhoti Chaupar → Badi Chaupar
+```
+
+**Operating Hours:** 5:50 AM – 11:00 PM  
+**Frequency:** 5–7 min (peak) · 8–10 min (off-peak)
+
+---
+
+## 💰 Fare Structure _(Effective January 31, 2025)_
+
+| Distance     | Cash Token | Smart Card (10% off) |
+| ------------ | ---------- | -------------------- |
+| 1–2 stations | ₹10        | ₹9                   |
+| 3–5 stations | ₹15        | ₹13.50               |
+| 6–8 stations | ₹25        | ₹22.50               |
+| 9+ stations  | ₹30        | ₹27                  |
+
+_Student Card: 15% off · Senior Citizen Card: 25% off_
+
+---
+
+## 🗂️ Project Structure
+
+```
+jaipur-metro/
+├── index.html              # App shell & all views
+├── css/
+│   └── app.css             # Unified design system (light + dark)
+├── js/
+│   ├── main.js             # Core app logic, routing, simulation
+│   ├── data/
+│   │   ├── stations.js     # Metro data, fares, translations
+│   │   └── stationAttractions.js  # Tourist attractions (offline)
+│   └── ui/
+│       ├── dropdown.js     # Custom station selector
+│       └── route.js        # Live journey renderer
+├── assets/
+│   └── images/             # All attraction & background images
+├── sitemap.xml
+└── vercel.json             # Deployment config
+```
+
+---
+
+## 🛠️ Tech Stack
+
+- **HTML5** + **Vanilla CSS** + **ES Modules** — zero framework overhead
+- **Lucide Icons** — clean, consistent iconography
+- **Google Fonts (Inter)** — modern, readable typography
+- **Offline-first** — all data bundled, no API calls needed
+
+---
+
+## 🚀 Getting Started
+
+```bash
+# Clone the repository
+git clone https://github.com/Tusharjain-19/jaipur-ride.git
+
+# Open in browser (no build step needed!)
+# Just open index.html or serve with any static server:
+npx serve .
+```
+
+Or simply visit the **[live demo](https://jaipurride.vercel.app)**.
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+
+- Add missing tourist attractions
+- Improve Hindi translations
+- Report bugs or suggest features
+
+Open a [pull request](https://github.com/Tusharjain-19/jaipur-ride/pulls) or [issue](https://github.com/Tusharjain-19/jaipur-ride/issues).
+
+---
+
+## 📄 License
+
+MIT License — free to use and modify.
+
+---
+
+<div align="center">
+
+Made with ❤️ for the **Pink City** 🏰
+
+_Jaipur Metro Pink Line · 11 Stations · Est. 2015_
+
+</div>
+
+
