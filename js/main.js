@@ -513,6 +513,11 @@ function showExploreDetail(stationName) {
                         <div class="meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</div>
                         <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
                     </div>
+                    <div class="attr-card-actions">
+                        <button class="btn-attr-small" onclick="event.stopPropagation(); window.open('${a.maps_link}', '_blank')">
+                            <i data-lucide="map-pin"></i> Navigate
+                        </button>
+                    </div>
                 </div>
             </div>
         `).join('');
