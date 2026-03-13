@@ -147,8 +147,14 @@ function setLanguage(lang) {
     if (activeView.id === "stations-view") renderStations();
     if (activeView.id === "safety-view") renderSafety();
     if (activeView.id === "timings-view") renderTimings();
+    if (activeView.id === "explore-view") renderExplore();
+    if (activeView.id === "explore-detail-view" && window.lastExploreStation) {
+      showExploreDetail(window.lastExploreStation);
+    }
   }
 }
+
+window.lastExploreStation = null;
 
 // ═══════════════════════════════════════
 //  GRAPH
@@ -465,6 +471,7 @@ function showStationInfo(stationName) {
 window.showStationInfo = showStationInfo;
 
 function showExploreDetail(stationName) {
+    window.lastExploreStation = stationName;
     const data = stationAttractions[stationName] || [];
     const meta = stationsMeta.find(m => m.name === stationName) || {};
     const header = document.getElementById('explore-detail-header');
@@ -496,11 +503,11 @@ function showExploreDetail(stationName) {
             <div class="attr-card">
                 <div class="attr-img-container">
                     <img src="${a.image}" class="attr-img" alt="${a.name}">
-                    <div class="attr-type-badge">${a.type}</div>
+                    <div class="attr-type-badge">${currentLang === 'hi' && a.typeHi ? a.typeHi : a.type}</div>
                 </div>
                 <div class="attr-body">
                     <div class="attr-name">${currentLang === 'hi' && a.nameHi ? a.nameHi : a.name}</div>
-                    <div class="attr-desc">${a.description}</div>
+                    <div class="attr-desc">${currentLang === 'hi' && a.descriptionHi ? a.descriptionHi : a.description}</div>
                     <div class="attr-meta">
                         <div class="meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</div>
                         <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
