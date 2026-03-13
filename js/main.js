@@ -151,10 +151,18 @@ function setLanguage(lang) {
     if (activeView.id === "explore-detail-view" && window.lastExploreStation) {
       showExploreDetail(window.lastExploreStation);
     }
+    if (activeView.id === "station-info-view" && window.lastSelectedStation) {
+      showStationInfo(window.lastSelectedStation);
+    }
+    if (activeView.id === "attraction-detail-view" && window.lastSelectedStation && window.lastSelectedAttrId) {
+      showAttractionDetail(window.lastSelectedStation, window.lastSelectedAttrId);
+    }
   }
 }
 
 window.lastExploreStation = null;
+window.lastSelectedStation = null;
+window.lastSelectedAttrId = null;
 
 // ═══════════════════════════════════════
 //  GRAPH
@@ -400,6 +408,7 @@ function showView(viewId) {
 window.showView = showView;
 
 function showStationInfo(stationName) {
+    window.lastSelectedStation = stationName;
     const meta = stationsMeta.find(m => m.name === stationName) || {};
     const header = document.getElementById('station-info-header');
     const facilitiesEl = document.getElementById('info-facilities');
@@ -412,13 +421,67 @@ function showStationInfo(stationName) {
     header.style.background = 'white';
     header.style.backgroundImage = 'none';
     
-    const hiName = meta.name_hi || stationTranslations[stationName]?.hi || '';
     header.innerHTML = `
         <div class="hero-line-badge" style="background:var(--accent-soft); color:var(--accent)">${meta.line || 'Pink Line'} • ${meta.code || ''}</div>
         <h2 style="color:var(--text)">${T_STATION(stationName)}</h2>
-        <div class="stn-hi-title" style="color:var(--text-muted)">${hiName}</div>
-        <p style="color:var(--text-sub)">${meta.type || 'Elevated'} Station</p>
+        ${currentLang === 'en' ? `<div class="stn-hi-title" style="color:var(--text-muted)">${meta.name_hi || ''}</div>` : ''}
+        <p style="color:var(--text-sub)">${T(meta.type?.toLowerCase() || 'elevated')} ${T('metroStation')}</p>
     `;
+
+    // Facilities Helper
+    const tFac = (f) => {
+        if (currentLang === 'en') return f;
+        const map = {
+            'Toilets': 'शौचालय',
+            'Escalator': 'एस्केलेटर',
+            'Elevator': 'लिफ्ट',
+            'Ticket Counter': 'टिकट काउंटर',
+            'Smart Card Recharge': 'स्मार्ट कार्ड रिचार्ज',
+            'Wheelchair Access': 'व्हीलचेयर एक्सेस',
+            'Parking': 'पार्किंग'
+        };
+        let res = f;
+        for (let key in map) {
+            if (res.includes(key)) res = res.replace(key, map[key]);
+        }
+        return res;
+    };
+
+    // Connectivity Helper
+    const tConn = (c) => {
+        if (currentLang === 'en') return c;
+        let res = c;
+        
+        // Translate known landmarks/stations mentioned in the string
+        for (let name in stationTranslations) {
+            if (res.includes(name)) {
+                res = res.replace(name, stationTranslations[name].hi);
+            }
+        }
+
+        const map = {
+            'Bus stop nearby': 'निकटतम बस स्टॉप',
+            'Bus stop': 'बस स्टॉप',
+            'Auto rickshaw stands': 'ऑटो रिक्शा स्टैंड',
+            'Auto rickshaw': 'ऑटो रिक्शा',
+            'Taxi / Cab': 'टैक्सी / कैब',
+            'Taxi pickup': 'टैक्सी पिकअप',
+            'Taxi': 'टैक्सी',
+            'Cab': 'कैब',
+            'Walking access to': 'पैदल रास्ता:',
+            'Cycle/Bike parking': 'साइकिल/बाइक पार्किंग',
+            'Cycle parking': 'साइकिल पार्किंग',
+            'Bike parking': 'बाइक पार्किंग',
+            'Last-mile autos': 'लास्ट-माइल ऑटो',
+            'Local buses': 'स्थानीय बसें'
+        };
+        
+        const sortedKeys = Object.keys(map).sort((a,b) => b.length - a.length);
+        for (let key of sortedKeys) {
+            if (res.includes(key)) res = res.replace(key, map[key]);
+        }
+        return res;
+    }
 
     // Facilities
     if (facilitiesEl) {
@@ -432,8 +495,8 @@ function showStationInfo(stationName) {
             if (f.includes('Recharge')) icon = 'zap';
             if (f.includes('Wheelchair')) icon = 'accessibility';
             if (f.includes('Parking')) icon = 'parking-circle';
-            return `<div class="tag-badge"><i data-lucide="${icon}" class="w-12 h-12"></i> ${f}</div>`;
-        }).join('') || '<p class="muted">Information not available</p>';
+            return `<div class="tag-badge"><i data-lucide="${icon}" class="w-12 h-12"></i> ${tFac(f)}</div>`;
+        }).join('') || `<p class="muted">${T('infoUnavailable')}</p>`;
     }
 
     // Connectivity
@@ -447,19 +510,19 @@ function showStationInfo(stationName) {
             if (c.includes('Cycle') || c.includes('Bike')) icon = 'bike';
             if (c.includes('Walking')) icon = 'footprints';
             if (c.includes('rail')) icon = 'train';
-            return `<div class="tag-badge connectivity-tag"><i data-lucide="${icon}" class="w-12 h-12"></i> ${c}</div>`;
-        }).join('') || '<p class="muted">Information not available</p>';
+            return `<div class="tag-badge connectivity-tag"><i data-lucide="${icon}" class="w-12 h-12"></i> ${tConn(c)}</div>`;
+        }).join('') || `<p class="muted">${T('infoUnavailable')}</p>`;
     }
 
     // Metro Travel Info
     if (metroInfoEl) {
         const info = meta.metroInfo || {};
         const items = [
-            { label: 'Line', value: meta.line || 'Pink Line' },
-            { label: 'Station Type', value: meta.type || 'Elevated' },
-            { label: 'Platforms', value: meta.platforms || '2' },
-            { label: 'Opened', value: info.opened || '2015' },
-            { label: 'Operator', value: info.operator || 'JMRC' }
+            { label: T('line'), value: currentLang === 'hi' ? 'पिंक लाइन' : 'Pink Line' },
+            { label: T('stationType'), value: T(meta.type?.toLowerCase() || 'elevated') },
+            { label: T('platforms'), value: meta.platforms || '2' },
+            { label: T('opened'), value: info.opened || '2015' },
+            { label: T('operator'), value: info.operator || 'JMRC' }
         ];
         metroInfoEl.innerHTML = items.map(it => `
             <div class="meta-list-item">
@@ -538,6 +601,8 @@ function showExploreDetail(stationName) {
 window.showExploreDetail = showExploreDetail;
 
 function showAttractionDetail(stationName, attrId) {
+    window.lastSelectedStation = stationName;
+    window.lastSelectedAttrId = attrId;
     const list = stationAttractions[stationName] || [];
     const a = list.find(it => it.id === attrId);
     if (!a) return;
