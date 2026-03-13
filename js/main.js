@@ -331,7 +331,7 @@ function showResult(journey) {
             </div>
             <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
         `;
-    topCard.onclick = () => showExploreDetail(destStation.name);
+    topCard.onclick = () => showAttractionDetail(destStation.name, top.id);
     sum.appendChild(topCard);
   }
 
@@ -380,6 +380,7 @@ function showView(viewId) {
         'explore-view': 'nav-explore',
         'station-info-view': 'nav-stations',
         'explore-detail-view': 'nav-explore',
+        'attraction-detail-view': 'nav-explore',
         'safety-view': 'nav-safety' 
     };
     const nb = document.getElementById(navMap[viewId]);
@@ -500,22 +501,17 @@ function showExploreDetail(stationName) {
     } else {
         label.textContent = `Explore Near ${T_STATION(stationName)}`;
         carousel.innerHTML = data.map(a => `
-            <div class="attr-card">
+            <div class="attr-card" onclick="showAttractionDetail('${stationName}', '${a.id}')">
                 <div class="attr-img-container">
                     <img src="${a.image}" class="attr-img" alt="${a.name}">
                     <div class="attr-type-badge">${currentLang === 'hi' && a.typeHi ? a.typeHi : a.type}</div>
                 </div>
                 <div class="attr-body">
                     <div class="attr-name">${currentLang === 'hi' && a.nameHi ? a.nameHi : a.name}</div>
-                    <div class="attr-desc">${currentLang === 'hi' && a.descriptionHi ? a.descriptionHi : a.description}</div>
+                    <div class="attr-desc">${currentLang === 'hi' && a.summaryHi ? a.summaryHi : (a.summary || a.description)}</div>
                     <div class="attr-meta">
                         <div class="meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</div>
                         <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
-                        ${a.best_time ? `<div class="meta-item" style="color:var(--green)"><i data-lucide="sun" style="color:var(--green)"></i> ${a.best_time}</div>` : ''}
-                    </div>
-                    <div class="attr-footer">
-                        <button class="btn-attr btn-attr-primary" onclick="window.open('${a.maps_link}', '_blank')"><i data-lucide="map-pin" class="w-14 h-14"></i> Navigate</button>
-                        ${a.entry_fee ? `<div class="btn-attr btn-attr-secondary" style="border-style:dashed;flex:0.6">${a.entry_fee}</div>` : ''}
                     </div>
                 </div>
             </div>
@@ -532,6 +528,62 @@ function showExploreDetail(stationName) {
     if (window.lucide) window.lucide.createIcons();
 }
 window.showExploreDetail = showExploreDetail;
+
+function showAttractionDetail(stationName, attrId) {
+    const list = stationAttractions[stationName] || [];
+    const a = list.find(it => it.id === attrId);
+    if (!a) return;
+
+    const content = document.getElementById('attr-detail-content');
+    if (!content) return;
+
+    const name = currentLang === 'hi' && a.nameHi ? a.nameHi : a.name;
+    const desc = currentLang === 'hi' && a.descriptionHi ? a.descriptionHi : a.description;
+    const type = currentLang === 'hi' && a.typeHi ? a.typeHi : a.type;
+
+    content.innerHTML = `
+        <div class="full-attr-hero">
+            <img src="${a.image}" class="full-attr-img" alt="${name}">
+            <div class="full-attr-overlay">
+                <div class="attr-type-badge">${type}</div>
+                <h2>${name}</h2>
+            </div>
+        </div>
+        
+        <div class="full-attr-body">
+            <div class="attr-quick-meta">
+                <div class="q-meta-item"><i data-lucide="navigation"></i> <span>${a.distance_km} km</span></div>
+                <div class="q-meta-item"><i data-lucide="clock"></i> <span>${a.walk_time_min}m</span></div>
+                ${a.entry_fee ? `<div class="q-meta-item"><i data-lucide="ticket"></i> <span>${a.entry_fee}</span></div>` : ''}
+            </div>
+
+            <div class="attr-detail-text">
+                <h3>About</h3>
+                <p>${desc}</p>
+            </div>
+
+            ${a.best_time ? `
+            <div class="attr-detail-info-card">
+                <i data-lucide="sun"></i>
+                <div>
+                    <strong>Best Time to Visit</strong>
+                    <p>${a.best_time}</p>
+                </div>
+            </div>
+            ` : ''}
+
+            <div class="full-attr-actions">
+                <button class="btn-big btn-primary" onclick="window.open('${a.maps_link}', '_blank')">
+                    <i data-lucide="map-pin"></i> Start Navigation
+                </button>
+            </div>
+        </div>
+    `;
+
+    showView('attraction-detail-view');
+    if (window.lucide) window.lucide.createIcons();
+}
+window.showAttractionDetail = showAttractionDetail;
 
 // ═══════════════════════════════════════
 //  RENDERERS
@@ -957,6 +1009,12 @@ function wire() {
   if (expDetailBackBtn)
     expDetailBackBtn.addEventListener("click", () => {
       showView("explore-view");
+    });
+
+  const attrDetailBackBtn = document.getElementById("attr-detail-back");
+  if (attrDetailBackBtn)
+    attrDetailBackBtn.addEventListener("click", () => {
+      showView("explore-detail-view");
     });
 
   // Board train
