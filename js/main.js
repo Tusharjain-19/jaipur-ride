@@ -326,8 +326,11 @@ function showResult(journey) {
     topCard.innerHTML = `
             <img src="${top.image}" class="top-nearby-thumb" alt="${top.name}">
             <div class="top-nearby-info">
-                <div class="top-nearby-title">${top.name}</div>
+                <div class="top-nearby-title" style="font-weight:800">${T_STATION(top.name)}</div>
                 <div class="top-nearby-sub">${top.distance_km} km · ${top.walk_time_min} min walk</div>
+                <div class="btn-navigate-small" style="margin-top:8px; padding:4px 12px; font-size:11px">
+                    <i data-lucide="map-pin"></i> Navigate
+                </div>
             </div>
             <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
         `;
@@ -514,7 +517,7 @@ function showExploreDetail(stationName) {
                         <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
                     </div>
                     <div class="attr-card-actions">
-                        <button class="btn-attr-small" onclick="event.stopPropagation(); window.open('${a.maps_link}', '_blank')">
+                        <button class="btn-navigate-small" onclick="event.stopPropagation(); window.open('${a.maps_link}', '_blank')">
                             <i data-lucide="map-pin"></i> Navigate
                         </button>
                     </div>
@@ -578,8 +581,8 @@ function showAttractionDetail(stationName, attrId) {
             ` : ''}
 
             <div class="full-attr-actions">
-                <button class="btn-big btn-primary" onclick="window.open('${a.maps_link}', '_blank')">
-                    <i data-lucide="map-pin"></i> Start Navigation
+                <button class="btn-navigate" onclick="window.open('${a.maps_link}', '_blank')">
+                    <i data-lucide="map-pin"></i> Navigate
                 </button>
             </div>
         </div>
