@@ -612,7 +612,10 @@ function showAttractionDetail(stationName, attrId) {
 
     const name = currentLang === 'hi' && a.nameHi ? a.nameHi : a.name;
     const desc = currentLang === 'hi' && a.descriptionHi ? a.descriptionHi : a.description;
+    const history = currentLang === 'hi' && a.historyHi ? a.historyHi : a.history;
     const type = currentLang === 'hi' && a.typeHi ? a.typeHi : a.type;
+    const fee = currentLang === 'hi' && a.entry_feeHi ? a.entry_feeHi : a.entry_fee;
+    const best = currentLang === 'hi' && a.best_timeHi ? a.best_timeHi : a.best_time;
 
     content.innerHTML = `
         <div class="full-attr-hero">
@@ -626,28 +629,45 @@ function showAttractionDetail(stationName, attrId) {
         <div class="full-attr-body">
             <div class="attr-quick-meta">
                 <div class="q-meta-item"><i data-lucide="navigation"></i> <span>${a.distance_km} km</span></div>
-                <div class="q-meta-item"><i data-lucide="clock"></i> <span>${a.walk_time_min}m</span></div>
-                ${a.entry_fee ? `<div class="q-meta-item"><i data-lucide="ticket"></i> <span>${a.entry_fee}</span></div>` : ''}
+                <div class="q-meta-item"><i data-lucide="clock"></i> <span>${a.walk_time_min || (a.distance_km * 12)}m</span></div>
+                ${fee ? `<div class="q-meta-item"><i data-lucide="ticket"></i> <span>${fee}</span></div>` : ''}
             </div>
 
             <div class="attr-detail-text">
-                <h3>About</h3>
+                <h3><i data-lucide="info"></i> ${T('about')}</h3>
                 <p>${desc}</p>
             </div>
 
-            ${a.best_time ? `
+            ${history ? `
+            <div class="attr-detail-text">
+                <h3><i data-lucide="history"></i> ${T('history')}</h3>
+                <p>${history}</p>
+            </div>
+            ` : ''}
+
+            ${best ? `
             <div class="attr-detail-info-card">
                 <i data-lucide="sun"></i>
                 <div>
-                    <strong>Best Time to Visit</strong>
-                    <p>${a.best_time}</p>
+                    <strong>${T('bestTime')}</strong>
+                    <p>${best}</p>
+                </div>
+            </div>
+            ` : ''}
+
+            ${fee ? `
+            <div class="attr-detail-info-card">
+                <i data-lucide="banknote"></i>
+                <div>
+                    <strong>${T('entryFee')}</strong>
+                    <p>${fee}</p>
                 </div>
             </div>
             ` : ''}
 
             <div class="full-attr-actions">
                 <button class="btn-navigate" onclick="window.open('${a.maps_link}', '_blank')">
-                    <i data-lucide="map-pin"></i> Navigate
+                    <i data-lucide="map-pin"></i> ${T('navigate')}
                 </button>
             </div>
         </div>

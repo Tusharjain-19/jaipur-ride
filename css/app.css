@@ -1584,6 +1584,130 @@ body {
     padding: 18px;
     box-shadow: var(--shadow-sm);
 }
+/* ──────── ATTRACTION FULL DETAIL ──────── */
+#attraction-detail-view {
+    padding-bottom: 100px; /* Room for navigation button */
+}
+
+.full-attr-hero {
+    position: relative;
+    padding: 24px 20px 0;
+    text-align: center;
+}
+
+.full-attr-img {
+    width: 140px;
+    height: 140px;
+    border-radius: 24px;
+    object-fit: cover;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 4px solid #fff;
+    margin-bottom: 20px;
+}
+
+
+
+.full-attr-overlay h2 {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.full-attr-overlay .attr-type-badge {
+    position: static;
+    display: inline-block;
+    margin-bottom: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+}
+
+.full-attr-body {
+    padding: 0 20px;
+}
+
+.attr-quick-meta {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.q-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-sub);
+    background: #f8fafc;
+    padding: 8px 14px;
+    border-radius: 100px;
+}
+
+.q-meta-item i {
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+}
+
+.attr-detail-text {
+    margin-bottom: 24px;
+}
+
+.attr-detail-text h3 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+}
+
+.attr-detail-text p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #475569;
+}
+
+.attr-detail-info-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-sm);
+}
+
+.attr-detail-info-card i {
+    width: 20px;
+    height: 20px;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.attr-detail-info-card strong {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+.attr-detail-info-card p {
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+
+
+.full-attr-actions .btn-navigate {
+    width: 100%;
+    max-width: 400px;
+    height: 52px;
+}
 .section-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
 .section-icon-box {
     width: 36px; height: 36px; border-radius: 10px;
@@ -1787,7 +1911,7 @@ body {
 
 .full-attr-actions {
   position: fixed;
-  bottom: 24px;
+  bottom: 85px; /* Stay ABOVE the main footer */
   left: 16px;
   right: 16px;
   display: flex;

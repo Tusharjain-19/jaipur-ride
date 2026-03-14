@@ -99,6 +99,10 @@ export const translations = {
     metroStation: "Metro Station",
     notice: "Notice",
     places: "Places",
+    about: "About",
+    history: "History",
+    bestTime: "Best Time to Visit",
+    entryFee: "Entry Fee",
     stationFacilities: "Station Facilities",
     facilitiesSub: "Amenities available inside the station",
     connectivity: "Connectivity",
@@ -197,7 +201,11 @@ export const translations = {
     line: "लाइन",
     stationType: "स्टेशन का प्रकार",
     elevated: "एलिवेटेड",
-    underground: "अंडरग्राउंड"
+    underground: "अंडरग्राउंड",
+    about: "बारे में",
+    history: "इतिहास",
+    bestTime: "घूमने का सबसे अच्छा समय",
+    entryFee: "प्रवेश शुल्क"
   }
 };
 
