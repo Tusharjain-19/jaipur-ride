@@ -577,7 +577,7 @@ function showExploreDetail(stationName) {
                     <div class="attr-desc">${currentLang === 'hi' && a.summaryHi ? a.summaryHi : (a.summary || a.description)}</div>
                     <div class="attr-meta">
                         <div class="meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</div>
-                        <div class="meta-item"><i data-lucide="clock"></i> ${a.walk_time_min}m</div>
+                        <div class="meta-item"><i data-lucide="clock"></i> ${Math.round(a.walk_time_min || (a.distance_km * 12))} ${T('walkTime')}</div>
                     </div>
                     <div class="attr-card-actions">
                         <button class="btn-navigate-small" onclick="event.stopPropagation(); window.open('${a.maps_link}', '_blank')">
@@ -629,7 +629,7 @@ function showAttractionDetail(stationName, attrId) {
         <div class="full-attr-body">
             <div class="attr-quick-meta">
                 <div class="q-meta-item"><i data-lucide="navigation"></i> <span>${a.distance_km} km</span></div>
-                <div class="q-meta-item"><i data-lucide="clock"></i> <span>${a.walk_time_min || (a.distance_km * 12)}m</span></div>
+                <div class="q-meta-item"><i data-lucide="clock"></i> <span>${Math.round(a.walk_time_min || (a.distance_km * 12))} ${T('walkTime')}</span></div>
                 ${fee ? `<div class="q-meta-item"><i data-lucide="ticket"></i> <span>${fee}</span></div>` : ''}
             </div>
 
