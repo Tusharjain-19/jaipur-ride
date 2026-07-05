@@ -80,7 +80,7 @@
                         <span data-lang-key="timings">Timings</span>
                     </button>
                     <button class="quick-item" id="ql-map">
-                        <div class="quick-icon"><i data-lucide="map-pin" class="w-20 h-20"></i></div>
+                        <div class="quick-icon"><i data-lucide="train-front" class="w-20 h-20"></i></div>
                         <span data-lang-key="stations">Stations</span>
                     </button>
                     <button class="quick-item" id="ql-safety">
@@ -229,10 +229,38 @@
                 <div class="progress-bar"><div id="jv-progress-bar" class="progress-fill"></div></div>
             </div>
             <div id="sim-route-list" class="overlay-body"></div>
-            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated Â· Not an official JMRC service</div>
+            <div class="overlay-footer" data-lang-key="simulatedDisclaimer">Simulated · Not an official JMRC service</div>
+
+            <!-- Nearby Attractions Popup Modal -->
+            <div id="nearby-popup-modal" class="nearby-modal hidden">
+                <div class="nearby-modal-content">
+                    <div class="nearby-modal-header">
+                        <h3 id="nearby-popup-title" data-lang-key="nearbyAttractions">Nearby Attractions</h3>
+                        <button id="close-nearby-popup" class="icon-btn-close" aria-label="Close popup">
+                            <i data-lucide="x" class="w-18 h-18"></i>
+                        </button>
+                    </div>
+                    <div id="nearby-popup-body" class="nearby-modal-body"></div>
+                </div>
+            </div>
         </section>
 
-        <!-- â•â•â• BOTTOM NAV â•â•â• -->
+        <!-- Floating Active Journey Bar -->
+        <div id="active-journey-bar" class="active-journey-bar hidden">
+            <div class="active-journey-info">
+                <span class="live-dot"></span>
+                <div>
+                    <div class="active-journey-title" data-lang-key="liveJourney">Live Journey</div>
+                    <div id="active-journey-sub" class="active-journey-sub">Towards ...</div>
+                </div>
+            </div>
+            <button id="active-journey-resume-btn" class="active-journey-btn">
+                <span data-lang-key="viewRoute">View Route</span>
+                <i data-lucide="chevron-right" class="w-16 h-16"></i>
+            </button>
+        </div>
+
+        <!-- ═══ BOTTOM NAV ═══ -->
         <nav class="bottom-nav">
             <button id="nav-plan" class="nav-item active" data-view="plan-view">
                 <i data-lucide="compass" class="w-20 h-20"></i>

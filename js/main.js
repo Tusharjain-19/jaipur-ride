@@ -24,6 +24,10 @@ const simulationState = {
   startTime: null,
   timeline: [],
   animFrameId: null,
+  userLocation: null,
+  watchId: null,
+  lastGpsIdx: undefined,
+  trackPoints: null,
 };
 const precomputed = { stations: {}, graph: {} };
 
@@ -417,8 +421,8 @@ function showStationInfo(stationName) {
 
     if (!header) return;
 
-    // Clean white header
-    header.style.background = 'white';
+    // Clean header
+    header.style.background = '';
     header.style.backgroundImage = 'none';
     
     header.innerHTML = `
@@ -549,8 +553,8 @@ function showExploreDetail(stationName) {
 
     if (!header || !carousel) return;
 
-    // Clean white header
-    header.style.background = 'white';
+    // Clean header
+    header.style.background = '';
     header.style.backgroundImage = 'none';
 
     // Header
@@ -677,6 +681,70 @@ function showAttractionDetail(stationName, attrId) {
     if (window.lucide) window.lucide.createIcons();
 }
 window.showAttractionDetail = showAttractionDetail;
+
+function showNearbyPopup(stationName) {
+  const modal = document.getElementById("nearby-popup-modal");
+  const titleEl = document.getElementById("nearby-popup-title");
+  const bodyEl = document.getElementById("nearby-popup-body");
+  if (!modal || !titleEl || !bodyEl) return;
+
+  const attrs = stationAttractions[stationName] || [];
+  titleEl.textContent = `${T("nearbyAttractions")} - ${T_STATION(stationName)}`;
+
+  if (attrs.length === 0) {
+    bodyEl.innerHTML = `<p class="no-attractions">${T("noAttractions")}</p>`;
+  } else {
+    bodyEl.innerHTML = attrs.map(a => {
+      const name = currentLang === 'hi' && a.nameHi ? a.nameHi : a.name;
+      const type = currentLang === 'hi' && a.typeHi ? a.typeHi : a.type;
+      const desc = currentLang === 'hi' && a.summaryHi ? a.summaryHi : (a.summary || a.description || '');
+      
+      const timeVal = a.walk_time_min 
+        ? `${a.walk_time_min} ${T('walkTime')}`
+        : (a.approx_drive_time_min ? `${a.approx_drive_time_min} min drive` : '');
+
+      return `
+        <div class="popup-attr-card">
+            <div class="popup-attr-img-container">
+                <img src="${a.image}" class="popup-attr-img" alt="${name}" onerror="this.src='assets/images/logo1.png'">
+                <div class="popup-attr-type-badge">${type}</div>
+            </div>
+            <div class="popup-attr-body">
+                <h4 class="popup-attr-name">${name}</h4>
+                <div class="popup-attr-meta">
+                    <span class="popup-meta-item"><i data-lucide="navigation"></i> ${a.distance_km} km</span>
+                    ${timeVal ? `<span class="popup-meta-item"><i data-lucide="clock"></i> ${timeVal}</span>` : ''}
+                </div>
+                <p class="popup-attr-desc">${desc}</p>
+                <div class="popup-attr-actions">
+                    <button class="btn-navigate-small" onclick="window.open('${a.maps_link}', '_blank')">
+                        <i data-lucide="map-pin"></i> ${T('navigate')}
+                    </button>
+                    <button class="btn-navigate-small" style="background:var(--accent-soft); color:var(--accent) !important; box-shadow:none;" onclick="showAttractionFullDetail('${stationName}', '${a.id}')">
+                        <i data-lucide="info"></i> ${currentLang === 'hi' ? 'विवरण' : 'Details'}
+                    </button>
+                </div>
+            </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  modal.classList.remove("hidden");
+  if (window.lucide) window.lucide.createIcons();
+}
+window.showNearbyPopup = showNearbyPopup;
+
+function showAttractionFullDetail(stationName, attrId) {
+  const modal = document.getElementById("nearby-popup-modal");
+  if (modal) modal.classList.add("hidden");
+
+  const overlay = document.getElementById("journey-overlay");
+  if (overlay) overlay.classList.add("hidden");
+
+  showAttractionDetail(stationName, attrId);
+}
+window.showAttractionFullDetail = showAttractionFullDetail;
 
 // ═══════════════════════════════════════
 //  RENDERERS
@@ -827,11 +895,112 @@ function makeTimeline(journey) {
   return tl;
 }
 
+function interpolatePoints(lat1, lon1, lat2, lon2, stepMeters = 15) {
+  const points = [];
+  const R = 6371000; // Earth radius in meters
+
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLon = ((lon2 - lon1) * Math.PI) / 180;
+
+  const lat1Rad = (lat1 * Math.PI) / 180;
+  const lat2Rad = (lat2 * Math.PI) / 180;
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1Rad) * Math.cos(lat2Rad) *
+    Math.sin(dLon / 2) *
+    Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const totalDist = R * c;
+
+  const numSteps = Math.max(1, Math.floor(totalDist / stepMeters));
+
+  for (let i = 0; i <= numSteps; i++) {
+    const fraction = i / numSteps;
+    const lat = lat1 + (lat2 - lat1) * fraction;
+    const lon = lon1 + (lon2 - lon1) * fraction;
+
+    points.push({
+      lat,
+      lon,
+      fraction,
+      distance: fraction * totalDist,
+    });
+  }
+  return { points, totalDist };
+}
+
+function buildTrackPoints(journey) {
+  const track = [];
+  let cumulativeDist = 0;
+
+  const stations = [];
+  journey.parts.forEach((part) => {
+    part.stations.forEach((s) => {
+      if (stations.length === 0 || stations[stations.length - 1].id !== s.id) {
+        stations.push(s);
+      }
+    });
+  });
+
+  for (let i = 0; i < stations.length - 1; i++) {
+    const sA = stations[i];
+    const sB = stations[i + 1];
+
+    const { points, totalDist } = interpolatePoints(sA.lat, sA.lon, sB.lat, sB.lon, 15);
+
+    points.forEach((p) => {
+      track.push({
+        lat: p.lat,
+        lon: p.lon,
+        segmentId: `${sA.id}-${sB.id}`,
+        segmentStartName: sA.name,
+        segmentEndName: sB.name,
+        segmentStartIndex: i,
+        segmentEndIndex: i + 1,
+        segmentFraction: p.fraction,
+        distanceAlongSegment: p.distance,
+        distanceAlongTrack: cumulativeDist + p.distance,
+      });
+    });
+    cumulativeDist += totalDist;
+  }
+  return { track, totalDistance: cumulativeDist };
+}
+
 function startSim(journey) {
   if (!journey) return;
+
+  const nearbyModal = document.getElementById("nearby-popup-modal");
+  if (nearbyModal) nearbyModal.classList.add("hidden");
+
+  const activeBar = document.getElementById("active-journey-bar");
+  if (activeBar) activeBar.classList.add("hidden");
+
   simulationState.isActive = true;
   simulationState.startTime = Date.now();
   simulationState.timeline = makeTimeline(journey);
+  simulationState.trackPoints = buildTrackPoints(journey).track;
+  simulationState.userLocation = null;
+  simulationState.lastGpsIdx = undefined;
+
+  // Start GPS watching if available
+  if (navigator.geolocation) {
+    simulationState.watchId = navigator.geolocation.watchPosition(
+      (position) => {
+        if (simulationState.isActive) {
+          simulationState.userLocation = {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          };
+        }
+      },
+      (error) => {
+        console.warn("Live route GPS watch error:", error);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
+  }
 
   const overlay = document.getElementById("journey-overlay");
   if (overlay) overlay.classList.remove("hidden");
@@ -858,23 +1027,59 @@ function startSim(journey) {
 
     // Update Attractions Link for current station
     const nbLink = document.getElementById("jv-nearby-link");
-    if (nbLink && res.currentStationName) {
+    if (nbLink && res.currentStationName && journey) {
+      const isStart = res.currentStationName === journey.parts[0].stations[0].name;
+      const lastP = journey.parts[journey.parts.length - 1];
+      const isEnd = lastP && res.currentStationName === lastP.stations[lastP.stations.length - 1].name;
+
       const attrs = stationAttractions[res.currentStationName] || [];
-      if (attrs.length > 0) {
+      if ((isStart || isEnd) && attrs.length > 0) {
         nbLink.textContent = `See nearby (${attrs.length})`;
         nbLink.classList.remove("hidden");
-        nbLink.onclick = () => showExploreDetail(res.currentStationName);
+        nbLink.onclick = () => showNearbyPopup(res.currentStationName);
       } else {
         nbLink.classList.add("hidden");
       }
     }
 
     const elapsed = (Date.now() - simulationState.startTime) / 1000;
-    const total =
-      simulationState.timeline[simulationState.timeline.length - 1]
-        ?.arrivalTime || 1;
+    
+    // Update progress bar width dynamically based on hybrid logic
     const bar = document.getElementById("jv-progress-bar");
-    if (bar) bar.style.width = Math.min((elapsed / total) * 100, 100) + "%";
+    if (bar) {
+      const pct = res.progressPercent !== undefined ? res.progressPercent : Math.min((elapsed / (simulationState.timeline[simulationState.timeline.length - 1]?.arrivalTime || 1)) * 100, 100);
+      bar.style.width = pct + "%";
+    }
+
+    // Dynamic remaining time calculation
+    let remaining = Math.max(0, Math.ceil((journey.totalTime - elapsed) / 60));
+    if (res.remainingTimeSeconds !== undefined) {
+      remaining = Math.max(0, Math.ceil(res.remainingTimeSeconds / 60));
+    }
+
+    // Update overlay ETA text in real time
+    const etaTextEl = document.getElementById("jv-eta");
+    if (etaTextEl) {
+      etaTextEl.textContent = remaining + " " + T("minRemaining");
+    }
+
+    // Manage Floating Active Journey Bar visibility and content
+    const overlayEl = document.getElementById("journey-overlay");
+    const activeBarEl = document.getElementById("active-journey-bar");
+    if (activeBarEl && overlayEl) {
+      if (overlayEl.classList.contains("hidden")) {
+        const activeSub = document.getElementById("active-journey-sub");
+        if (activeSub) {
+          const lastP = journey.parts[journey.parts.length - 1];
+          const destName = lastP ? T_STATION(lastP.stations[lastP.stations.length - 1].name) : "";
+          activeSub.textContent = `${T("towards")} ${destName} • ${remaining} ${T("minRemaining")}`;
+        }
+        activeBarEl.classList.remove("hidden");
+      } else {
+        activeBarEl.classList.add("hidden");
+      }
+    }
+
     simulationState.animFrameId = requestAnimationFrame(loop);
   };
   loop();
@@ -885,8 +1090,24 @@ function stopSim() {
   simulationState.isActive = false;
   if (simulationState.animFrameId)
     cancelAnimationFrame(simulationState.animFrameId);
+
+  // Clear GPS watch
+  if (simulationState.watchId !== null) {
+    navigator.geolocation.clearWatch(simulationState.watchId);
+    simulationState.watchId = null;
+  }
+  simulationState.userLocation = null;
+  simulationState.lastGpsIdx = undefined;
+
   const overlay = document.getElementById("journey-overlay");
   if (overlay) overlay.classList.add("hidden");
+
+  const nearbyModal = document.getElementById("nearby-popup-modal");
+  if (nearbyModal) nearbyModal.classList.add("hidden");
+
+  const activeBar = document.getElementById("active-journey-bar");
+  if (activeBar) activeBar.classList.add("hidden");
+
   showView("plan-view");
 }
 
@@ -898,6 +1119,29 @@ function locateMe() {
     toast(T("locationUnavailable"));
     return;
   }
+
+  // Show a beautiful custom pre-permission dialog first to explain why we need location
+  showModal({
+    title: currentLang === 'hi' ? 'स्थान अनुमति' : 'Location Permission',
+    body: `<div style="text-align:center; padding:10px 0;">
+             <i data-lucide="map-pin" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
+             <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'निकटतम स्टेशन खोजें' : 'Find Nearest Station'}</strong>
+             <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
+               ${currentLang === 'hi' ? 'जयपुर राइड को निकटतम स्टेशन खोजने के लिए आपकी जीपीएस लोकेशन की आवश्यकता है। कृपया अगले चरण में ब्राउज़र अनुमति स्वीकार करें।' : 'Jaipur Ride needs your GPS location to find the nearest station. Please accept the browser prompt in the next step.'}
+             </p>
+           </div>`,
+    confirmText: currentLang === 'hi' ? 'अनुमति दें' : 'Allow',
+    cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+    onConfirm: () => {
+      // Re-trigger icon updates inside modal if needed
+      triggerRealLocationAccess();
+    }
+  });
+  
+  if (window.lucide) window.lucide.createIcons();
+}
+
+function triggerRealLocationAccess() {
   toast(T("detectingLocation"));
 
   navigator.geolocation.getCurrentPosition(
@@ -1101,13 +1345,23 @@ function wire() {
   const expDetailBackBtn = document.getElementById("explore-detail-back");
   if (expDetailBackBtn)
     expDetailBackBtn.addEventListener("click", () => {
-      showView("explore-view");
+      if (simulationState.isActive) {
+        const overlay = document.getElementById("journey-overlay");
+        if (overlay) overlay.classList.remove("hidden");
+      } else {
+        showView("explore-view");
+      }
     });
 
   const attrDetailBackBtn = document.getElementById("attr-detail-back");
   if (attrDetailBackBtn)
     attrDetailBackBtn.addEventListener("click", () => {
-      showView("explore-detail-view");
+      if (simulationState.isActive) {
+        const overlay = document.getElementById("journey-overlay");
+        if (overlay) overlay.classList.remove("hidden");
+      } else {
+        showView("explore-detail-view");
+      }
     });
 
   // Board train
@@ -1120,6 +1374,38 @@ function wire() {
   // Exit journey
   const exitBtn = document.getElementById("exit-journey-btn");
   if (exitBtn) exitBtn.addEventListener("click", stopSim);
+
+  // Nearby Popup Close and Backdrop Click
+  const closeNearbyBtn = document.getElementById("close-nearby-popup");
+  if (closeNearbyBtn) {
+    closeNearbyBtn.addEventListener("click", () => {
+      const modal = document.getElementById("nearby-popup-modal");
+      if (modal) modal.classList.add("hidden");
+    });
+  }
+  const nearbyModal = document.getElementById("nearby-popup-modal");
+  if (nearbyModal) {
+    nearbyModal.addEventListener("click", (e) => {
+      if (e.target === nearbyModal) {
+        nearbyModal.classList.add("hidden");
+      }
+    });
+  }
+
+  // Active Journey Bar click events
+  const activeJourneyBar = document.getElementById("active-journey-bar");
+  const activeJourneyBtn = document.getElementById("active-journey-resume-btn");
+  const resumeAction = () => {
+    const overlay = document.getElementById("journey-overlay");
+    if (overlay) overlay.classList.remove("hidden");
+    const activeBar = document.getElementById("active-journey-bar");
+    if (activeBar) activeBar.classList.add("hidden");
+  };
+  if (activeJourneyBar) activeJourneyBar.addEventListener("click", resumeAction);
+  if (activeJourneyBtn) activeJourneyBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    resumeAction();
+  });
 
   // Bottom nav
   document.querySelectorAll(".nav-item[data-view]").forEach((btn) => {
@@ -1142,6 +1428,39 @@ function wire() {
   // Locate me
   const locBtn = document.getElementById("locate-me-btn");
   if (locBtn) locBtn.addEventListener("click", locateMe);
+
+  // Intercept tel: links to prevent native browser pick-an-app prompts on desktop
+  document.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href^='tel:']");
+    if (link) {
+      e.preventDefault();
+      const phoneNum = link.getAttribute("href").replace("tel:", "");
+      let contactName = "Helpline";
+      const nameEl = link.querySelector(".contact-name");
+      if (nameEl) {
+        contactName = nameEl.textContent.trim();
+      } else {
+        const parent = link.closest(".contact-card");
+        if (parent) {
+          const innerName = parent.querySelector(".contact-name");
+          if (innerName) contactName = innerName.textContent.trim();
+        }
+      }
+      
+      showModal({
+        title: T("notice") || "Notice",
+        body: `<div style="text-align:center; padding:10px 0;"><strong style="font-size:18px; color:var(--text);">${contactName}</strong><br><span style="font-size:16px; color:var(--accent); font-weight:700; display:block; margin:8px 0;">${phoneNum}</span><br><p style="margin:0; font-size:13px; color:var(--text-sub);">${currentLang === 'hi' ? 'क्या आप इस नंबर पर कॉल करना चाहते हैं?' : 'Do you want to make a call to this number?'}</p></div>`,
+        confirmText: currentLang === 'hi' ? 'कॉल करें' : 'Call',
+        cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+        onConfirm: () => {
+          navigator.clipboard.writeText(phoneNum).then(() => {
+            toast(currentLang === 'hi' ? 'नंबर कॉपी किया गया!' : 'Number copied to clipboard!');
+          }).catch(() => {});
+          window.location.href = `tel:${phoneNum}`;
+        }
+      });
+    }
+  });
 }
 
 document.addEventListener("DOMContentLoaded", init);

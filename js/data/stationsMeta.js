@@ -27,9 +27,9 @@ export const stationsMeta = [
       "Last-mile autos"
     ],
     "location": {
-      "lat": 26.879531,
-      "lon": 75.749971,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.879531,75.749971"
+      "lat": 26.8794444,
+      "lon": 75.7500000,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.8794444,75.7500000"
     }
   },
   {
@@ -57,9 +57,9 @@ export const stationsMeta = [
       "Cycle/Bike parking"
     ],
     "location": {
-      "lat": 26.880308,
-      "lon": 75.764602,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.880308,75.764602"
+      "lat": 26.8802778,
+      "lon": 75.7647222,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.8802778,75.7647222"
     }
   },
   {
@@ -87,9 +87,9 @@ export const stationsMeta = [
       "Taxi"
     ],
     "location": {
-      "lat": 26.888952,
-      "lon": 75.768499,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.888952,75.768499"
+      "lat": 26.8888889,
+      "lon": 75.7686111,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.8888889,75.7686111"
     }
   },
   {
@@ -115,9 +115,9 @@ export const stationsMeta = [
       "Local bus"
     ],
     "location": {
-      "lat": 26.896650,
-      "lon": 75.770667,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.896650,75.770667"
+      "lat": 26.8966667,
+      "lon": 75.7705556,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.8966667,75.7705556"
     }
   },
   {
@@ -142,9 +142,9 @@ export const stationsMeta = [
       "Auto rickshaw stand"
     ],
     "location": {
-      "lat": 26.901944,
-      "lon": 75.774652,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.901944,75.774652"
+      "lat": 26.9019444,
+      "lon": 75.7747222,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9019444,75.7747222"
     }
   },
   {
@@ -174,9 +174,9 @@ export const stationsMeta = [
       "Nearby attraction access"
     ],
     "location": {
-      "lat": 26.909585,
-      "lon": 75.781277,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.909585,75.781277"
+      "lat": 26.9097222,
+      "lon": 75.7813889,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9097222,75.7813889"
     }
   },
   {
@@ -206,9 +206,9 @@ export const stationsMeta = [
       "Prepaid taxi counters"
     ],
     "location": {
-      "lat": 26.918559,
-      "lon": 75.789903,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.918559,75.789903"
+      "lat": 26.9186111,
+      "lon": 75.7900000,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9186111,75.7900000"
     }
   },
   {
@@ -238,9 +238,9 @@ export const stationsMeta = [
       "Auto rickshaw"
     ],
     "location": {
-      "lat": 26.922563,
-      "lon": 75.799747,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.922563,75.799747"
+      "lat": 26.9225000,
+      "lon": 75.7997222,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9225000,75.7997222"
     }
   },
   {
@@ -267,9 +267,9 @@ export const stationsMeta = [
       "Walking access to old city"
     ],
     "location": {
-      "lat": 26.926370,
-      "lon": 75.807456,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.926370,75.807456"
+      "lat": 26.9263889,
+      "lon": 75.8075000,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9263889,75.8075000"
     }
   },
   {
@@ -296,9 +296,9 @@ export const stationsMeta = [
       "Local bus stops"
     ],
     "location": {
-      "lat": 26.924720,
-      "lon": 75.818456,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.924720,75.818456"
+      "lat": 26.9251176,
+      "lon": 75.8156788,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9251176,75.8156788"
     }
   },
   {
@@ -327,9 +327,9 @@ export const stationsMeta = [
       "Taxi / Cab"
     ],
     "location": {
-      "lat": 26.922960,
-      "lon": 75.826814,
-      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.922960,75.826814"
+      "lat": 26.9229600,
+      "lon": 75.8268140,
+      "maps_link": "https://www.google.com/maps/search/?api=1&query=26.9229600,75.8268140"
     }
   }
 ];

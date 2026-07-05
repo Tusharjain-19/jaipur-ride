@@ -8,17 +8,17 @@ export const metroData = {
     name: "Pink Line",
     color: "#EC4899",
     stations: [
-      { id: "J01", name: "Mansarovar",        lat: 26.879531, lon: 75.749971, maps_link: "https://www.google.com/maps/search/?api=1&query=26.879531,75.749971", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J02", name: "New Aatish Market",  lat: 26.880308, lon: 75.764602, maps_link: "https://www.google.com/maps/search/?api=1&query=26.880308,75.764602", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
-      { id: "J03", name: "Vivek Vihar",        lat: 26.888952, lon: 75.768499, maps_link: "https://www.google.com/maps/search/?api=1&query=26.888952,75.768499", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J04", name: "Shyam Nagar",        lat: 26.896650, lon: 75.770667, maps_link: "https://www.google.com/maps/search/?api=1&query=26.896650,75.770667", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
-      { id: "J05", name: "Ram Nagar",          lat: 26.901944, lon: 75.774652, maps_link: "https://www.google.com/maps/search/?api=1&query=26.901944,75.774652", timeToNext: 125, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J06", name: "Civil Lines",        lat: 26.909585, lon: 75.781277, maps_link: "https://www.google.com/maps/search/?api=1&query=26.909585,75.781277", timeToNext: 130, distanceToNext: 1.3, platforms: { forward: 2, backward: 1 } },
-      { id: "J07", name: "Railway Station",    lat: 26.918559, lon: 75.789903, maps_link: "https://www.google.com/maps/search/?api=1&query=26.918559,75.789903", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
-      { id: "J08", name: "Sindhi Camp",        lat: 26.922563, lon: 75.799747, maps_link: "https://www.google.com/maps/search/?api=1&query=26.922563,75.799747", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J09", name: "Chandpole",          lat: 26.926370, lon: 75.807456, maps_link: "https://www.google.com/maps/search/?api=1&query=26.926370,75.807456", timeToNext: 105, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
-      { id: "J10", name: "Chhoti Chaupar",     lat: 26.924720, lon: 75.818456, maps_link: "https://www.google.com/maps/search/?api=1&query=26.924720,75.818456", timeToNext:  95, distanceToNext: 0.9, platforms: { forward: 2, backward: 1 } },
-      { id: "J11", name: "Badi Chaupar",       lat: 26.922960, lon: 75.826814, maps_link: "https://www.google.com/maps/search/?api=1&query=26.922960,75.826814", timeToNext:   0, distanceToNext: 0,   platforms: { forward: 2, backward: 1 } }
+      { id: "J01", name: "Mansarovar",        lat: 26.8794444, lon: 75.7500000, maps_link: "https://www.google.com/maps/search/?api=1&query=26.8794444,75.7500000", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J02", name: "New Aatish Market",  lat: 26.8802778, lon: 75.7647222, maps_link: "https://www.google.com/maps/search/?api=1&query=26.8802778,75.7647222", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
+      { id: "J03", name: "Vivek Vihar",        lat: 26.8888889, lon: 75.7686111, maps_link: "https://www.google.com/maps/search/?api=1&query=26.8888889,75.7686111", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J04", name: "Shyam Nagar",        lat: 26.8966667, lon: 75.7705556, maps_link: "https://www.google.com/maps/search/?api=1&query=26.8966667,75.7705556", timeToNext: 115, distanceToNext: 1.1, platforms: { forward: 2, backward: 1 } },
+      { id: "J05", name: "Ram Nagar",          lat: 26.9019444, lon: 75.7747222, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9019444,75.7747222", timeToNext: 125, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J06", name: "Civil Lines",        lat: 26.9097222, lon: 75.7813889, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9097222,75.7813889", timeToNext: 130, distanceToNext: 1.3, platforms: { forward: 2, backward: 1 } },
+      { id: "J07", name: "Railway Station",    lat: 26.9186111, lon: 75.7900000, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9186111,75.7900000", timeToNext: 120, distanceToNext: 1.2, platforms: { forward: 2, backward: 1 } },
+      { id: "J08", name: "Sindhi Camp",        lat: 26.9225000, lon: 75.7997222, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9225000,75.7997222", timeToNext: 110, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J09", name: "Chandpole",          lat: 26.9263889, lon: 75.8075000, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9263889,75.8075000", timeToNext: 105, distanceToNext: 1.0, platforms: { forward: 2, backward: 1 } },
+      { id: "J10", name: "Chhoti Chaupar",     lat: 26.9251176, lon: 75.8156788, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9251176,75.8156788", timeToNext:  95, distanceToNext: 0.9, platforms: { forward: 2, backward: 1 } },
+      { id: "J11", name: "Badi Chaupar",       lat: 26.9229600, lon: 75.8268140, maps_link: "https://www.google.com/maps/search/?api=1&query=26.9229600,75.8268140", timeToNext:   0, distanceToNext: 0,   platforms: { forward: 2, backward: 1 } }
     ]
   }
 };
@@ -115,7 +115,10 @@ export const translations = {
     opened: "Opened",
     operator: "Operator",
     elevated: "Elevated",
-    underground: "Underground"
+    underground: "Underground",
+    nearbyAttractions: "Nearby Attractions",
+    noAttractions: "No major attractions listed nearby.",
+    viewRoute: "View Route"
   },
   hi: {
     appName: "जयपुर राइड",
@@ -205,7 +208,10 @@ export const translations = {
     about: "बारे में",
     history: "इतिहास",
     bestTime: "घूमने का सबसे अच्छा समय",
-    entryFee: "प्रवेश शुल्क"
+    entryFee: "प्रवेश शुल्क",
+    nearbyAttractions: "आसपास के आकर्षण",
+    noAttractions: "आसपास कोई प्रमुख आकर्षण उपलब्ध नहीं है।",
+    viewRoute: "मार्ग देखें"
   }
 };
 

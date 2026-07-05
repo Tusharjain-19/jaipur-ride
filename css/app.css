@@ -78,6 +78,7 @@ a {
   --bg-card-alt: rgba(248, 250, 252, 0.65);
   --bg-header: rgba(255, 255, 255, 0.75);
   --bg-nav: rgba(255, 255, 255, 0.8);
+  --bg-solid: #ffffff;
   --text: #1a0a10;
   --text-sub: #4a2030;
   --text-muted: #8a6070;
@@ -104,6 +105,7 @@ a {
   --bg-card-alt: rgba(15, 23, 42, 0.68);
   --bg-header: rgba(10, 15, 30, 0.8);
   --bg-nav: rgba(10, 15, 30, 0.85);
+  --bg-solid: #0f172a;
   --text: #f8fafc;
   --text-sub: #cbd5e1;
   --text-muted: #64748b;
@@ -211,7 +213,7 @@ body {
 .branding-text {
   display: flex;
   align-items: baseline;
-  gap: 60px; /* Shifted time further right */
+  gap: 16px;
 }
 .brand-title {
   font-size: 20px;
@@ -232,6 +234,7 @@ body {
   margin-top: 0;
   font-variant-numeric: tabular-nums;
   opacity: 0.8;
+  white-space: nowrap;
 }
 .header-actions {
   display: flex;
@@ -809,9 +812,7 @@ body {
   position: fixed;
   inset: 0;
   z-index: 300;
-  background: var(--bg-header);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  background: var(--bg-solid);
   color: var(--text);
   display: flex;
   flex-direction: column;
@@ -819,7 +820,7 @@ body {
   margin: 0 auto;
 }
 .overlay.hidden {
-  display: none;
+  display: none !important;
 }
 .overlay-header {
   display: flex;
@@ -1063,8 +1064,8 @@ body {
   align-items: center;
   gap: 14px;
   padding: 14px 16px;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   margin-bottom: 8px;
   transition: all 0.2s;
@@ -1093,11 +1094,11 @@ body {
 .stn-name {
   font-size: 14px;
   font-weight: 700;
-  color: #000000;
+  color: var(--text);
 }
 .stn-name-hi {
   font-size: 11px;
-  color: #475569;
+  color: var(--text-muted);
 }
 .stn-idx {
   font-size: 11px;
@@ -1365,10 +1366,10 @@ body {
 /* ── ATTRACTIONS & STATION DETAIL ── */
 .station-header-hero {
   padding: 24px;
-  background: #ffffff !important;
+  background: var(--bg-card) !important;
   border-radius: var(--radius);
   margin-bottom: 24px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--border);
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
@@ -1376,11 +1377,11 @@ body {
 .station-header-hero h2 {
   font-size: 24px;
   font-weight: 800;
-  color: #000000;
+  color: var(--text);
 }
 .station-header-hero p {
   font-size: 14px;
-  color: #334155;
+  color: var(--text-sub);
   margin-top: 4px;
 }
 .hero-line-badge {
@@ -1586,7 +1587,7 @@ body {
 }
 /* ──────── ATTRACTION FULL DETAIL ──────── */
 #attraction-detail-view {
-    padding-bottom: 100px; /* Room for navigation button */
+    padding-bottom: 160px;
 }
 
 .full-attr-hero {
@@ -1641,7 +1642,8 @@ body {
     font-size: 13px;
     font-weight: 700;
     color: var(--text-sub);
-    background: #f8fafc;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
     padding: 8px 14px;
     border-radius: 100px;
 }
@@ -1669,11 +1671,11 @@ body {
 .attr-detail-text p {
     font-size: 14px;
     line-height: 1.6;
-    color: #475569;
+    color: var(--text-sub);
 }
 
 .attr-detail-info-card {
-    background: white;
+    background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 16px;
@@ -1703,11 +1705,7 @@ body {
 
 
 
-.full-attr-actions .btn-navigate {
-    width: 100%;
-    max-width: 400px;
-    height: 52px;
-}
+/* Removed duplicate fixed button rule */
 .section-header-row { display: flex; align-items: center; gap: 12px; margin-bottom: 4px; }
 .section-icon-box {
     width: 36px; height: 36px; border-radius: 10px;
@@ -1752,8 +1750,8 @@ body {
   cursor: pointer;
   align-items: center;
   transition: all 0.2s;
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
 }
 .station-explore-card:hover {
@@ -1796,12 +1794,12 @@ body {
 .explore-card-title {
   font-size: 17px;
   font-weight: 800;
-  color: #000000;
+  color: var(--text);
   margin-bottom: 2px;
 }
 .explore-card-sub {
   font-size: 12px;
-  color: #475569;
+  color: var(--text-muted);
   font-weight: 600;
   margin-bottom: 8px;
 }
@@ -1910,18 +1908,39 @@ body {
 }
 
 .full-attr-actions {
-  position: fixed;
-  bottom: 85px; /* Stay ABOVE the main footer */
-  left: 16px;
-  right: 16px;
+  margin-top: 32px;
+  margin-bottom: 16px;
   display: flex;
   justify-content: center;
-  z-index: 1000;
+  width: 100%;
 }
 
 .full-attr-actions .btn-navigate {
-    width: 100%;
-    max-width: 340px;
+  width: 100%;
+  max-width: 100%;
+  height: 54px;
+  border-radius: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(236, 72, 153, 0.25);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.full-attr-actions .btn-navigate:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(236, 72, 153, 0.35);
+}
+
+.full-attr-actions .btn-navigate:active {
+  transform: scale(0.98);
 }
 
 /* Better alignment for meta in cards */
@@ -1936,6 +1955,275 @@ body {
     color: var(--text-muted);
     margin-top: -2px;
     margin-bottom: 4px;
+}
+
+/* ── Nearby Attractions Popup Modal ── */
+.nearby-modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  z-index: 310;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  transition: opacity 0.3s ease;
+}
+.nearby-modal.hidden {
+  display: none !important;
+}
+.nearby-modal-content {
+  width: 100%;
+  max-height: 75%;
+  background: var(--bg-solid);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+.nearby-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-solid);
+  z-index: 10;
+}
+.nearby-modal-header h3 {
+  font-size: 16px;
+  font-weight: 850;
+  color: var(--text);
+  margin: 0;
+}
+.icon-btn-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.icon-btn-close:hover {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.nearby-modal-body {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.nearby-modal-body::-webkit-scrollbar {
+  display: none;
+}
+.no-attractions {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 20px 0;
+  width: 100%;
+}
+
+/* Attraction Cards inside Popup */
+.popup-attr-card {
+  min-width: 280px;
+  max-width: 280px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+  scroll-snap-align: center;
+}
+.popup-attr-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-md);
+}
+.popup-attr-img-container {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+}
+.popup-attr-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.popup-attr-type-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  padding: 3px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+}
+.popup-attr-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.popup-attr-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin: 0;
+}
+.popup-attr-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.popup-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--text-muted);
+}
+.popup-meta-item i {
+  width: 12px;
+  height: 12px;
+  color: var(--accent);
+}
+.popup-attr-desc {
+  font-size: 12px;
+  color: var(--text-sub);
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.popup-attr-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  width: 100%;
+}
+.popup-attr-actions .btn-navigate-small {
+  flex: 1;
+  justify-content: center;
+  padding: 8px 6px;
+  font-size: 12px;
+  width: auto;
+}
+
+/* ── Floating Active Journey Bar ── */
+.active-journey-bar {
+  position: absolute;
+  bottom: 74px;
+  left: 16px;
+  right: 16px;
+  background: var(--bg-solid);
+  border: 1.5px solid var(--accent);
+  border-radius: 16px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-lg), 0 0 15px var(--accent-soft);
+  z-index: 150;
+  animation: slideUpShort 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease-in-out;
+}
+.active-journey-bar.hidden {
+  display: none !important;
+}
+.active-journey-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.active-journey-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+.active-journey-sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.active-journey-btn {
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+  color: #ffffff !important;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(236, 72, 153, 0.2);
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+.active-journey-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(236, 72, 153, 0.3);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUpShort {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 6px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
 }
 
 

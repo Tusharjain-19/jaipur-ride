@@ -2,17 +2,17 @@
    Jaipur Metro Pink Line actual approximate coordinates
    ─────────────────────────────────────────────────────────────────────── */
 const STATION_COORDS = {
-  JM01: { lat: 26.8535, lng: 75.7483 }, // Mansarovar
-  JM02: { lat: 26.8614, lng: 75.7569 }, // New Aatish Market
-  JM03: { lat: 26.8658, lng: 75.7626 }, // Vivek Vihar
-  JM04: { lat: 26.8707, lng: 75.7681 }, // Shyam Nagar
-  JM05: { lat: 26.8769, lng: 75.7754 }, // Ram Nagar Ghat Gate
-  JM06: { lat: 26.8840, lng: 75.7837 }, // Civil Lines
-  JM07: { lat: 26.9196, lng: 75.7882 }, // Railway Station
-  JM08: { lat: 26.9145, lng: 75.7930 }, // Sindhi Camp
-  JM09: { lat: 26.9225, lng: 75.8078 }, // Chandpole
-  JM10: { lat: 26.9212, lng: 75.8136 }, // Chhoti Chaupar
-  JM11: { lat: 26.9200, lng: 75.8183 }, // Badi Chaupar
+  JM01: { lat: 26.8794444, lng: 75.7500000 }, // Mansarovar
+  JM02: { lat: 26.8802778, lng: 75.7647222 }, // New Aatish Market
+  JM03: { lat: 26.8888889, lng: 75.7686111 }, // Vivek Vihar
+  JM04: { lat: 26.8966667, lng: 75.7705556 }, // Shyam Nagar
+  JM05: { lat: 26.9019444, lng: 75.7747222 }, // Ram Nagar
+  JM06: { lat: 26.9097222, lng: 75.7813889 }, // Civil Lines
+  JM07: { lat: 26.9186111, lng: 75.7900000 }, // Railway Station
+  JM08: { lat: 26.9225000, lng: 75.7997222 }, // Sindhi Camp
+  JM09: { lat: 26.9263889, lng: 75.8075000 }, // Chandpole
+  JM10: { lat: 26.9251176, lng: 75.8156788 }, // Chhoti Chaupar
+  JM11: { lat: 26.9229600, lng: 75.8268140 }, // Badi Chaupar
 };
 
 /* ─── STATE ─────────────────────────────────────────────────────────────── */
