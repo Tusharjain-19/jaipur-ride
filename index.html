@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"/>
-    <meta name="theme-color" content="#FFFFFF"/>
+    <meta name="theme-color" content="#1A1A2E"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
     <link rel="icon" type="image/png" href="assets/images/logo1.png">
+    <link rel="apple-touch-icon" href="assets/images/logo1.png">
+    <link rel="manifest" href="manifest.json">
     <title>JaipurRide</title>
     <meta name="description" content="Plan your Jaipur Metro journey. Find routes, fares, and timings for the Pink Line."/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -302,6 +306,14 @@
             </div>
         </div>
     </div>
+    <script>
+      // Register Service Worker (browser only, Capacitor handles caching natively)
+      if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {});
+        });
+      }
+    </script>
 </body>
 </html>
 

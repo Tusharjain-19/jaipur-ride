@@ -10,6 +10,20 @@ import { stationsMeta } from "./data/stationsMeta.js";
 import { stationAttractions } from "./data/stationAttractions.js";
 import { CustomDropdown } from "./ui/dropdown.js";
 import { renderLiveRoute, updateRouteVisuals } from "./ui/route.js";
+import {
+  isNative,
+  hideSplashScreen,
+  setStatusBarStyle,
+  onBackButton,
+  exitApp,
+  watchPosition as nativeWatchPosition,
+  getCurrentPosition as nativeGetCurrentPosition,
+  checkLocationPermission,
+  requestLocationPermission,
+  hapticImpact,
+  onNetworkChange,
+  getNetworkStatus,
+} from "./native-bridge.js";
 
 // ═══════════════════════════════════════
 //  STATE
@@ -123,6 +137,8 @@ function setTheme(theme) {
         : '<i data-lucide="sun" class="w-18 h-18"></i>';
     if (window.lucide) window.lucide.createIcons();
   }
+  // Sync Android status bar with theme
+  setStatusBarStyle(theme === "dark");
 }
 
 // ═══════════════════════════════════════
@@ -984,23 +1000,21 @@ function startSim(journey) {
   simulationState.userLocation = null;
   simulationState.lastGpsIdx = undefined;
 
-  // Start GPS watching if available
-  if (navigator.geolocation) {
-    simulationState.watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        if (simulationState.isActive) {
-          simulationState.userLocation = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          };
-        }
-      },
-      (error) => {
-        console.warn("Live route GPS watch error:", error);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-    );
-  }
+  // Start GPS watching if available (uses native bridge for Capacitor)
+  simulationState.watchId = nativeWatchPosition(
+    (position) => {
+      if (simulationState.isActive) {
+        simulationState.userLocation = {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        };
+      }
+    },
+    (error) => {
+      console.warn("Live route GPS watch error:", error);
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+  );
 
   const overlay = document.getElementById("journey-overlay");
   if (overlay) overlay.classList.remove("hidden");
@@ -1091,9 +1105,13 @@ function stopSim() {
   if (simulationState.animFrameId)
     cancelAnimationFrame(simulationState.animFrameId);
 
-  // Clear GPS watch
+  // Clear GPS watch (native bridge compatible)
   if (simulationState.watchId !== null) {
-    navigator.geolocation.clearWatch(simulationState.watchId);
+    if (simulationState.watchId.clear) {
+      simulationState.watchId.clear();
+    } else if (navigator.geolocation) {
+      navigator.geolocation.clearWatch(simulationState.watchId);
+    }
     simulationState.watchId = null;
   }
   simulationState.userLocation = null;
@@ -1115,11 +1133,6 @@ function stopSim() {
 //  GEOLOCATION — "I am at..."
 // ═══════════════════════════════════════
 function locateMe() {
-  if (!navigator.geolocation) {
-    toast(T("locationUnavailable"));
-    return;
-  }
-
   // Show a beautiful custom pre-permission dialog first to explain why we need location
   showModal({
     title: currentLang === 'hi' ? 'स्थान अनुमति' : 'Location Permission',
@@ -1127,13 +1140,12 @@ function locateMe() {
              <i data-lucide="map-pin" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
              <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'निकटतम स्टेशन खोजें' : 'Find Nearest Station'}</strong>
              <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
-               ${currentLang === 'hi' ? 'जयपुर राइड को निकटतम स्टेशन खोजने के लिए आपकी जीपीएस लोकेशन की आवश्यकता है। कृपया अगले चरण में ब्राउज़र अनुमति स्वीकार करें।' : 'Jaipur Ride needs your GPS location to find the nearest station. Please accept the browser prompt in the next step.'}
+               ${currentLang === 'hi' ? 'जयपुर राइड को निकटतम स्टेशन खोजने के लिए आपकी जीपीएस लोकेशन की आवश्यकता है।' : 'JaipurRide needs your GPS location to find the nearest metro station.'}
              </p>
            </div>`,
     confirmText: currentLang === 'hi' ? 'अनुमति दें' : 'Allow',
     cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
     onConfirm: () => {
-      // Re-trigger icon updates inside modal if needed
       triggerRealLocationAccess();
     }
   });
@@ -1141,64 +1153,75 @@ function locateMe() {
   if (window.lucide) window.lucide.createIcons();
 }
 
-function triggerRealLocationAccess() {
+async function triggerRealLocationAccess() {
   toast(T("detectingLocation"));
 
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const lat = pos.coords.latitude;
-      const lon = pos.coords.longitude;
-      let nearest = null;
-      let minDist = Infinity;
-
-      Object.values(metroData).forEach((line) => {
-        line.stations.forEach((s) => {
-          const d = getDistance(lat, lon, s.lat, s.lon);
-          if (d < minDist) {
-            minDist = d;
-            nearest = s;
-          }
-        });
-      });
-
-      if (nearest) {
-        // Show distance: meters if < 1km, km otherwise
-        const distLabel =
-          minDist < 1
-            ? `~${Math.round(minDist * 1000)} m`
-            : `~${minDist.toFixed(1)} km`;
-
-        const stationName = T_STATION(nearest.name);
-        toast(`${T("nearest")}: ${stationName} (${distLabel})`);
-
-        if (startDropdown) startDropdown.select(nearest.id);
-
-        // Use station's pre-verified Maps pin
-        const url =
-          nearest.maps_link ||
-          `https://www.google.com/maps/search/?api=1&query=${nearest.lat},${nearest.lon}`;
-
-        setTimeout(() => {
-          showModal({
-            title: T("navigate"),
-            body: `${T("navigateModalBody")} <b>${stationName}</b> ${T("metroStation")}<br>
-                           <small style="color:var(--text-muted);font-size:12px">${distLabel} ${T("away")}</small>`,
-            confirmText: T("openMaps"),
-            cancelText: T("cancel"),
-            onConfirm: () => window.open(url, "_blank"),
-          });
-        }, 500);
-      } else {
-        toast(T("noNearbyStation"));
+  // Use native bridge for Capacitor or browser fallback
+  try {
+    // Request permission if needed (native path)
+    const perm = await checkLocationPermission();
+    if (perm === 'denied') {
+      toast(T("locAccessDenied"));
+      return;
+    }
+    if (perm === 'prompt') {
+      const result = await requestLocationPermission();
+      if (result === 'denied') {
+        toast(T("locAccessDenied"));
+        return;
       }
-    },
-    (err) => {
-      if (err.code === 1) toast(T("locAccessDenied"));
-      else if (err.code === 2) toast(T("locationUnavailable"));
-      else toast(T("locationTimeout"));
-    },
-    { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
-  );
+    }
+
+    const position = await nativeGetCurrentPosition({ enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+    let nearest = null;
+    let minDist = Infinity;
+
+    Object.values(metroData).forEach((line) => {
+      line.stations.forEach((s) => {
+        const d = getDistance(lat, lon, s.lat, s.lon);
+        if (d < minDist) {
+          minDist = d;
+          nearest = s;
+        }
+      });
+    });
+
+    if (nearest) {
+      const distLabel =
+        minDist < 1
+          ? `~${Math.round(minDist * 1000)} m`
+          : `~${minDist.toFixed(1)} km`;
+
+      const stationName = T_STATION(nearest.name);
+      toast(`${T("nearest")}: ${stationName} (${distLabel})`);
+      hapticImpact('Medium');
+
+      if (startDropdown) startDropdown.select(nearest.id);
+
+      const url =
+        nearest.maps_link ||
+        `https://www.google.com/maps/search/?api=1&query=${nearest.lat},${nearest.lon}`;
+
+      setTimeout(() => {
+        showModal({
+          title: T("navigate"),
+          body: `${T("navigateModalBody")} <b>${stationName}</b> ${T("metroStation")}<br>
+                         <small style="color:var(--text-muted);font-size:12px">${distLabel} ${T("away")}</small>`,
+          confirmText: T("openMaps"),
+          cancelText: T("cancel"),
+          onConfirm: () => window.open(url, "_blank"),
+        });
+      }, 500);
+    } else {
+      toast(T("noNearbyStation"));
+    }
+  } catch (err) {
+    if (err.code === 1) toast(T("locAccessDenied"));
+    else if (err.code === 2) toast(T("locationUnavailable"));
+    else toast(T("locationTimeout"));
+  }
 }
 
 // ═══════════════════════════════════════
@@ -1278,7 +1301,69 @@ function init() {
   }, 1000);
 
   if (window.lucide) window.lucide.createIcons();
-  console.log("JaipurRide: Ready!");
+
+  // ── Capacitor Native Setup ──
+  // Hide splash screen after app is ready
+  hideSplashScreen();
+
+  // Handle Android hardware back button
+  onBackButton(({ canGoBack }) => {
+    const overlay = document.getElementById("journey-overlay");
+    const modal = document.getElementById("custom-modal");
+    const nearbyModal = document.getElementById("nearby-popup-modal");
+
+    // Close modals first
+    if (modal && !modal.classList.contains("hidden")) {
+      modal.classList.add("hidden");
+      return;
+    }
+    if (nearbyModal && !nearbyModal.classList.contains("hidden")) {
+      nearbyModal.classList.add("hidden");
+      return;
+    }
+    // Close journey overlay
+    if (overlay && !overlay.classList.contains("hidden")) {
+      stopSim();
+      return;
+    }
+    // Navigate back through views
+    const activeView = document.querySelector(".view.active-view");
+    if (activeView) {
+      const id = activeView.id;
+      if (id === "results-view") {
+        showView("plan-view");
+        return;
+      }
+      if (id === "station-info-view") {
+        showView("stations-view");
+        return;
+      }
+      if (id === "attraction-detail-view") {
+        showView("explore-detail-view");
+        return;
+      }
+      if (id === "explore-detail-view") {
+        showView("explore-view");
+        return;
+      }
+      // If on a main tab (not plan), go to plan
+      if (id !== "plan-view") {
+        showView("plan-view");
+        return;
+      }
+    }
+    // On plan view — exit app
+    exitApp();
+  });
+
+  // Monitor network status
+  onNetworkChange((status) => {
+    if (!status.connected) {
+      toast(currentLang === 'hi' ? 'ऑफ़लाइन मोड' : 'You are offline');
+    }
+  });
+
+  console.log("JaipurRide: Ready!" + (isNative() ? " (Capacitor)" : " (Browser)"));
 }
 
 function wire() {
