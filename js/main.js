@@ -87,7 +87,7 @@ function getDistance(lat1, lon1, lat2, lon2) {
 // ═══════════════════════════════════════
 //  MODAL SYSTEM
 // ═══════════════════════════════════════
-function showModal({ title, body, confirmText, cancelText, onConfirm }) {
+function showModal({ title, body, confirmText, cancelText, onConfirm, onCancel }) {
   const modal = document.getElementById("custom-modal");
   const tEl = document.getElementById("modal-title");
   const bEl = document.getElementById("modal-body");
@@ -108,6 +108,7 @@ function showModal({ title, body, confirmText, cancelText, onConfirm }) {
   };
   xbtn.onclick = () => {
     close();
+    if (onCancel) onCancel();
   };
 }
 
@@ -154,6 +155,9 @@ function setLanguage(lang) {
     const key = el.getAttribute("data-lang-key");
     if (translations[lang][key]) el.innerHTML = translations[lang][key];
   });
+  const langBtn = document.getElementById("lang-toggle");
+  if (langBtn) langBtn.textContent = lang.toUpperCase();
+
   if (startDropdown) startDropdown.refreshTranslations();
   if (endDropdown) endDropdown.refreshTranslations();
 
@@ -387,11 +391,11 @@ function showView(viewId) {
     const currentActive = document.querySelector(".view.active-view");
     if (
       currentActive &&
-      currentActive.id !== "station-detail-view" &&
-      viewId === "station-detail-view"
+      currentActive.id !== "station-info-view" &&
+      viewId === "station-info-view"
     ) {
       lastView = currentActive.id;
-    } else if (viewId !== "station-detail-view") {
+    } else if (viewId !== "station-info-view") {
       lastView = viewId;
     }
     target.classList.add("active-view");
