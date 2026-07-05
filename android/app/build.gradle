@@ -20,10 +20,19 @@ android {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
     }
+    signingConfigs {
+        release {
+            storeFile file("jaipurride-upload.jks")
+            storePassword "JpR_UploadKey_2026_Secured!"
+            keyAlias "jaipurride"
+            keyPassword "JpR_UploadKey_2026_Secured!"
+        }
+    }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
