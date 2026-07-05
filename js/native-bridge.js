@@ -300,3 +300,18 @@ export function onKeyboardHide(callback) {
     Keyboard.addListener('keyboardWillHide', callback);
   }
 }
+
+// ═══════════════════════════════════════
+//  APP SETTINGS
+// ═══════════════════════════════════════
+export async function openAppSettings() {
+  if (isNative() && window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.NativeSettings) {
+    try {
+      await window.Capacitor.Plugins.NativeSettings.openAppSettings();
+    } catch (e) {
+      console.warn('[NativeBridge] openAppSettings failed:', e);
+    }
+  } else {
+    console.log('[NativeBridge] openAppSettings fallback: please open settings manually.');
+  }
+}

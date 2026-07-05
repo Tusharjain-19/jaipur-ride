@@ -23,6 +23,7 @@ import {
   hapticImpact,
   onNetworkChange,
   getNetworkStatus,
+  openAppSettings,
 } from "./native-bridge.js";
 
 // ═══════════════════════════════════════
@@ -987,6 +988,20 @@ function buildTrackPoints(journey) {
 function startSim(journey) {
   if (!journey) return;
 
+  // Clear any existing active GPS watch to prevent duplicate watchers and battery drain
+  if (simulationState.watchId !== null) {
+    if (simulationState.watchId.clear) {
+      simulationState.watchId.clear();
+    } else if (navigator.geolocation) {
+      navigator.geolocation.clearWatch(simulationState.watchId);
+    }
+    simulationState.watchId = null;
+  }
+  if (simulationState.animFrameId) {
+    cancelAnimationFrame(simulationState.animFrameId);
+    simulationState.animFrameId = null;
+  }
+
   const nearbyModal = document.getElementById("nearby-popup-modal");
   if (nearbyModal) nearbyModal.classList.add("hidden");
 
@@ -1038,6 +1053,76 @@ function startSim(journey) {
   const loop = () => {
     if (!simulationState.isActive) return;
     const res = updateRouteVisuals(simulationState);
+
+    // Calculate nearest station automatically using current GPS or active node fallback
+    const closestEl = document.getElementById("jv-closest-station");
+    if (closestEl) {
+      let nearestStn = null;
+      let minDist = Infinity;
+      const userLoc = simulationState.userLocation;
+      
+      if (userLoc) {
+        Object.values(metroData).forEach((line) => {
+          line.stations.forEach((s) => {
+            const d = getDistance(userLoc.lat, userLoc.lon, s.lat, s.lon);
+            if (d < minDist) {
+              minDist = d;
+              nearestStn = s;
+            }
+          });
+        });
+      }
+
+      if (nearestStn && minDist !== Infinity) {
+        const stationName = T_STATION(nearestStn.name);
+        const distLabel = minDist < 1
+          ? `${Math.round(minDist * 1000)} m`
+          : `${minDist.toFixed(1)} km`;
+        const walkTimeMin = Math.max(1, Math.round((minDist / 5) * 60));
+        
+        if (minDist <= 0.05) {
+          closestEl.textContent = currentLang === 'hi'
+            ? `आप ${stationName} मेट्रो स्टेशन पर हैं`
+            : `You are at ${stationName} Metro Station`;
+        } else {
+          closestEl.textContent = currentLang === 'hi'
+            ? `निकटतम: ${stationName} (${distLabel} · पैदल ${walkTimeMin} मिनट)`
+            : `Closest: ${stationName} (${distLabel} · ${walkTimeMin} min walk)`;
+        }
+      } else if (res.currentStationName) {
+        // Fallback: show the active node station in simulation mode
+        const stationName = T_STATION(res.currentStationName);
+        closestEl.textContent = currentLang === 'hi'
+          ? `निकटतम: ${stationName}`
+          : `Closest: ${stationName}`;
+      } else {
+        closestEl.textContent = '';
+      }
+    }
+
+    // Handle arrival detection: show completion modal, trigger haptic feedback, and stop tracking
+    if (res.arrived) {
+      stopSim();
+      hapticImpact('Heavy');
+      const lastP = journey.parts[journey.parts.length - 1];
+      const destStation = lastP ? lastP.stations[lastP.stations.length - 1] : null;
+      const destName = destStation ? T_STATION(destStation.name) : '';
+      
+      showModal({
+        title: currentLang === 'hi' ? 'यात्रा पूर्ण हुई 🎉' : 'Journey Completed 🎉',
+        body: `<div style="text-align:center; padding:10px 0;">
+                 <i data-lucide="check-circle" style="width:48px; height:48px; color:var(--green); display:block; margin:0 auto 12px;"></i>
+                 <strong style="font-size:18px; color:var(--text);">${currentLang === 'hi' ? 'आप अपने गंतव्य पर पहुंच गए हैं!' : 'You have reached your destination!'}</strong>
+                 <p style="margin:8px 0 0; font-size:14px; font-weight:700; color:var(--accent);">${destName}</p>
+                 <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">${currentLang === 'hi' ? 'जयपुर राइड के साथ यात्रा करने के लिए धन्यवाद।' : 'Thank you for traveling with Jaipur Ride.'}</p>
+               </div>`,
+        confirmText: currentLang === 'hi' ? 'ठीक है' : 'OK',
+        cancelText: '',
+        onConfirm: () => {}
+      });
+      if (window.lucide) window.lucide.createIcons();
+      return;
+    }
 
     // Update Attractions Link for current station
     const nbLink = document.getElementById("jv-nearby-link");
@@ -1130,48 +1215,88 @@ function stopSim() {
 }
 
 // ═══════════════════════════════════════
-//  GEOLOCATION — "I am at..."
+//  GEOLOCATION — Permissions and Helpers
 // ═══════════════════════════════════════
+async function checkAndRequestLocationPermission() {
+  try {
+    const perm = await checkLocationPermission();
+    if (perm === 'granted') {
+      return 'granted';
+    }
+
+    if (perm === 'prompt') {
+      return new Promise((resolve) => {
+        showModal({
+          title: currentLang === 'hi' ? 'स्थान अनुमति' : 'Location Permission',
+          body: `<div style="text-align:center; padding:10px 0;">
+                   <i data-lucide="map-pin" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
+                   <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'जयपुर राइड को स्थान अनुमति चाहिए' : 'JaipurRide needs Location Permission'}</strong>
+                   <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
+                     ${currentLang === 'hi' ? 'जयपुर मेट्रो के निकटतम स्टेशन को खोजने और आपकी यात्रा को लाइव ट्रैक करने के लिए स्थान अनुमति आवश्यक है।' : 'Location permission is required to detect the nearest station and track your live journey on the Jaipur Metro.'}
+                   </p>
+                 </div>`,
+          confirmText: currentLang === 'hi' ? 'अनुमति दें' : 'Allow',
+          cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+          onConfirm: async () => {
+            const reqResult = await requestLocationPermission();
+            if (reqResult === 'granted') {
+              resolve('granted');
+            } else {
+              toast(T("locAccessDenied"));
+              resolve('denied');
+            }
+          },
+          onCancel: () => {
+            resolve('denied');
+          }
+        });
+        if (window.lucide) window.lucide.createIcons();
+      });
+    }
+
+    if (perm === 'denied') {
+      return new Promise((resolve) => {
+        showModal({
+          title: currentLang === 'hi' ? 'स्थान अनुमति आवश्यक है' : 'Location Permission Required',
+          body: `<div style="text-align:center; padding:10px 0;">
+                   <i data-lucide="alert-circle" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
+                   <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'अनुमति अस्वीकृत कर दी गई है' : 'Permission is Denied'}</strong>
+                   <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
+                     ${currentLang === 'hi' ? 'यात्रा को ट्रैक करने के लिए कृपया ऐप सेटिंग्स खोलें और स्थान अनुमति सक्षम करें।' : 'Please open App Settings and enable Location permission to track your journey.'}
+                   </p>
+                 </div>`,
+          confirmText: currentLang === 'hi' ? 'सेटिंग्स खोलें' : 'Open Settings',
+          cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
+          onConfirm: async () => {
+            await openAppSettings();
+            resolve('denied');
+          },
+          onCancel: () => {
+            resolve('denied');
+          }
+        });
+        if (window.lucide) window.lucide.createIcons();
+      });
+    }
+  } catch (err) {
+    console.error("Permission flow error:", err);
+    return 'denied';
+  }
+  return 'denied';
+}
+
 function locateMe() {
-  // Show a beautiful custom pre-permission dialog first to explain why we need location
-  showModal({
-    title: currentLang === 'hi' ? 'स्थान अनुमति' : 'Location Permission',
-    body: `<div style="text-align:center; padding:10px 0;">
-             <i data-lucide="map-pin" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
-             <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'निकटतम स्टेशन खोजें' : 'Find Nearest Station'}</strong>
-             <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
-               ${currentLang === 'hi' ? 'जयपुर राइड को निकटतम स्टेशन खोजने के लिए आपकी जीपीएस लोकेशन की आवश्यकता है।' : 'JaipurRide needs your GPS location to find the nearest metro station.'}
-             </p>
-           </div>`,
-    confirmText: currentLang === 'hi' ? 'अनुमति दें' : 'Allow',
-    cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
-    onConfirm: () => {
+  checkAndRequestLocationPermission().then((status) => {
+    if (status === 'granted') {
       triggerRealLocationAccess();
     }
   });
-  
-  if (window.lucide) window.lucide.createIcons();
 }
 
 async function triggerRealLocationAccess() {
   toast(T("detectingLocation"));
 
-  // Use native bridge for Capacitor or browser fallback
   try {
-    // Request permission if needed (native path)
-    const perm = await checkLocationPermission();
-    if (perm === 'denied') {
-      toast(T("locAccessDenied"));
-      return;
-    }
-    if (perm === 'prompt') {
-      const result = await requestLocationPermission();
-      if (result === 'denied') {
-        toast(T("locAccessDenied"));
-        return;
-      }
-    }
-
     const position = await nativeGetCurrentPosition({ enableHighAccuracy: true, timeout: 12000, maximumAge: 0 });
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
@@ -1218,9 +1343,21 @@ async function triggerRealLocationAccess() {
       toast(T("noNearbyStation"));
     }
   } catch (err) {
-    if (err.code === 1) toast(T("locAccessDenied"));
-    else if (err.code === 2) toast(T("locationUnavailable"));
-    else toast(T("locationTimeout"));
+    console.error("GPS position error:", err);
+    showModal({
+      title: currentLang === 'hi' ? 'स्थान त्रुटि' : 'Location Error',
+      body: `<div style="text-align:center; padding:10px 0;">
+               <i data-lucide="alert-triangle" style="width:36px; height:36px; color:var(--accent); display:block; margin:0 auto 12px;"></i>
+               <strong style="font-size:16px; color:var(--text);">${currentLang === 'hi' ? 'जीपीएस/स्थान अक्षम है' : 'GPS / Location is Disabled'}</strong>
+               <p style="margin:12px 0 0; font-size:13px; color:var(--text-sub); line-height:1.5;">
+                 ${currentLang === 'hi' ? 'कृपया सुनिश्चित करें कि आपका जीपीएस/लोकेशन चालू है और आप हवाई जहाज मोड में नहीं हैं।' : 'Please ensure that your device location/GPS is turned ON and Airplane mode is disabled.'}
+               </p>
+             </div>`,
+      confirmText: currentLang === 'hi' ? 'ठीक है' : 'OK',
+      cancelText: '',
+      onConfirm: () => {}
+    });
+    if (window.lucide) window.lucide.createIcons();
   }
 }
 
@@ -1452,8 +1589,32 @@ function wire() {
   // Board train
   const boardBtn = document.getElementById("board-train-btn");
   if (boardBtn)
-    boardBtn.addEventListener("click", () => {
-      if (currentJourney) startSim(currentJourney);
+    boardBtn.addEventListener("click", async () => {
+      const sv = document.getElementById("start-station")?.value;
+      const ev = document.getElementById("end-station")?.value;
+      if (!sv || !ev) {
+        toast(T("selectBothStations"));
+        return;
+      }
+      if (sv === ev) {
+        toast(T("startAndEndDifferent"));
+        return;
+      }
+      
+      const permStatus = await checkAndRequestLocationPermission();
+      if (permStatus !== 'granted') return;
+
+      if (currentJourney) {
+        startSim(currentJourney);
+      } else {
+        const j = calcJourney(sv, ev);
+        if (j) {
+          showResult(j);
+          startSim(j);
+        } else {
+          toast(T("noRouteFound"));
+        }
+      }
     });
 
   // Exit journey
