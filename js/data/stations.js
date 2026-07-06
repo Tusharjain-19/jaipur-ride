@@ -118,7 +118,17 @@ export const translations = {
     underground: "Underground",
     nearbyAttractions: "Nearby Attractions",
     noAttractions: "No major attractions listed nearby.",
-    viewRoute: "View Route"
+    viewRoute: "View Route",
+    state_idle: "Idle",
+    state_planned: "Trip Planned",
+    state_permission: "Permission Checked",
+    state_gps: "GPS Started",
+    state_walking: "Walking to Station",
+    state_boarded: "Boarded Train",
+    state_travelling: "Travelling",
+    state_approaching: "Approaching Destination",
+    state_arrived: "Arrived",
+    state_completed: "Completed"
   },
   hi: {
     appName: "जयपुर राइड",
@@ -211,7 +221,17 @@ export const translations = {
     entryFee: "प्रवेश शुल्क",
     nearbyAttractions: "आसपास के आकर्षण",
     noAttractions: "आसपास कोई प्रमुख आकर्षण उपलब्ध नहीं है।",
-    viewRoute: "मार्ग देखें"
+    viewRoute: "मार्ग देखें",
+    state_idle: "निष्क्रिय",
+    state_planned: "यात्रा नियोजित",
+    state_permission: "अनुमति जांची गई",
+    state_gps: "जीपीएस चालू",
+    state_walking: "स्टेशन की ओर",
+    state_boarded: "मेट्रो में सवार",
+    state_travelling: "यात्रा में",
+    state_approaching: "गंतव्य के निकट",
+    state_arrived: "पहुंच गए",
+    state_completed: "यात्रा पूर्ण"
   }
 };
 

@@ -989,233 +989,451 @@ function buildTrackPoints(journey) {
   return { track, totalDistance: cumulativeDist };
 }
 
-function startSim(journey) {
-  if (!journey) return;
+const JourneyState = {
+  IDLE: "IDLE",
+  PLAN_SELECTED: "PLAN_SELECTED",
+  PERMISSION_GRANTED: "PERMISSION_GRANTED",
+  GPS_STARTED: "GPS_STARTED",
+  WALKING_TO_STATION: "WALKING_TO_STATION",
+  BOARDED_METRO: "BOARDED_METRO",
+  TRAVELLING: "TRAVELLING",
+  APPROACHING_DESTINATION: "APPROACHING_DESTINATION",
+  ARRIVED: "ARRIVED",
+  COMPLETED: "COMPLETED",
+};
 
-  // Clear any existing active GPS watch to prevent duplicate watchers and battery drain
-  if (simulationState.watchId !== null) {
-    if (simulationState.watchId.clear) {
-      simulationState.watchId.clear();
-    } else if (navigator.geolocation) {
-      navigator.geolocation.clearWatch(simulationState.watchId);
+class JourneyManager {
+  constructor() {
+    this.state = JourneyState.IDLE;
+    this.activeJourney = null;
+    this.watchId = null;
+    this.userLocation = null;
+    this.lastGpsIdx = undefined;
+    this.animFrameId = null;
+  }
+
+  transitionTo(newState) {
+    console.log(`[JourneyManager] Transitioning state: ${this.state} -> ${newState}`);
+    this.state = newState;
+    this.saveSession();
+    this.updateUI();
+  }
+
+  saveSession() {
+    try {
+      const data = {
+        state: this.state,
+        activeJourney: this.activeJourney,
+        lastGpsIdx: this.lastGpsIdx,
+        simulationStartTime: simulationState.startTime
+      };
+      localStorage.setItem("jaipurride_journey_session", JSON.stringify(data));
+    } catch (e) {
+      console.error("[JourneyManager] Failed to save session:", e);
     }
-    simulationState.watchId = null;
-  }
-  if (simulationState.animFrameId) {
-    cancelAnimationFrame(simulationState.animFrameId);
-    simulationState.animFrameId = null;
   }
 
-  const nearbyModal = document.getElementById("nearby-popup-modal");
-  if (nearbyModal) nearbyModal.classList.add("hidden");
-
-  const activeBar = document.getElementById("active-journey-bar");
-  if (activeBar) activeBar.classList.add("hidden");
-
-  simulationState.isActive = true;
-  simulationState.startTime = Date.now();
-  simulationState.timeline = makeTimeline(journey);
-  simulationState.trackPoints = buildTrackPoints(journey).track;
-  simulationState.userLocation = null;
-  simulationState.lastGpsIdx = undefined;
-
-  // Start GPS watching if available (uses native bridge for Capacitor)
-  simulationState.watchId = nativeWatchPosition(
-    (position) => {
-      if (simulationState.isActive) {
-        simulationState.userLocation = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
-        };
-      }
-    },
-    (error) => {
-      console.warn("Live route GPS watch error:", error);
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-  );
-
-  const overlay = document.getElementById("journey-overlay");
-  if (overlay) overlay.classList.remove("hidden");
-
-  renderLiveRoute(
-    journey,
-    document.getElementById("sim-route-list"),
-    simulationState,
-  );
-
-  const lastP = journey.parts[journey.parts.length - 1];
-  const dest = lastP
-    ? T_STATION(lastP.stations[lastP.stations.length - 1].name)
-    : "";
-  const mins = Math.ceil(journey.totalTime / 60);
-  const dirEl = document.getElementById("jv-direction");
-  const etaEl = document.getElementById("jv-eta");
-  if (dirEl) dirEl.textContent = T("towards") + " " + dest;
-  if (etaEl) etaEl.textContent = mins + " " + T("minRemaining");
-
-  const loop = () => {
-    if (!simulationState.isActive) return;
-    const res = updateRouteVisuals(simulationState);
-
-    // Calculate nearest station automatically using current GPS or active node fallback
-    const closestEl = document.getElementById("jv-closest-station");
-    if (closestEl) {
-      let nearestStn = null;
-      let minDist = Infinity;
-      const userLoc = simulationState.userLocation;
-      
-      if (userLoc) {
-        Object.values(metroData).forEach((line) => {
-          line.stations.forEach((s) => {
-            const d = getDistance(userLoc.lat, userLoc.lon, s.lat, s.lon);
-            if (d < minDist) {
-              minDist = d;
-              nearestStn = s;
-            }
-          });
-        });
-      }
-
-      if (nearestStn && minDist !== Infinity) {
-        const stationName = T_STATION(nearestStn.name);
-        const distLabel = minDist < 1
-          ? `${Math.round(minDist * 1000)} m`
-          : `${minDist.toFixed(1)} km`;
-        const walkTimeMin = Math.max(1, Math.round((minDist / 5) * 60));
-        
-        if (minDist <= 0.05) {
-          closestEl.textContent = currentLang === 'hi'
-            ? `आप ${stationName} मेट्रो स्टेशन पर हैं`
-            : `You are at ${stationName} Metro Station`;
-        } else {
-          closestEl.textContent = currentLang === 'hi'
-            ? `निकटतम: ${stationName} (${distLabel} · पैदल ${walkTimeMin} मिनट)`
-            : `Closest: ${stationName} (${distLabel} · ${walkTimeMin} min walk)`;
+  loadSession() {
+    try {
+      const data = localStorage.getItem("jaipurride_journey_session");
+      if (data) {
+        const parsed = JSON.parse(data);
+        this.state = parsed.state || JourneyState.IDLE;
+        this.activeJourney = parsed.activeJourney || null;
+        this.lastGpsIdx = parsed.lastGpsIdx;
+        if (parsed.simulationStartTime) {
+          simulationState.startTime = parsed.simulationStartTime;
         }
-      } else if (res.currentStationName) {
-        // Fallback: show the active node station in simulation mode
-        const stationName = T_STATION(res.currentStationName);
-        closestEl.textContent = currentLang === 'hi'
-          ? `निकटतम: ${stationName}`
-          : `Closest: ${stationName}`;
-      } else {
-        closestEl.textContent = '';
+        return true;
       }
+    } catch (e) {
+      console.error("[JourneyManager] Failed to load session:", e);
+    }
+    return false;
+  }
+
+  clearSession() {
+    localStorage.removeItem("jaipurride_journey_session");
+    this.state = JourneyState.IDLE;
+    this.activeJourney = null;
+    this.lastGpsIdx = undefined;
+  }
+
+  updateUI() {
+    const el = document.getElementById("jv-engine-state");
+    if (!el) return;
+
+    el.className = "state-badge";
+
+    let stateKey = "";
+    let cssClass = "";
+
+    switch (this.state) {
+      case JourneyState.IDLE:
+        stateKey = "state_idle";
+        cssClass = "state-idle";
+        break;
+      case JourneyState.PLAN_SELECTED:
+        stateKey = "state_planned";
+        cssClass = "state-planned";
+        break;
+      case JourneyState.PERMISSION_GRANTED:
+        stateKey = "state_permission";
+        cssClass = "state-permission";
+        break;
+      case JourneyState.GPS_STARTED:
+        stateKey = "state_gps";
+        cssClass = "state-gps";
+        break;
+      case JourneyState.WALKING_TO_STATION:
+        stateKey = "state_walking";
+        cssClass = "state-walking";
+        break;
+      case JourneyState.BOARDED_METRO:
+        stateKey = "state_boarded";
+        cssClass = "state-boarded";
+        break;
+      case JourneyState.TRAVELLING:
+        stateKey = "state_travelling";
+        cssClass = "state-travelling";
+        break;
+      case JourneyState.APPROACHING_DESTINATION:
+        stateKey = "state_approaching";
+        cssClass = "state-approaching";
+        break;
+      case JourneyState.ARRIVED:
+        stateKey = "state_arrived";
+        cssClass = "state-arrived";
+        break;
+      case JourneyState.COMPLETED:
+        stateKey = "state_completed";
+        cssClass = "state-completed";
+        break;
     }
 
-    // Handle arrival detection: show completion modal, trigger haptic feedback, and stop tracking
-    if (res.arrived) {
-      stopSim();
-      hapticImpact('Heavy');
-      const lastP = journey.parts[journey.parts.length - 1];
-      const destStation = lastP ? lastP.stations[lastP.stations.length - 1] : null;
-      const destName = destStation ? T_STATION(destStation.name) : '';
-      
-      showModal({
-        title: currentLang === 'hi' ? 'यात्रा पूर्ण हुई 🎉' : 'Journey Completed 🎉',
-        body: `<div style="text-align:center; padding:10px 0;">
-                 <i data-lucide="check-circle" style="width:48px; height:48px; color:var(--green); display:block; margin:0 auto 12px;"></i>
-                 <strong style="font-size:18px; color:var(--text);">${currentLang === 'hi' ? 'आप अपने गंतव्य पर पहुंच गए हैं!' : 'You have reached your destination!'}</strong>
-                 <p style="margin:8px 0 0; font-size:14px; font-weight:700; color:var(--accent);">${destName}</p>
-                 <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">${currentLang === 'hi' ? 'जयपुर राइड के साथ यात्रा करने के लिए धन्यवाद।' : 'Thank you for traveling with Jaipur Ride.'}</p>
-               </div>`,
-        confirmText: currentLang === 'hi' ? 'ठीक है' : 'OK',
-        cancelText: '',
-        onConfirm: () => {}
-      });
-      if (window.lucide) window.lucide.createIcons();
+    el.classList.add(cssClass);
+    el.textContent = T(stateKey);
+  }
+
+  async startJourney(journey) {
+    if (!journey) return;
+    this.activeJourney = journey;
+    currentJourney = journey;
+    this.transitionTo(JourneyState.PLAN_SELECTED);
+
+    // 1. Request/Verify permission
+    const permStatus = await checkAndRequestLocationPermission();
+    if (permStatus !== 'granted') {
+      this.clearSession();
+      this.transitionTo(JourneyState.IDLE);
       return;
     }
+    this.transitionTo(JourneyState.PERMISSION_GRANTED);
 
-    // Update Attractions Link for current station
-    const nbLink = document.getElementById("jv-nearby-link");
-    if (nbLink && res.currentStationName && journey) {
-      const isStart = res.currentStationName === journey.parts[0].stations[0].name;
-      const lastP = journey.parts[journey.parts.length - 1];
-      const isEnd = lastP && res.currentStationName === lastP.stations[lastP.stations.length - 1].name;
-
-      const attrs = stationAttractions[res.currentStationName] || [];
-      if ((isStart || isEnd) && attrs.length > 0) {
-        nbLink.textContent = `See nearby (${attrs.length})`;
-        nbLink.classList.remove("hidden");
-        nbLink.onclick = () => showNearbyPopup(res.currentStationName);
-      } else {
-        nbLink.classList.add("hidden");
-      }
+    // 2. Clear any existing watch/animation frame
+    this.stopGps();
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
     }
 
-    const elapsed = (Date.now() - simulationState.startTime) / 1000;
-    
-    // Update progress bar width dynamically based on hybrid logic
-    const bar = document.getElementById("jv-progress-bar");
-    if (bar) {
-      const pct = res.progressPercent !== undefined ? res.progressPercent : Math.min((elapsed / (simulationState.timeline[simulationState.timeline.length - 1]?.arrivalTime || 1)) * 100, 100);
-      bar.style.width = pct + "%";
+    // 3. Start Geolocation Watcher
+    simulationState.isActive = true;
+    if (!simulationState.startTime) {
+      simulationState.startTime = Date.now();
     }
+    simulationState.timeline = makeTimeline(journey);
+    simulationState.trackPoints = buildTrackPoints(journey).track;
 
-    // Dynamic remaining time calculation
-    let remaining = Math.max(0, Math.ceil((journey.totalTime - elapsed) / 60));
-    if (res.remainingTimeSeconds !== undefined) {
-      remaining = Math.max(0, Math.ceil(res.remainingTimeSeconds / 60));
-    }
+    this.transitionTo(JourneyState.GPS_STARTED);
 
-    // Update overlay ETA text in real time
-    const etaTextEl = document.getElementById("jv-eta");
-    if (etaTextEl) {
-      etaTextEl.textContent = remaining + " " + T("minRemaining");
-    }
+    const nearbyModal = document.getElementById("nearby-popup-modal");
+    if (nearbyModal) nearbyModal.classList.add("hidden");
+    const activeBar = document.getElementById("active-journey-bar");
+    if (activeBar) activeBar.classList.add("hidden");
 
-    // Manage Floating Active Journey Bar visibility and content
-    const overlayEl = document.getElementById("journey-overlay");
-    const activeBarEl = document.getElementById("active-journey-bar");
-    if (activeBarEl && overlayEl) {
-      if (overlayEl.classList.contains("hidden")) {
-        const activeSub = document.getElementById("active-journey-sub");
-        if (activeSub) {
-          const lastP = journey.parts[journey.parts.length - 1];
-          const destName = lastP ? T_STATION(lastP.stations[lastP.stations.length - 1].name) : "";
-          activeSub.textContent = `${T("towards")} ${destName} • ${remaining} ${T("minRemaining")}`;
+    this.watchId = nativeWatchPosition(
+      (position) => {
+        if (simulationState.isActive) {
+          this.userLocation = {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          };
+          simulationState.userLocation = this.userLocation;
+          this.processLocationUpdate();
         }
-        activeBarEl.classList.remove("hidden");
+      },
+      (error) => {
+        console.warn("Journey GPS watch error:", error);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
+
+    const overlay = document.getElementById("journey-overlay");
+    if (overlay) overlay.classList.remove("hidden");
+
+    renderLiveRoute(
+      journey,
+      document.getElementById("sim-route-list"),
+      simulationState,
+    );
+
+    const lastP = journey.parts[journey.parts.length - 1];
+    const dest = lastP
+      ? T_STATION(lastP.stations[lastP.stations.length - 1].name)
+      : "";
+    const mins = Math.ceil(journey.totalTime / 60);
+    const dirEl = document.getElementById("jv-direction");
+    const etaEl = document.getElementById("jv-eta");
+    if (dirEl) dirEl.textContent = T("towards") + " " + dest;
+    if (etaEl) etaEl.textContent = mins + " " + T("minRemaining");
+
+    // Start UI loop
+    this.startUiLoop();
+  }
+
+  processLocationUpdate() {
+    if (!this.userLocation || !this.activeJourney) return;
+
+    const startStation = this.activeJourney.parts[0].stations[0];
+    const lastP = this.activeJourney.parts[this.activeJourney.parts.length - 1];
+    const endStation = lastP.stations[lastP.stations.length - 1];
+
+    const distToStart = getDistance(this.userLocation.lat, this.userLocation.lon, startStation.lat, startStation.lon);
+    const distToEnd = getDistance(this.userLocation.lat, this.userLocation.lon, endStation.lat, endStation.lon);
+
+    if (this.state === JourneyState.GPS_STARTED || this.state === JourneyState.PERMISSION_GRANTED) {
+      if (distToStart > 0.100) {
+        this.transitionTo(JourneyState.WALKING_TO_STATION);
       } else {
-        activeBarEl.classList.add("hidden");
+        this.transitionTo(JourneyState.BOARDED_METRO);
+      }
+    } else if (this.state === JourneyState.WALKING_TO_STATION) {
+      if (distToStart <= 0.100) {
+        this.transitionTo(JourneyState.BOARDED_METRO);
+      }
+    } else if (this.state === JourneyState.BOARDED_METRO) {
+      if (distToStart > 0.150 && distToEnd > 0.150) {
+        this.transitionTo(JourneyState.TRAVELLING);
+      }
+    } else if (this.state === JourneyState.TRAVELLING) {
+      if (distToEnd <= 0.500) {
+        this.transitionTo(JourneyState.APPROACHING_DESTINATION);
+      }
+    } else if (this.state === JourneyState.APPROACHING_DESTINATION) {
+      if (distToEnd <= 0.100) {
+        this.transitionTo(JourneyState.ARRIVED);
       }
     }
+  }
 
-    simulationState.animFrameId = requestAnimationFrame(loop);
-  };
-  loop();
-  if (window.lucide) window.lucide.createIcons();
+  startUiLoop() {
+    if (this.animFrameId) cancelAnimationFrame(this.animFrameId);
+
+    const loop = () => {
+      if (this.state === JourneyState.IDLE) return;
+
+      const res = updateRouteVisuals(simulationState);
+
+      if (res.arrived || this.state === JourneyState.ARRIVED) {
+        this.transitionTo(JourneyState.ARRIVED);
+        this.completeJourney();
+        return;
+      }
+
+      const closestEl = document.getElementById("jv-closest-station");
+      if (closestEl) {
+        let nearestStn = null;
+        let minDist = Infinity;
+        const userLoc = this.userLocation || simulationState.userLocation;
+
+        if (userLoc) {
+          Object.values(metroData).forEach((line) => {
+            line.stations.forEach((s) => {
+              const d = getDistance(userLoc.lat, userLoc.lon, s.lat, s.lon);
+              if (d < minDist) {
+                minDist = d;
+                nearestStn = s;
+              }
+            });
+          });
+        }
+
+        if (nearestStn && minDist !== Infinity) {
+          const stationName = T_STATION(nearestStn.name);
+          const distLabel = minDist < 1
+            ? `${Math.round(minDist * 1000)} m`
+            : `${minDist.toFixed(1)} km`;
+          const walkTimeMin = Math.max(1, Math.round((minDist / 5) * 60));
+
+          if (minDist <= 0.05) {
+            closestEl.textContent = currentLang === 'hi'
+              ? `आप ${stationName} मेट्रो स्टेशन पर हैं`
+              : `You are at ${stationName} Metro Station`;
+          } else {
+            closestEl.textContent = currentLang === 'hi'
+              ? `निकटतम: ${stationName} (${distLabel} · पैदल ${walkTimeMin} मिनट)`
+              : `Closest: ${stationName} (${distLabel} · ${walkTimeMin} min walk)`;
+          }
+        } else if (res.currentStationName) {
+          const stationName = T_STATION(res.currentStationName);
+          closestEl.textContent = currentLang === 'hi'
+            ? `निकटतम: ${stationName}`
+            : `Closest: ${stationName}`;
+        } else {
+          closestEl.textContent = '';
+        }
+      }
+
+      const nbLink = document.getElementById("jv-nearby-link");
+      if (nbLink && res.currentStationName && this.activeJourney) {
+        const isStart = res.currentStationName === this.activeJourney.parts[0].stations[0].name;
+        const lastP = this.activeJourney.parts[this.activeJourney.parts.length - 1];
+        const isEnd = lastP && res.currentStationName === lastP.stations[lastP.stations.length - 1].name;
+
+        const attrs = stationAttractions[res.currentStationName] || [];
+        if ((isStart || isEnd) && attrs.length > 0) {
+          nbLink.textContent = `See nearby (${attrs.length})`;
+          nbLink.classList.remove("hidden");
+          nbLink.onclick = () => showNearbyPopup(res.currentStationName);
+        } else {
+          nbLink.classList.add("hidden");
+        }
+      }
+
+      const elapsed = (Date.now() - simulationState.startTime) / 1000;
+      
+      const bar = document.getElementById("jv-progress-bar");
+      if (bar) {
+        const pct = res.progressPercent !== undefined ? res.progressPercent : Math.min((elapsed / (simulationState.timeline[simulationState.timeline.length - 1]?.arrivalTime || 1)) * 100, 100);
+        bar.style.width = pct + "%";
+      }
+
+      let remaining = Math.max(0, Math.ceil((this.activeJourney.totalTime - elapsed) / 60));
+      if (res.remainingTimeSeconds !== undefined) {
+        remaining = Math.max(0, Math.ceil(res.remainingTimeSeconds / 60));
+      }
+
+      const etaTextEl = document.getElementById("jv-eta");
+      if (etaTextEl) {
+        etaTextEl.textContent = remaining + " " + T("minRemaining");
+      }
+
+      const overlayEl = document.getElementById("journey-overlay");
+      const activeBarEl = document.getElementById("active-journey-bar");
+      if (activeBarEl && overlayEl) {
+        if (overlayEl.classList.contains("hidden")) {
+          const activeSub = document.getElementById("active-journey-sub");
+          if (activeSub) {
+            const lastP = this.activeJourney.parts[this.activeJourney.parts.length - 1];
+            const destName = lastP ? T_STATION(lastP.stations[lastP.stations.length - 1].name) : "";
+            activeSub.textContent = `${T("towards")} ${destName} • ${remaining} ${T("minRemaining")}`;
+          }
+          activeBarEl.classList.remove("hidden");
+        } else {
+          activeBarEl.classList.add("hidden");
+        }
+      }
+
+      this.animFrameId = requestAnimationFrame(loop);
+    };
+
+    this.animFrameId = requestAnimationFrame(loop);
+  }
+
+  completeJourney() {
+    this.transitionTo(JourneyState.COMPLETED);
+    this.stopGps();
+
+    const lastP = this.activeJourney.parts[this.activeJourney.parts.length - 1];
+    const destStation = lastP ? lastP.stations[lastP.stations.length - 1] : null;
+    const destName = destStation ? T_STATION(destStation.name) : '';
+
+    showModal({
+      title: currentLang === 'hi' ? 'यात्रा पूर्ण हुई 🎉' : 'Journey Completed 🎉',
+      body: `<div style="text-align:center; padding:10px 0;">
+               <i data-lucide="check-circle" style="width:48px; height:48px; color:var(--green); display:block; margin:0 auto 12px;"></i>
+               <strong style="font-size:18px; color:var(--text);">${currentLang === 'hi' ? 'आप अपने गंतव्य पर पहुंच गए हैं!' : 'You have reached your destination!'}</strong>
+               <p style="margin:8px 0 0; font-size:14px; font-weight:700; color:var(--accent);">${destName}</p>
+               <p style="margin:4px 0 0; font-size:12px; color:var(--text-muted);">${currentLang === 'hi' ? 'जयपुर राइड के साथ यात्रा करने के लिए धन्यवाद।' : 'Thank you for traveling with Jaipur Ride.'}</p>
+             </div>`,
+      confirmText: currentLang === 'hi' ? 'ठीक है' : 'OK',
+      cancelText: '',
+      onConfirm: () => {
+        this.resetJourney();
+      },
+      onCancel: () => {
+        this.resetJourney();
+      }
+    });
+
+    hapticImpact('Heavy');
+    if (window.lucide) window.lucide.createIcons();
+  }
+
+  stopGps() {
+    if (this.watchId !== null) {
+      if (this.watchId.clear) {
+        this.watchId.clear();
+      } else if (navigator.geolocation) {
+        navigator.geolocation.clearWatch(this.watchId);
+      }
+      this.watchId = null;
+    }
+  }
+
+  resetJourney() {
+    this.stopGps();
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+
+    simulationState.isActive = false;
+    simulationState.startTime = null;
+    simulationState.userLocation = null;
+    simulationState.lastGpsIdx = undefined;
+
+    this.clearSession();
+    this.updateUI();
+
+    const overlay = document.getElementById("journey-overlay");
+    if (overlay) overlay.classList.add("hidden");
+
+    const nearbyModal = document.getElementById("nearby-popup-modal");
+    if (nearbyModal) nearbyModal.classList.add("hidden");
+
+    const activeBar = document.getElementById("active-journey-bar");
+    if (activeBar) activeBar.classList.add("hidden");
+
+    showView("plan-view");
+  }
+
+  recoverSession() {
+    const loaded = this.loadSession();
+    if (loaded && this.activeJourney && this.state !== JourneyState.IDLE) {
+      console.log("[JourneyManager] Recovered previous active session!");
+      
+      simulationState.isActive = true;
+      simulationState.timeline = makeTimeline(this.activeJourney);
+      simulationState.trackPoints = buildTrackPoints(this.activeJourney).track;
+
+      this.startJourney(this.activeJourney);
+      return true;
+    }
+    return false;
+  }
+}
+
+const journeyManager = new JourneyManager();
+window.journeyManager = journeyManager;
+
+function startSim(journey) {
+  journeyManager.startJourney(journey);
 }
 
 function stopSim() {
-  simulationState.isActive = false;
-  if (simulationState.animFrameId)
-    cancelAnimationFrame(simulationState.animFrameId);
-
-  // Clear GPS watch (native bridge compatible)
-  if (simulationState.watchId !== null) {
-    if (simulationState.watchId.clear) {
-      simulationState.watchId.clear();
-    } else if (navigator.geolocation) {
-      navigator.geolocation.clearWatch(simulationState.watchId);
-    }
-    simulationState.watchId = null;
-  }
-  simulationState.userLocation = null;
-  simulationState.lastGpsIdx = undefined;
-
-  const overlay = document.getElementById("journey-overlay");
-  if (overlay) overlay.classList.add("hidden");
-
-  const nearbyModal = document.getElementById("nearby-popup-modal");
-  if (nearbyModal) nearbyModal.classList.add("hidden");
-
-  const activeBar = document.getElementById("active-journey-bar");
-  if (activeBar) activeBar.classList.add("hidden");
-
-  showView("plan-view");
+  journeyManager.resetJourney();
 }
 
 // ═══════════════════════════════════════
@@ -1419,6 +1637,9 @@ function init() {
 
   // Wire everything
   wire();
+
+  // Recover active session from localStorage if app restarts
+  journeyManager.recoverSession();
 
   // Clock
   setInterval(() => {

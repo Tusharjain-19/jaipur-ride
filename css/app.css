@@ -894,6 +894,59 @@ body {
   background: var(--bg-card-alt);
   border-bottom: 1px solid var(--border);
 }
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.2s ease-in-out;
+}
+.state-badge.state-idle {
+  background: var(--border);
+  color: var(--text-muted);
+}
+.state-badge.state-planned {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+.state-badge.state-permission {
+  background: rgba(14, 165, 233, 0.15);
+  color: #0284c7;
+}
+.state-badge.state-gps {
+  background: rgba(99, 102, 241, 0.15);
+  color: #4f46e5;
+}
+.state-badge.state-walking {
+  background: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+}
+.state-badge.state-boarded {
+  background: rgba(16, 185, 129, 0.15);
+  color: #059669;
+}
+.state-badge.state-travelling {
+  background: rgba(16, 185, 129, 0.25);
+  color: #10b981;
+}
+.state-badge.state-approaching {
+  background: rgba(139, 92, 246, 0.15);
+  color: #7c3aed;
+}
+.state-badge.state-arrived {
+  background: rgba(236, 72, 153, 0.2);
+  color: #db2777;
+  animation: pulse 1.5s infinite;
+}
+.state-badge.state-completed {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
 .live-badge {
   display: inline-flex;
   align-items: center;
