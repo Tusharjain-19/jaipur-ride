@@ -381,23 +381,19 @@ function showResult(journey) {
 // ═══════════════════════════════════════
 //  VIEW MANAGEMENT
 // ═══════════════════════════════════════
-function showView(viewId) {
+const navigationStack = [];
+
+function showView(viewId, pushToStack = true) {
+  const currentActive = document.querySelector(".view.active-view");
+  if (currentActive && pushToStack && currentActive.id !== viewId) {
+    navigationStack.push(currentActive.id);
+  }
+
   document
     .querySelectorAll(".view")
     .forEach((v) => v.classList.remove("active-view"));
   const target = document.getElementById(viewId);
   if (target) {
-    // Track history for back buttons, but don't track detail view itself as "last"
-    const currentActive = document.querySelector(".view.active-view");
-    if (
-      currentActive &&
-      currentActive.id !== "station-info-view" &&
-      viewId === "station-info-view"
-    ) {
-      lastView = currentActive.id;
-    } else if (viewId !== "station-info-view") {
-      lastView = viewId;
-    }
     target.classList.add("active-view");
   }
 
@@ -431,6 +427,25 @@ function showView(viewId) {
     if (window.lucide) window.lucide.createIcons();
 }
 window.showView = showView;
+
+function goBack() {
+  if (simulationState.isActive) {
+    const overlay = document.getElementById("journey-overlay");
+    if (overlay) {
+      overlay.classList.remove("hidden");
+      showView("plan-view", false);
+      return;
+    }
+  }
+
+  if (navigationStack.length > 0) {
+    const prevView = navigationStack.pop();
+    showView(prevView, false);
+  } else {
+    showView("plan-view", false);
+  }
+}
+window.goBack = goBack;
 
 function showStationInfo(stationName) {
     window.lastSelectedStation = stationName;
@@ -1669,7 +1684,7 @@ function init() {
   hideSplashScreen();
 
   // Handle Android hardware back button
-  onBackButton(({ canGoBack }) => {
+  onBackButton(() => {
     const overlay = document.getElementById("journey-overlay");
     const modal = document.getElementById("custom-modal");
     const nearbyModal = document.getElementById("nearby-popup-modal");
@@ -1690,32 +1705,11 @@ function init() {
     }
     // Navigate back through views
     const activeView = document.querySelector(".view.active-view");
-    if (activeView) {
-      const id = activeView.id;
-      if (id === "results-view") {
-        showView("plan-view");
-        return;
-      }
-      if (id === "station-info-view") {
-        showView("stations-view");
-        return;
-      }
-      if (id === "attraction-detail-view") {
-        showView("explore-detail-view");
-        return;
-      }
-      if (id === "explore-detail-view") {
-        showView("explore-view");
-        return;
-      }
-      // If on a main tab (not plan), go to plan
-      if (id !== "plan-view") {
-        showView("plan-view");
-        return;
-      }
+    if (activeView && activeView.id === "plan-view") {
+      exitApp();
+    } else {
+      goBack();
     }
-    // On plan view — exit app
-    exitApp();
   });
 
   // Monitor network status
@@ -1781,35 +1775,16 @@ function wire() {
 
   // Back from results
   const backBtn = document.getElementById("results-back");
-  if (backBtn) backBtn.addEventListener("click", () => showView("plan-view"));
+  if (backBtn) backBtn.addEventListener("click", goBack);
 
   const infoBackBtn = document.getElementById("info-back");
-  if (infoBackBtn)
-    infoBackBtn.addEventListener("click", () => {
-      showView("stations-view");
-    });
+  if (infoBackBtn) infoBackBtn.addEventListener("click", goBack);
 
   const expDetailBackBtn = document.getElementById("explore-detail-back");
-  if (expDetailBackBtn)
-    expDetailBackBtn.addEventListener("click", () => {
-      if (simulationState.isActive) {
-        const overlay = document.getElementById("journey-overlay");
-        if (overlay) overlay.classList.remove("hidden");
-      } else {
-        showView("explore-view");
-      }
-    });
+  if (expDetailBackBtn) expDetailBackBtn.addEventListener("click", goBack);
 
   const attrDetailBackBtn = document.getElementById("attr-detail-back");
-  if (attrDetailBackBtn)
-    attrDetailBackBtn.addEventListener("click", () => {
-      if (simulationState.isActive) {
-        const overlay = document.getElementById("journey-overlay");
-        if (overlay) overlay.classList.remove("hidden");
-      } else {
-        showView("explore-detail-view");
-      }
-    });
+  if (attrDetailBackBtn) attrDetailBackBtn.addEventListener("click", goBack);
 
   // Board train
   const boardBtn = document.getElementById("board-train-btn");
@@ -1880,7 +1855,10 @@ function wire() {
 
   // Bottom nav
   document.querySelectorAll(".nav-item[data-view]").forEach((btn) => {
-    btn.addEventListener("click", () => showView(btn.dataset.view));
+    btn.addEventListener("click", () => {
+      navigationStack.length = 0; // Clear history stack on tab change
+      showView(btn.dataset.view, false);
+    });
   });
 
   // Quick links
