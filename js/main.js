@@ -1131,28 +1131,30 @@ class JourneyManager {
   }
 
   async startJourney(journey) {
-    if (!journey) return;
+    console.log("[DEBUG] startJourney method triggered.");
+    if (!journey) {
+      console.warn("[DEBUG] startJourney: journey object is null or undefined.");
+      return;
+    }
     this.activeJourney = journey;
     currentJourney = journey;
     this.transitionTo(JourneyState.PLAN_SELECTED);
+    console.log("[DEBUG] Transitioned to PLAN_SELECTED.");
 
-    // 1. Request/Verify permission
+    console.log("[DEBUG] Checking location permission within startJourney...");
     const permStatus = await checkAndRequestLocationPermission();
+    console.log("[DEBUG] checkAndRequestLocationPermission resolved with status:", permStatus);
     if (permStatus !== 'granted') {
+      console.warn("[DEBUG] Location permission not granted. Clearing session.");
       this.clearSession();
       this.transitionTo(JourneyState.IDLE);
       return;
     }
     this.transitionTo(JourneyState.PERMISSION_GRANTED);
+    console.log("[DEBUG] Transitioned to PERMISSION_GRANTED.");
 
-    // 2. Clear any existing watch/animation frame
     this.stopGps();
-    if (this.animFrameId) {
-      cancelAnimationFrame(this.animFrameId);
-      this.animFrameId = null;
-    }
-
-    // 3. Start Geolocation Watcher
+    console.log("[DEBUG] GPS stopped. Re-initializing simulationState...");
     simulationState.isActive = true;
     if (!simulationState.startTime) {
       simulationState.startTime = Date.now();
@@ -1161,14 +1163,17 @@ class JourneyManager {
     simulationState.trackPoints = buildTrackPoints(journey).track;
 
     this.transitionTo(JourneyState.GPS_STARTED);
+    console.log("[DEBUG] Transitioned to GPS_STARTED.");
 
     const nearbyModal = document.getElementById("nearby-popup-modal");
     if (nearbyModal) nearbyModal.classList.add("hidden");
     const activeBar = document.getElementById("active-journey-bar");
     if (activeBar) activeBar.classList.add("hidden");
 
+    console.log("[DEBUG] Starting GPS watchPosition...");
     this.watchId = nativeWatchPosition(
       (position) => {
+        console.log("[DEBUG] GPS update received:", position.coords.latitude, position.coords.longitude);
         if (simulationState.isActive) {
           this.userLocation = {
             lat: position.coords.latitude,
@@ -1179,19 +1184,26 @@ class JourneyManager {
         }
       },
       (error) => {
-        console.warn("Journey GPS watch error:", error);
+        console.warn("[DEBUG] watchPosition error callback triggered:", error);
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
     );
+    console.log("[DEBUG] watchPosition registered. watchId object:", this.watchId);
 
     const overlay = document.getElementById("journey-overlay");
-    if (overlay) overlay.classList.remove("hidden");
+    if (overlay) {
+      overlay.classList.remove("hidden");
+      console.log("[DEBUG] Live journey overlay display enabled.");
+    } else {
+      console.error("[DEBUG] #journey-overlay element not found in DOM!");
+    }
 
     renderLiveRoute(
       journey,
       document.getElementById("sim-route-list"),
       simulationState,
     );
+    console.log("[DEBUG] Live route items rendered.");
 
     const lastP = journey.parts[journey.parts.length - 1];
     const dest = lastP
@@ -1203,8 +1215,9 @@ class JourneyManager {
     if (dirEl) dirEl.textContent = T("towards") + " " + dest;
     if (etaEl) etaEl.textContent = mins + " " + T("minRemaining");
 
-    // Start UI loop
+    console.log("[DEBUG] UI text updated. Launching startUiLoop...");
     this.startUiLoop();
+    console.log("[DEBUG] startUiLoop launched.");
   }
 
   processLocationUpdate() {
@@ -1455,13 +1468,17 @@ function stopSim() {
 //  GEOLOCATION — Permissions and Helpers
 // ═══════════════════════════════════════
 async function checkAndRequestLocationPermission() {
+  console.log("[DEBUG] checkAndRequestLocationPermission flow started.");
   try {
     const perm = await checkLocationPermission();
+    console.log("[DEBUG] checkLocationPermission returned raw value:", perm);
     if (perm === 'granted') {
+      console.log("[DEBUG] Permission is already granted.");
       return 'granted';
     }
 
     if (perm === 'prompt') {
+      console.log("[DEBUG] Permission state is 'prompt'. Launching explanation modal...");
       return new Promise((resolve) => {
         showModal({
           title: currentLang === 'hi' ? 'स्थान अनुमति' : 'Location Permission',
@@ -1475,7 +1492,9 @@ async function checkAndRequestLocationPermission() {
           confirmText: currentLang === 'hi' ? 'अनुमति दें' : 'Allow',
           cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
           onConfirm: async () => {
+            console.log("[DEBUG] Explanation modal confirmed. Requesting location permission...");
             const reqResult = await requestLocationPermission();
+            console.log("[DEBUG] requestLocationPermission returned result:", reqResult);
             if (reqResult === 'granted') {
               resolve('granted');
             } else {
@@ -1484,6 +1503,7 @@ async function checkAndRequestLocationPermission() {
             }
           },
           onCancel: () => {
+            console.log("[DEBUG] Explanation modal cancelled.");
             resolve('denied');
           }
         });
@@ -1492,6 +1512,7 @@ async function checkAndRequestLocationPermission() {
     }
 
     if (perm === 'denied') {
+      console.log("[DEBUG] Permission state is 'denied'. Launching settings redirection modal...");
       return new Promise((resolve) => {
         showModal({
           title: currentLang === 'hi' ? 'स्थान अनुमति आवश्यक है' : 'Location Permission Required',
@@ -1505,10 +1526,12 @@ async function checkAndRequestLocationPermission() {
           confirmText: currentLang === 'hi' ? 'सेटिंग्स खोलें' : 'Open Settings',
           cancelText: currentLang === 'hi' ? 'रद्द करें' : 'Cancel',
           onConfirm: async () => {
+            console.log("[DEBUG] Settings modal confirmed. Redirecting to settings...");
             await openAppSettings();
             resolve('denied');
           },
           onCancel: () => {
+            console.log("[DEBUG] Settings modal cancelled.");
             resolve('denied');
           }
         });
@@ -1516,9 +1539,10 @@ async function checkAndRequestLocationPermission() {
       });
     }
   } catch (err) {
-    console.error("Permission flow error:", err);
+    console.error("[DEBUG] Exception caught in checkAndRequestLocationPermission:", err);
     return 'denied';
   }
+  console.log("[DEBUG] checkAndRequestLocationPermission returning fallback 'denied'.");
   return 'denied';
 }
 
@@ -1788,34 +1812,52 @@ function wire() {
 
   // Board train
   const boardBtn = document.getElementById("board-train-btn");
-  if (boardBtn)
+  if (boardBtn) {
+    console.log("[DEBUG] board-train-btn found. Attaching click listener.");
     boardBtn.addEventListener("click", async () => {
+      console.log("[DEBUG] Board train button clicked.");
       const sv = document.getElementById("start-station")?.value;
       const ev = document.getElementById("end-station")?.value;
+      console.log("[DEBUG] Selected stations: start=" + sv + ", end=" + ev);
       if (!sv || !ev) {
+        console.warn("[DEBUG] Board train: missing stations. Showing toast.");
         toast(T("selectBothStations"));
         return;
       }
       if (sv === ev) {
+        console.warn("[DEBUG] Board train: same station selected. Showing toast.");
         toast(T("startAndEndDifferent"));
         return;
       }
       
+      console.log("[DEBUG] Requesting permission in boardBtn handler...");
       const permStatus = await checkAndRequestLocationPermission();
-      if (permStatus !== 'granted') return;
+      console.log("[DEBUG] Permission result in boardBtn handler:", permStatus);
+      if (permStatus !== 'granted') {
+        console.warn("[DEBUG] Permission not granted. Aborting journey start.");
+        return;
+      }
 
+      console.log("[DEBUG] Permission granted. currentJourney=" + (currentJourney ? "exists" : "null"));
       if (currentJourney) {
+        console.log("[DEBUG] Starting simulation with currentJourney...");
         startSim(currentJourney);
       } else {
+        console.log("[DEBUG] Calculating journey...");
         const j = calcJourney(sv, ev);
         if (j) {
+          console.log("[DEBUG] Journey calculated successfully. Displaying result and starting simulation...");
           showResult(j);
           startSim(j);
         } else {
+          console.warn("[DEBUG] No route found. Showing toast.");
           toast(T("noRouteFound"));
         }
       }
     });
+  } else {
+    console.error("[DEBUG] board-train-btn element NOT found in DOM during wire()!");
+  }
 
   // Exit journey
   const exitBtn = document.getElementById("exit-journey-btn");
