@@ -134,7 +134,6 @@ export async function getCurrentPosition(options = {}) {
 export function watchPosition(callback, errorCallback, options = {}) {
   const Geolocation = getPlugin('Geolocation');
   if (Geolocation) {
-    // Capacitor watchPosition returns a callback ID
     let callbackId = null;
     Geolocation.watchPosition(
       { enableHighAccuracy: true, timeout: 10000, ...options },
@@ -145,7 +144,12 @@ export function watchPosition(callback, errorCallback, options = {}) {
           callback(position);
         }
       }
-    ).then(id => { callbackId = id; });
+    ).then(id => { 
+      callbackId = id; 
+    }).catch(err => {
+      console.error('[NativeBridge] watchPosition promise rejected:', err);
+      if (errorCallback) errorCallback(err);
+    });
     // Return an object that can be used to clear the watch
     return { 
       clear: () => {

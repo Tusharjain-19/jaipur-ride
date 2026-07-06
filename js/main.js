@@ -1141,20 +1141,14 @@ class JourneyManager {
     this.transitionTo(JourneyState.PLAN_SELECTED);
     console.log("[DEBUG] Transitioned to PLAN_SELECTED.");
 
-    console.log("[DEBUG] Checking location permission within startJourney...");
-    const permStatus = await checkAndRequestLocationPermission();
-    console.log("[DEBUG] checkAndRequestLocationPermission resolved with status:", permStatus);
-    if (permStatus !== 'granted') {
-      console.warn("[DEBUG] Location permission not granted. Clearing session.");
-      this.clearSession();
-      this.transitionTo(JourneyState.IDLE);
-      return;
-    }
-    this.transitionTo(JourneyState.PERMISSION_GRANTED);
-    console.log("[DEBUG] Transitioned to PERMISSION_GRANTED.");
-
+    // 1. Clear existing Geolocation watch and UI loops
     this.stopGps();
-    console.log("[DEBUG] GPS stopped. Re-initializing simulationState...");
+    if (this.animFrameId) {
+      cancelAnimationFrame(this.animFrameId);
+      this.animFrameId = null;
+    }
+
+    // 2. Initialize static simulation state
     simulationState.isActive = true;
     if (!simulationState.startTime) {
       simulationState.startTime = Date.now();
@@ -1162,38 +1156,16 @@ class JourneyManager {
     simulationState.timeline = makeTimeline(journey);
     simulationState.trackPoints = buildTrackPoints(journey).track;
 
-    this.transitionTo(JourneyState.GPS_STARTED);
-    console.log("[DEBUG] Transitioned to GPS_STARTED.");
-
     const nearbyModal = document.getElementById("nearby-popup-modal");
     if (nearbyModal) nearbyModal.classList.add("hidden");
     const activeBar = document.getElementById("active-journey-bar");
     if (activeBar) activeBar.classList.add("hidden");
 
-    console.log("[DEBUG] Starting GPS watchPosition...");
-    this.watchId = nativeWatchPosition(
-      (position) => {
-        console.log("[DEBUG] GPS update received:", position.coords.latitude, position.coords.longitude);
-        if (simulationState.isActive) {
-          this.userLocation = {
-            lat: position.coords.latitude,
-            lon: position.coords.longitude,
-          };
-          simulationState.userLocation = this.userLocation;
-          this.processLocationUpdate();
-        }
-      },
-      (error) => {
-        console.warn("[DEBUG] watchPosition error callback triggered:", error);
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
-    );
-    console.log("[DEBUG] watchPosition registered. watchId object:", this.watchId);
-
+    // 3. Open overlay IMMEDIATELY to prevent navigation block
     const overlay = document.getElementById("journey-overlay");
     if (overlay) {
       overlay.classList.remove("hidden");
-      console.log("[DEBUG] Live journey overlay display enabled.");
+      console.log("[DEBUG] Live journey overlay display enabled immediately.");
     } else {
       console.error("[DEBUG] #journey-overlay element not found in DOM!");
     }
@@ -1215,9 +1187,96 @@ class JourneyManager {
     if (dirEl) dirEl.textContent = T("towards") + " " + dest;
     if (etaEl) etaEl.textContent = mins + " " + T("minRemaining");
 
-    console.log("[DEBUG] UI text updated. Launching startUiLoop...");
+    // 4. Start UI loop immediately
     this.startUiLoop();
-    console.log("[DEBUG] startUiLoop launched.");
+    console.log("[DEBUG] startUiLoop launched immediately.");
+
+    // 5. Spawn non-blocking background location tracker initialization
+    this.initGpsBackground();
+  }
+
+  async initGpsBackground() {
+    console.log("[DEBUG] initGpsBackground started in background.");
+    this.transitionTo(JourneyState.GPS_STARTED);
+
+    try {
+      const perm = await checkLocationPermission();
+      console.log("[DEBUG] initGpsBackground checkLocationPermission resolved with status:", perm);
+
+      if (perm === 'granted') {
+        this.transitionTo(JourneyState.PERMISSION_GRANTED);
+        this.startWatchingGps();
+      } else {
+        this.showPermissionPromptUI(perm);
+      }
+    } catch (e) {
+      console.error("[DEBUG] initGpsBackground permission check failed:", e);
+      this.showPermissionPromptUI('prompt');
+    }
+  }
+
+  showPermissionPromptUI(perm) {
+    console.log("[DEBUG] showPermissionPromptUI triggered. State:", perm);
+    const closestEl = document.getElementById("jv-closest-station");
+    if (!closestEl) return;
+
+    const msg = currentLang === 'hi'
+      ? 'लाइव ट्रैकिंग के लिए स्थान अनुमति आवश्यक है।'
+      : 'Location permission required for live tracking.';
+    const btnText = currentLang === 'hi'
+      ? 'स्थान अनुमति सक्षम करें'
+      : 'Enable Location';
+
+    closestEl.innerHTML = `
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; padding:8px 0; background:rgba(236,72,153,0.06); border-radius:8px; border:1px dashed var(--accent); margin-top: 8px;">
+        <span style="font-size:11px; font-weight:600; color:var(--text-sub);">${msg}</span>
+        <button id="enable-location-inline" class="btn-primary" style="margin-top:2px; padding:6px 14px; font-size:11px; height:auto; width:auto; line-height:1; display:flex; align-items:center; gap:6px;">
+          <i data-lucide="map-pin" class="w-12 h-12"></i> ${btnText}
+        </button>
+      </div>
+    `;
+
+    if (window.lucide) window.lucide.createIcons();
+
+    const inlineBtn = document.getElementById("enable-location-inline");
+    if (inlineBtn) {
+      inlineBtn.onclick = async (e) => {
+        e.stopPropagation();
+        console.log("[DEBUG] Inline enable location clicked.");
+        
+        const newPerm = await checkAndRequestLocationPermission();
+        if (newPerm === 'granted') {
+          this.transitionTo(JourneyState.PERMISSION_GRANTED);
+          this.startWatchingGps();
+        } else {
+          toast(T("locAccessDenied"));
+        }
+      };
+    }
+  }
+
+  startWatchingGps() {
+    this.stopGps();
+    console.log("[DEBUG] Starting GPS watchPosition in background...");
+
+    this.watchId = nativeWatchPosition(
+      (position) => {
+        console.log("[DEBUG] GPS location update received:", position.coords.latitude, position.coords.longitude);
+        if (simulationState.isActive) {
+          this.userLocation = {
+            lat: position.coords.latitude,
+            lon: position.coords.longitude,
+          };
+          simulationState.userLocation = this.userLocation;
+          this.processLocationUpdate();
+        }
+      },
+      (error) => {
+        console.warn("[DEBUG] watchPosition error in background watch:", error);
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 5000 }
+    );
+    console.log("[DEBUG] background watchPosition registered. watchId object:", this.watchId);
   }
 
   processLocationUpdate() {
@@ -1271,45 +1330,54 @@ class JourneyManager {
 
       const closestEl = document.getElementById("jv-closest-station");
       if (closestEl) {
-        let nearestStn = null;
-        let minDist = Infinity;
-        const userLoc = this.userLocation || simulationState.userLocation;
-
-        if (userLoc) {
-          Object.values(metroData).forEach((line) => {
-            line.stations.forEach((s) => {
-              const d = getDistance(userLoc.lat, userLoc.lon, s.lat, s.lon);
-              if (d < minDist) {
-                minDist = d;
-                nearestStn = s;
-              }
-            });
-          });
-        }
-
-        if (nearestStn && minDist !== Infinity) {
-          const stationName = T_STATION(nearestStn.name);
-          const distLabel = minDist < 1
-            ? `${Math.round(minDist * 1000)} m`
-            : `${minDist.toFixed(1)} km`;
-          const walkTimeMin = Math.max(1, Math.round((minDist / 5) * 60));
-
-          if (minDist <= 0.05) {
-            closestEl.textContent = currentLang === 'hi'
-              ? `आप ${stationName} मेट्रो स्टेशन पर हैं`
-              : `You are at ${stationName} Metro Station`;
-          } else {
-            closestEl.textContent = currentLang === 'hi'
-              ? `निकटतम: ${stationName} (${distLabel} · पैदल ${walkTimeMin} मिनट)`
-              : `Closest: ${stationName} (${distLabel} · ${walkTimeMin} min walk)`;
-          }
-        } else if (res.currentStationName) {
-          const stationName = T_STATION(res.currentStationName);
-          closestEl.textContent = currentLang === 'hi'
-            ? `निकटतम: ${stationName}`
-            : `Closest: ${stationName}`;
+        // Do not overwrite closestEl if it contains the inline enable location button
+        if (closestEl.querySelector("#enable-location-inline")) {
+          // Keep button displayed
         } else {
-          closestEl.textContent = '';
+          let nearestStn = null;
+          let minDist = Infinity;
+          const userLoc = this.userLocation || simulationState.userLocation;
+
+          if (userLoc) {
+            Object.values(metroData).forEach((line) => {
+              line.stations.forEach((s) => {
+                const d = getDistance(userLoc.lat, userLoc.lon, s.lat, s.lon);
+                if (d < minDist) {
+                  minDist = d;
+                  nearestStn = s;
+                }
+              });
+            });
+          }
+
+          if ((this.state === JourneyState.GPS_STARTED || this.state === JourneyState.PERMISSION_GRANTED) && !userLoc) {
+            closestEl.textContent = currentLang === 'hi'
+              ? 'आपकी लोकेशन खोजी जा रही है...'
+              : 'Getting your location...';
+          } else if (nearestStn && minDist !== Infinity) {
+            const stationName = T_STATION(nearestStn.name);
+            const distLabel = minDist < 1
+              ? `${Math.round(minDist * 1000)} m`
+              : `${minDist.toFixed(1)} km`;
+            const walkTimeMin = Math.max(1, Math.round((minDist / 5) * 60));
+
+            if (minDist <= 0.05) {
+              closestEl.textContent = currentLang === 'hi'
+                ? `आप ${stationName} मेट्रो स्टेशन पर हैं`
+                : `You are at ${stationName} Metro Station`;
+            } else {
+              closestEl.textContent = currentLang === 'hi'
+                ? `निकटतम: ${stationName} (${distLabel} · पैदल ${walkTimeMin} मिनट)`
+                : `Closest: ${stationName} (${distLabel} · ${walkTimeMin} min walk)`;
+            }
+          } else if (res.currentStationName) {
+            const stationName = T_STATION(res.currentStationName);
+            closestEl.textContent = currentLang === 'hi'
+              ? `निकटतम: ${stationName}`
+              : `Closest: ${stationName}`;
+          } else {
+            closestEl.textContent = '';
+          }
         }
       }
 
@@ -1814,7 +1882,7 @@ function wire() {
   const boardBtn = document.getElementById("board-train-btn");
   if (boardBtn) {
     console.log("[DEBUG] board-train-btn found. Attaching click listener.");
-    boardBtn.addEventListener("click", async () => {
+    boardBtn.addEventListener("click", () => {
       console.log("[DEBUG] Board train button clicked.");
       const sv = document.getElementById("start-station")?.value;
       const ev = document.getElementById("end-station")?.value;
@@ -1829,24 +1897,16 @@ function wire() {
         toast(T("startAndEndDifferent"));
         return;
       }
-      
-      console.log("[DEBUG] Requesting permission in boardBtn handler...");
-      const permStatus = await checkAndRequestLocationPermission();
-      console.log("[DEBUG] Permission result in boardBtn handler:", permStatus);
-      if (permStatus !== 'granted') {
-        console.warn("[DEBUG] Permission not granted. Aborting journey start.");
-        return;
-      }
 
-      console.log("[DEBUG] Permission granted. currentJourney=" + (currentJourney ? "exists" : "null"));
+      console.log("[DEBUG] Navigating immediately. currentJourney=" + (currentJourney ? "exists" : "null"));
       if (currentJourney) {
-        console.log("[DEBUG] Starting simulation with currentJourney...");
+        console.log("[DEBUG] Starting simulation with currentJourney immediately...");
         startSim(currentJourney);
       } else {
         console.log("[DEBUG] Calculating journey...");
         const j = calcJourney(sv, ev);
         if (j) {
-          console.log("[DEBUG] Journey calculated successfully. Displaying result and starting simulation...");
+          console.log("[DEBUG] Journey calculated successfully. Displaying result and starting simulation immediately...");
           showResult(j);
           startSim(j);
         } else {
