@@ -1,0 +1,24 @@
+{
+  "lines": {
+    "pink": {
+      "id": "pink",
+      "name": "Pink Line",
+      "nameHi": "पिंक लाइन",
+      "color": "#EC4899",
+      "stations": ["J01", "J02", "J03", "J04", "J05", "J06", "J07", "J08", "J09", "J10", "J11"],
+      "interchanges": []
+    }
+  },
+  "connections": {
+    "J01-J02": { "timeToNext": 120, "distanceToNext": 1.2 },
+    "J02-J03": { "timeToNext": 115, "distanceToNext": 1.1 },
+    "J03-J04": { "timeToNext": 110, "distanceToNext": 1.0 },
+    "J04-J05": { "timeToNext": 115, "distanceToNext": 1.1 },
+    "J05-J06": { "timeToNext": 125, "distanceToNext": 1.2 },
+    "J06-J07": { "timeToNext": 130, "distanceToNext": 1.3 },
+    "J07-J08": { "timeToNext": 120, "distanceToNext": 1.2 },
+    "J08-J09": { "timeToNext": 110, "distanceToNext": 1.0 },
+    "J09-J10": { "timeToNext": 105, "distanceToNext": 1.0 },
+    "J10-J11": { "timeToNext": 95, "distanceToNext": 0.9 }
+  }
+}

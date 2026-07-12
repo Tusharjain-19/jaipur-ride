@@ -1,0 +1,37 @@
+[
+  {
+    "id": "faq_1",
+    "question": "Is Jaipur Ride the official app of Jaipur Metro?",
+    "questionHi": "क्या जयपुर राइड जयपुर मेट्रो का आधिकारिक ऐप है?",
+    "answer": "No, Jaipur Ride is an independent companion app and marketing website developed to assist tourists and daily commuters in Jaipur. We are not officially affiliated with Jaipur Metro Rail Corporation (JMRC). All travel statistics, timings, and fares shown are estimates.",
+    "answerHi": "नहीं, जयपुर राइड पर्यटकों और दैनिक यात्रियों की सहायता के लिए विकसित एक स्वतंत्र साथी ऐप और वेबसाइट है। हम आधिकारिक तौर पर जयपुर मेट्रो रेल कॉर्पोरेशन (JMRC) से संबद्ध नहीं हैं। दिखाए गए सभी यात्रा आँकड़े, समय और किराए अनुमानित हैं।"
+  },
+  {
+    "id": "faq_2",
+    "question": "Does the web journey planner require GPS location access?",
+    "questionHi": "क्या वेब यात्रा योजनाकार को जीपीएस लोकेशन की आवश्यकता है?",
+    "answer": "No. The web journey planner is a simulation tool that runs entirely using local static metro databases. It does not request device location permissions or track you. To experience real-time location tracking and live notifications, download the official Jaipur Ride Android application.",
+    "answerHi": "नहीं। वेब यात्रा योजनाकार एक सिमुलेशन टूल है जो पूरी तरह से स्थानीय डेटाबेस का उपयोग करता है। यह डिवाइस की लोकेशन अनुमति नहीं मांगता है। वास्तविक समय की लाइव लोकेशन ट्रैकिंग और सूचनाओं का अनुभव करने के लिए, आधिकारिक जयपुर राइड एंड्रॉइड ऐप डाउनलोड करें।"
+  },
+  {
+    "id": "faq_3",
+    "question": "How are the metro fares calculated?",
+    "questionHi": "मेट्रो किराए की गणना कैसे की जाती है?",
+    "answer": "The ticket prices are determined based on the total number of stations traveled. A journey of 1-2 stations costs ₹10, 3-5 stations costs ₹15, 6-8 stations costs ₹25, and 9 or more stations costs ₹30. Recharging your Smart Card gives you a 10% discount on every ride.",
+    "answerHi": "टिकट की कीमतें यात्रा किए गए स्टेशनों की कुल संख्या के आधार पर तय की जाती हैं। 1-2 स्टेशनों की यात्रा का किराया ₹10, 3-5 स्टेशनों का ₹15, 6-8 स्टेशनों का ₹25, और 9 या अधिक स्टेशनों का किराया ₹30 है। स्मार्ट कार्ड का उपयोग करने पर हर सवारी पर 10% की छूट मिलती है।"
+  },
+  {
+    "id": "faq_4",
+    "question": "How does the 'Live Journey' mode work on the Android App?",
+    "questionHi": "एंड्रॉइड ऐप पर 'लाइव यात्रा' मोड कैसे काम करता है?",
+    "answer": "The Android application uses your device's GPS and cell towers to track your position in real-time as you ride the metro. It alerts you when you are approaching your destination and provides platform information. This feature requires fine location permissions and is exclusive to the Android App.",
+    "answerHi": "एंड्रॉइड ऐप मेट्रो में सवारी करते समय वास्तविक समय में आपकी स्थिति को ट्रैक करने के लिए डिवाइस के जीपीएस का उपयोग करता है। जब आप अपने गंतव्य स्टेशन के करीब पहुंच रहे होते हैं तो यह आपको अलर्ट करता है। यह सुविधा केवल एंड्रॉइड ऐप में उपलब्ध है।"
+  },
+  {
+    "id": "faq_5",
+    "question": "Can I use Jaipur Ride offline?",
+    "questionHi": "क्या मैं जयपुर राइड का उपयोग ऑफलाइन कर सकता हूँ?",
+    "answer": "Yes! The mobile application is built offline-first. Once installed, it stores all stations, route maps, safety contacts, and tourist guides on your device, allowing you to plan your journey and browse sights deep inside underground stations without internet connectivity.",
+    "answerHi": "हाँ! मोबाइल ऐप ऑफलाइन-फर्स्ट बनाया गया है। एक बार इंस्टॉल होने के बाद, यह सभी स्टेशन, रूट मैप, आपातकालीन संपर्क और पर्यटक गाइड को सहेज लेता है, जिससे आप बिना इंटरनेट के भी भूमिगत स्टेशनों के अंदर भी अपनी यात्रा की योजना बना सकते हैं।"
+  }
+]

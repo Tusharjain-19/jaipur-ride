@@ -1,0 +1,346 @@
+[
+  {
+    "id": "J01",
+    "name": "Mansarovar",
+    "nameHi": "मानसरोवर",
+    "code": "J01",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Smart Card Recharge",
+      "Wheelchair Access",
+      "Parking (small)"
+    ],
+    "connectivity": [
+      "City Bus stop nearby",
+      "Auto rickshaw stand",
+      "Taxi / Cab pickup",
+      "Last-mile autos"
+    ],
+    "timings": {
+      "firstTrain": "05:50",
+      "lastTrain": "22:50"
+    },
+    "location": {
+      "lat": 26.8794444,
+      "lon": 75.75,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.8794444,75.7500000"
+    }
+  },
+  {
+    "id": "J02",
+    "name": "New Aatish Market",
+    "nameHi": "न्यू आतिश मार्केट",
+    "code": "J02",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Local buses",
+      "Auto rickshaw stand",
+      "Cycle/Bike parking"
+    ],
+    "timings": {
+      "firstTrain": "05:53",
+      "lastTrain": "22:53"
+    },
+    "location": {
+      "lat": 26.8802778,
+      "lon": 75.7647222,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.8802778,75.7647222"
+    }
+  },
+  {
+    "id": "J03",
+    "name": "Vivek Vihar",
+    "nameHi": "विवेक विहार",
+    "code": "J03",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Local buses",
+      "Auto rickshaw stand",
+      "Taxi"
+    ],
+    "timings": {
+      "firstTrain": "05:56",
+      "lastTrain": "22:56"
+    },
+    "location": {
+      "lat": 26.8888889,
+      "lon": 75.7686111,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.8888889,75.7686111"
+    }
+  },
+  {
+    "id": "J04",
+    "name": "Shyam Nagar",
+    "nameHi": "श्याम नगर",
+    "code": "J04",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Ticket Counter",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Auto stand",
+      "Local bus"
+    ],
+    "timings": {
+      "firstTrain": "05:59",
+      "lastTrain": "22:59"
+    },
+    "location": {
+      "lat": 26.8966667,
+      "lon": 75.7705556,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.8966667,75.7705556"
+    }
+  },
+  {
+    "id": "J05",
+    "name": "Ram Nagar",
+    "nameHi": "राम नगर",
+    "code": "J05",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Ticket Counter"
+    ],
+    "connectivity": [
+      "Local buses",
+      "Auto rickshaw stand"
+    ],
+    "timings": {
+      "firstTrain": "06:02",
+      "lastTrain": "23:02"
+    },
+    "location": {
+      "lat": 26.9019444,
+      "lon": 75.7747222,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9019444,75.7747222"
+    }
+  },
+  {
+    "id": "J06",
+    "name": "Civil Lines",
+    "nameHi": "सिविल लाइन्स",
+    "code": "J06",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Smart Card Recharge",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "City Bus",
+      "Taxi / Cab",
+      "Auto rickshaw",
+      "Nearby attraction access"
+    ],
+    "timings": {
+      "firstTrain": "06:05",
+      "lastTrain": "23:05"
+    },
+    "location": {
+      "lat": 26.9097222,
+      "lon": 75.7813889,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9097222,75.7813889"
+    }
+  },
+  {
+    "id": "J07",
+    "name": "Railway Station",
+    "nameHi": "रेलवे स्टेशन",
+    "code": "J07",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Smart Card Recharge",
+      "Large Parking / Taxi Stand"
+    ],
+    "connectivity": [
+      "Jaipur Junction (rail)",
+      "Long-distance bus / intercity taxis",
+      "City Bus",
+      "Prepaid taxi counters"
+    ],
+    "timings": {
+      "firstTrain": "06:08",
+      "lastTrain": "23:08"
+    },
+    "location": {
+      "lat": 26.9186111,
+      "lon": 75.79,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9186111,75.7900000"
+    }
+  },
+  {
+    "id": "J08",
+    "name": "Sindhi Camp",
+    "nameHi": "सिंधी कैंप",
+    "code": "J08",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Smart Card Recharge",
+      "Large Auto / Taxi Stand"
+    ],
+    "connectivity": [
+      "Sindhi Camp Bus Stand",
+      "City Bus",
+      "Taxi / Cab",
+      "Auto rickshaw"
+    ],
+    "timings": {
+      "firstTrain": "06:11",
+      "lastTrain": "23:11"
+    },
+    "location": {
+      "lat": 26.9225,
+      "lon": 75.7997222,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9225000,75.7997222"
+    }
+  },
+  {
+    "id": "J09",
+    "name": "Chandpole",
+    "nameHi": "चांदपोल",
+    "code": "J09",
+    "lineId": "pink",
+    "type": "Elevated",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Ticket Counter",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Local buses",
+      "Auto rickshaw",
+      "Walking access to old city"
+    ],
+    "timings": {
+      "firstTrain": "06:14",
+      "lastTrain": "23:14"
+    },
+    "location": {
+      "lat": 26.9263889,
+      "lon": 75.8075,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9263889,75.8075000"
+    }
+  },
+  {
+    "id": "J10",
+    "name": "Chhoti Chaupar",
+    "nameHi": "छोटी चौपड़",
+    "code": "J10",
+    "lineId": "pink",
+    "type": "Underground",
+    "platforms": 2,
+    "opened": "2015",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Ticket Counter",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Walking access to Bapu Bazaar",
+      "Auto rickshaws",
+      "Local bus stops"
+    ],
+    "timings": {
+      "firstTrain": "06:17",
+      "lastTrain": "23:17"
+    },
+    "location": {
+      "lat": 26.9251176,
+      "lon": 75.8156788,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9251176,75.8156788"
+    }
+  },
+  {
+    "id": "J11",
+    "name": "Badi Chaupar",
+    "nameHi": "बड़ी चौपड़",
+    "code": "J11",
+    "lineId": "pink",
+    "type": "Underground",
+    "platforms": 2,
+    "opened": "2019",
+    "facilities": [
+      "Toilets",
+      "Escalator",
+      "Elevator",
+      "Ticket Counter",
+      "Smart Card Recharge",
+      "Wheelchair Access"
+    ],
+    "connectivity": [
+      "Walking access to Hawa Mahal",
+      "Auto rickshaw stands",
+      "Taxi / Cab"
+    ],
+    "timings": {
+      "firstTrain": "06:20",
+      "lastTrain": "23:20"
+    },
+    "location": {
+      "lat": 26.92296,
+      "lon": 75.826814,
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=26.9229600,75.8268140"
+    }
+  }
+]

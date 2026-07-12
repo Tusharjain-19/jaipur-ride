@@ -1,0 +1,458 @@
+/* ═══════════════════════════════════════════════════
+   JAIPUR RIDE — Anime Metro Hero v2
+   Full 14-frame cinematic + anime motion effects
+   Based on: www/home design/antigravity_prompt_anime_style.md
+   ═══════════════════════════════════════════════════ */
+
+/* ── HERO OVERLAY (Full-screen cinematic) ── */
+.metro-hero {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.metro-hero.hero-exit {
+  opacity: 0;
+  pointer-events: none;
+}
+.metro-hero.hero-hidden {
+  display: none;
+}
+
+/* ── FRAME CANVAS ── */
+.hero-frame-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hero-frame {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+  will-change: opacity, transform;
+}
+.hero-frame.active {
+  opacity: 1;
+}
+
+/* ── IMPACT SHAKE (anime camera shake on train arrival) ── */
+@keyframes heroImpactShake {
+  0%   { transform: translate(0, 0) rotate(0deg); }
+  8%   { transform: translate(0, 4px) rotate(-0.3deg); }
+  16%  { transform: translate(-3px, -2px) rotate(0.2deg); }
+  24%  { transform: translate(3px, 3px) rotate(-0.2deg); }
+  32%  { transform: translate(-2px, -3px) rotate(0.3deg); }
+  40%  { transform: translate(2px, 1px) rotate(-0.1deg); }
+  50%  { transform: translate(-1px, 2px) rotate(0.1deg); }
+  60%  { transform: translate(1px, -1px) rotate(0deg); }
+  70%  { transform: translate(-1px, 0) rotate(0.1deg); }
+  80%  { transform: translate(1px, 1px) rotate(-0.1deg); }
+  90%  { transform: translate(0, -1px) rotate(0deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+.hero-frame-canvas.impact-shake {
+  animation: heroImpactShake 0.65s ease-out;
+}
+
+/* ── SPEED LINES OVERLAY (horizontal, right-to-left) ── */
+.speed-lines-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.speed-lines-overlay.active {
+  opacity: 1;
+}
+.speed-line {
+  stroke: rgba(255, 255, 255, 0.75);
+  stroke-linecap: round;
+  animation: speedLineDash 0.5s linear infinite;
+}
+@keyframes speedLineDash {
+  0%   { stroke-dashoffset: 220; opacity: 0.2; }
+  40%  { opacity: 0.85; }
+  100% { stroke-dashoffset: 0; opacity: 0.2; }
+}
+
+/* ── ZOOM LINES OVERLAY (radial convergence to center) ── */
+.zoom-lines-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.zoom-lines-overlay.active {
+  opacity: 1;
+}
+.zoom-line {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  animation: zoomPulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes zoomPulse {
+  0%   { opacity: 0.3; stroke-width: 1; }
+  100% { opacity: 0.8; stroke-width: 2; }
+}
+
+/* ── GLOW AURA OVERLAY (golden light effects) ── */
+.glow-aura-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.glow-aura-overlay.active {
+  opacity: 1;
+}
+
+/* Gate glow: frames 8–9 */
+.glow-aura-gate {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 65% 75% at 50% 50%,
+    rgba(255, 215, 0, 0.14) 0%,
+    rgba(255, 165, 0, 0.07) 35%,
+    rgba(255, 140, 0, 0.03) 55%,
+    transparent 72%
+  );
+  transition: opacity 0.4s ease;
+}
+
+/* Interior glow: frames 10–14 */
+.glow-aura-interior {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 65% at 50% 48%,
+    rgba(255, 215, 0, 0.22) 0%,
+    rgba(255, 200, 100, 0.12) 35%,
+    rgba(255, 180, 60, 0.05) 55%,
+    transparent 68%
+  );
+  transition: opacity 0.5s ease;
+}
+
+/* ── FLOATING PARTICLES (arrival scene) ── */
+.particles-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+.particles-overlay.active {
+  opacity: 1;
+}
+.particle {
+  position: absolute;
+  background: rgba(255, 215, 0, 0.65);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.3);
+  animation: particleFloat 3s ease-in-out infinite;
+}
+@keyframes particleFloat {
+  0%   { transform: translateY(0) translateX(0) scale(0.8); opacity: 0; }
+  20%  { opacity: 0.6; }
+  50%  { transform: translateY(-25px) translateX(8px) scale(1.2); opacity: 0.9; }
+  80%  { opacity: 0.4; }
+  100% { transform: translateY(-50px) translateX(-5px) scale(0.6); opacity: 0; }
+}
+
+/* ── CINEMATIC VIGNETTE ── */
+.hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 72% 72% at 50% 50%,
+    transparent 45%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* ═══════════════════════════════════════════════════
+   TEXT & UI OVERLAYS
+   ═══════════════════════════════════════════════════ */
+
+.hero-text-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* ── Logo (Frame 1) ── */
+.hero-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  opacity: 0;
+  transform: scale(0.85) translateY(10px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.hero-logo-container.visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+.hero-logo-img {
+  width: 88px;
+  height: 88px;
+  border-radius: 22px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 40px rgba(236, 72, 153, 0.45));
+  animation: logoPulse 2.5s ease-in-out infinite;
+}
+@keyframes logoPulse {
+  0%, 100% { filter: drop-shadow(0 10px 40px rgba(236, 72, 153, 0.35)); transform: scale(1); }
+  50%      { filter: drop-shadow(0 14px 50px rgba(236, 72, 153, 0.55)); transform: scale(1.03); }
+}
+.hero-logo-text {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-size: 36px;
+  font-weight: 800;
+  color: #1a0a10;
+  letter-spacing: -1.2px;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+}
+.hero-logo-text span {
+  color: #ec4899;
+}
+
+/* ── Arrival Text (final frames) ── */
+.hero-arrival-text {
+  position: absolute;
+  bottom: 30%;
+  left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 11;
+  pointer-events: none;
+  width: 90%;
+  max-width: 600px;
+}
+.hero-arrival-text.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.arrival-welcome {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(11px, 2.5vw, 16px);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  animation: welcomeFade 1s ease 0.2s both;
+}
+@keyframes welcomeFade {
+  from { opacity: 0; letter-spacing: 10px; }
+  to   { opacity: 1; letter-spacing: 5px; }
+}
+.arrival-title {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(30px, 7vw, 52px);
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -1.5px;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  line-height: 1.05;
+}
+.arrival-title span {
+  background: linear-gradient(135deg, #ec4899, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.arrival-subtitle {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(12px, 2.5vw, 16px);
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: 18px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+/* ── Stats Counter ── */
+.hero-stats {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%) translateY(25px);
+  display: flex;
+  gap: clamp(24px, 6vw, 56px);
+  opacity: 0;
+  transition: opacity 1s ease 0.3s, transform 1s ease 0.3s;
+  z-index: 11;
+  pointer-events: none;
+}
+.hero-stats.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.hero-stat {
+  text-align: center;
+}
+.hero-stat-value {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(26px, 6vw, 44px);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+}
+.hero-stat-label {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: clamp(9px, 2vw, 12px);
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* ═══════════════════════════════════════════════════
+   CONTROLS
+   ═══════════════════════════════════════════════════ */
+
+/* ── Skip Button ── */
+.hero-skip-btn {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top, 16px));
+  right: 16px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 28px;
+  padding: 10px 22px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+.hero-skip-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Sound Toggle ── */
+.hero-sound-btn {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top, 16px));
+  left: 16px;
+  z-index: 20;
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: auto;
+}
+.hero-sound-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+.hero-sound-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Progress Bar ── */
+.hero-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  z-index: 15;
+  overflow: hidden;
+}
+.hero-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #be185d, #ec4899, #f472b6);
+  width: 0%;
+  transition: width 0.4s linear;
+  border-radius: 0 2px 2px 0;
+  box-shadow: 0 0 16px rgba(236, 72, 153, 0.5), 0 0 4px rgba(236, 72, 153, 0.8);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE & ACCESSIBILITY
+   ═══════════════════════════════════════════════════ */
+
+@media (max-width: 480px) {
+  .hero-logo-img {
+    width: 68px;
+    height: 68px;
+  }
+  .hero-logo-text {
+    font-size: 28px;
+  }
+  .hero-stats {
+    bottom: 6%;
+    gap: 20px;
+  }
+  .hero-arrival-text {
+    bottom: 25%;
+  }
+  .hero-skip-btn {
+    padding: 8px 18px;
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metro-hero {
+    display: none !important;
+  }
+  .speed-line,
+  .zoom-line,
+  .particle,
+  .hero-logo-img {
+    animation: none !important;
+  }
+}

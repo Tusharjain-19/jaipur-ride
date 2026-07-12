@@ -1,0 +1,23 @@
+{
+  "name": "Jaipur Ride — Official Website & Metro Guide",
+  "short_name": "Jaipur Ride",
+  "description": "Plan your Jaipur Metro journey instantly. Interactive map, fares, station facilities, and sightseeing guides.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#050811",
+  "theme_color": "#ec4899",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo1.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

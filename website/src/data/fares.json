@@ -1,0 +1,13 @@
+{
+  "rules": [
+    { "minStations": 0, "maxStations": 2, "cashFare": 10 },
+    { "minStations": 3, "maxStations": 5, "cashFare": 15 },
+    { "minStations": 6, "maxStations": 8, "cashFare": 25 },
+    { "minStations": 9, "maxStations": 99, "cashFare": 30 }
+  ],
+  "discounts": {
+    "smartCard": 0.10,
+    "student": 0.15,
+    "seniorCitizen": 0.25
+  }
+}

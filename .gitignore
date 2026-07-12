@@ -1,7 +1,29 @@
-mobile/
-*.apk
-*.aab
+# Dependencies
 node_modules/
-www/
+mobile/node_modules/
+website/node_modules/
+
+# Next.js Build
+website/.next/
+website/out/
+
+# Capacitor / Mobile Builds
+mobile/www/
+mobile/android/app/build/
+mobile/android/.gradle/
+mobile/android/local.properties
+
+# Dynamic Synced Assets (git-ignored because they copy from mobile workspace at build time)
+website/public/simulator/
+website/public/images/
+website/public/release/
+
+# System / OS files
 .DS_Store
 Thumbs.db
+*.log
+
+# Android binaries
+*.apk
+*.aab
+

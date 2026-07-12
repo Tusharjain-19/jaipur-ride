@@ -1,14 +1,15 @@
-﻿<div align="center">
+<div align="center">
 
-<img src="assets/images/logo1.png" alt="JaipurRide Logo" width="90" height="90" style="border-radius:16px"/>
+<img src="website/public/logo1.png" alt="JaipurRide Logo" width="120" height="120" style="border-radius:24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"/>
 
 # 🚇 JaipurRide
 
-### The unofficial Jaipur Metro companion app for tourists & daily commuters
+### The Ultimate Offline-First Jaipur Metro Companion for Android & Web
 
+[![Google Play Store](https://img.shields.io/badge/Google_Play-Download_App-00D2FF?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-JaipurRide-EC4899?style=for-the-badge)](https://jaipurride.vercel.app)
-[![Made with Love](https://img.shields.io/badge/Made_with-❤️_in_Jaipur-FF6B6B?style=for-the-badge)](#)
 [![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Tusharjain-19/jaipur-ride?style=for-the-badge&color=gold)](https://github.com/Tusharjain-19/jaipur-ride/stargazers)
 
 </div>
 
@@ -16,151 +17,175 @@
 
 ## ✨ Overview
 
-**JaipurRide** is a beautiful, offline-first web app that helps you navigate the **Jaipur Metro Pink Line** with ease. Whether you're a tourist exploring the Pink City or a daily commuter, JaipurRide gives you real-time journey planning, live simulation, fare info, and curated tourist attractions — all in one elegant interface.
+**JaipurRide** is a premium, open-source, offline-first navigation utility designed to simplify Jaipur Metro Pink Line transits. 
 
-> _Not affiliated with JMRC. Timings and fares are estimates._
+Unlike standard map providers that sell user coordinates and fail inside deep underground tunnels, JaipurRide stores all database caches and routing graphs locally. Whether you are a tourist exploring historical palaces or a daily commuter planning routes, JaipurRide calculates coordinates, fares, and connections 100% on-device.
+
+### 🌟 Key Pillars
+* **Privacy-First**: No telemetry, no analytical trackings, and local-only GPS calculation.
+* **Offline-First Architecture**: Cached tourist DBs, station parameters, and vector maps.
+* **Bilingual Support**: Fully localized in English and हिन्दी (Hindi).
+* **Workspaces Monorepo**: Segregated mobile code (`mobile/`) and Next.js website (`website/`).
 
 ---
 
-## 📸 Preview
+## 📱 Google Play Store App
+The compiled native Android release is available for download on the Google Play Store. It features:
+* **Background GPS alerts**: Triggers stop reminders even when your phone is in your pocket.
+* **Tactile Haptic Navigation**: Vibrate patterns corresponding to boarding and arrival.
+* **Zero Internet Requirements**: A self-contained APK for reliable underground operations.
 
+[📥 **Download JaipurRide on Google Play**](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
+
+---
+
+## 📸 App Preview
 <div align="center">
-<img src="assets/images/hawa_mahal.jpg" alt="App Background — Hawa Mahal, Jaipur" width="400"/>
+  <img src="website/public/images/hawa_mahal.jpg" alt="App Banner - Hawa Mahal" width="550" style="border-radius:18px"/>
 </div>
 
 ---
 
-## 🚀 Features
+## 🚀 Key Features
 
-| Feature                        | Description                                                       |
-| ------------------------------ | ----------------------------------------------------------------- |
-| 🗺️ **Route Planner**           | Select origin & destination — get the fastest route instantly     |
-| 🎫 **Smart Fare Calculator**   | Cash, Smart Card, Student & Senior Citizen fares (Jan 2025 rates) |
-| 🔴 **Live Journey Simulation** | Real-time progress tracker as you ride the metro                  |
-| 🏛️ **Explore Nearby**          | Curated tourist attractions near each station with walk times     |
-| 🕌 **Station Detail View**     | Tap any station to discover its hidden gems                       |
-| 🕐 **Metro Timings**           | First/last train & peak-hour frequency at a glance                |
-| 🛡️ **Safety & Emergency**      | One-tap access to metro helpline, police, ambulance & more        |
-| 🌐 **Bilingual**               | Full English & Hindi support                                      |
-| 🌙 **Dark / Light Mode**       | Seamless theme toggle                                             |
-| 📴 **Offline-First**           | All data is bundled locally — no internet needed                  |
-
----
-
-## 🏛️ Tourist Attractions Covered
-
-JaipurRide maps the best sights to their nearest metro station:
-
-| Station             | Attractions                                                    |
-| ------------------- | -------------------------------------------------------------- |
-| **Badi Chaupar**    | Hawa Mahal, City Palace, Jantar Mantar (UNESCO), Johari Bazaar |
-| **Chhoti Chaupar**  | Bapu Bazaar, Albert Hall Museum                                |
-| **Chandpole**       | Nahargarh Fort, Chandpole Bazaar                               |
-| **Sindhi Camp**     | Raj Mandir Cinema, Nehru Bazaar                                |
-| **Railway Station** | MI Road                                                        |
-| **Civil Lines**     | Birla Mandir, Central Park, Statue Circle                      |
-| **Mansarovar**      | ISKCON Temple, Patrika Gate                                    |
-
----
-
-## 🛤️ Metro Line Coverage
-
-```
-Pink Line  ·  11 Stations
-Mansarovar → New Aatish Market → Vivek Vihar → Shyam Nagar
-→ Ram Nagar → Civil Lines → Railway Station → Sindhi Camp
-→ Chandpole → Chhoti Chaupar → Badi Chaupar
-```
-
-**Operating Hours:** 5:50 AM – 11:00 PM  
-**Frequency:** 5–7 min (peak) · 8–10 min (off-peak)
-
----
-
-## 💰 Fare Structure _(Effective January 31, 2025)_
-
-| Distance     | Cash Token | Smart Card (10% off) |
-| ------------ | ---------- | -------------------- |
-| 1–2 stations | ₹10        | ₹9                   |
-| 3–5 stations | ₹15        | ₹13.50               |
-| 6–8 stations | ₹25        | ₹22.50               |
-| 9+ stations  | ₹30        | ₹27                  |
-
-_Student Card: 15% off · Senior Citizen Card: 25% off_
+* 🗺️ **Interactive Route Pathfinder**: Select origin and destination nodes; get the shortest route path, transfers, and ride duration instantly.
+* 🎫 **Ticket Fare Audit**: Live ticket price checks including Cash Tokens, Smart Cards (10% off), Student Cards (15% off), and Senior Citizen Cards (25% off) based on the latest JMRC regulations.
+* 🔴 **Real-Time Journey Simulator**: Simulates time-progress points along your path to estimate arrival offsets.
+* 🏛️ **Tourism Explore Directory**: Offline list of heritage palaces, bazaars, and monuments mapped to their nearest metro terminal, detailing walks and maps links.
+* 🕐 **Timings Board**: Comprehensive schedules for first/last train dispatches and peak vs. off-peak frequencies.
+* 🛡️ **Safety & Help Desk**: Direct offline hotlines for Jaipur Metro safety, women's helpline, police, and ambulances.
 
 ---
 
 ## 🗂️ Project Structure
 
+JaipurRide is managed as a unified monorepo with npm Workspaces:
+
 ```
-jaipur-metro/
-├── index.html              # App shell & all views
-├── css/
-│   └── app.css             # Unified design system (light + dark)
-├── js/
-│   ├── main.js             # Core app logic, routing, simulation
-│   ├── data/
-│   │   ├── stations.js     # Metro data, fares, translations
-│   │   └── stationAttractions.js  # Tourist attractions (offline)
-│   └── ui/
-│       ├── dropdown.js     # Custom station selector
-│       └── route.js        # Live journey renderer
-├── assets/
-│   └── images/             # All attraction & background images
-├── sitemap.xml
-└── vercel.json             # Deployment config
+jaipur-ride/
+├── mobile/                 # 📱 Capacitor Android & Mobile application source
+│   ├── index.html          # Mobile app web shell
+│   ├── css/                # Mobile app styles (light/dark theme, responsive grids)
+│   ├── js/                 # Mobile app logic (modules, offline DBs, bridges)
+│   ├── assets/             # Mobile app static assets (images, audio)
+│   ├── android/            # Native Gradle Android Studio project
+│   └── capacitor.config.ts # Capacitor configuration
+├── website/                # 🚇 Next.js marketing site, documentation & simulator
+│   ├── src/app/            # App router pages (timings, map, download, explorer)
+│   ├── src/components/     # Next.js React components (Navbar, Footer, Mockup)
+│   └── public/             # Static public folder (sideload releases, synced assets)
+├── scripts/                # 🛠️ Workspace helper scripts
+│   └── sync-assets.js      # Synchronizes mobile assets to website public assets
+└── package.json            # Monorepo configuration defining workspaces
 ```
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
-- **HTML5** + **Vanilla CSS** + **ES Modules** — zero framework overhead
-- **Lucide Icons** — clean, consistent iconography
-- **Google Fonts (Inter)** — modern, readable typography
-- **Offline-first** — all data bundled, no API calls needed
+### Mobile Application (`mobile/`)
+* **Core**: Vanilla HTML5, CSS Grid Layouts, ES Modules.
+* **Bridge**: Capacitor JS Native Runtime Bridge.
+* **Native**: Kotlin, Java, Gradle build automation.
+
+### Marketing Website (`website/`)
+* **Framework**: Next.js (React 19 + TypeScript).
+* **Styling**: Tailwind CSS v4 (using clean canonical layout classes).
+* **Icons**: Lucide React.
+* **Simulation**: Embedded iframe wrapper targeting synced mobile builds.
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Development & Build Setup
 
+### Prerequisites
+* **Node.js** (v18 or higher recommended)
+* **npm** (v9 or higher)
+* **Android SDK / Android Studio** (for mobile workspace compiles)
+
+### 1. Repository Setup
 ```bash
 # Clone the repository
 git clone https://github.com/Tusharjain-19/jaipur-ride.git
+cd jaipur-ride-main
 
-# Open in browser (no build step needed!)
-# Just open index.html or serve with any static server:
-npx serve .
+# Install dependencies for all workspaces
+npm install
 ```
 
-Or simply visit the **[live demo](https://jaipurride.vercel.app)**.
+### 2. Website Workspace (Next.js)
+```bash
+# Start the local development server (runs asset-sync automatically)
+npm run dev:website
+
+# Build the static Next.js production output
+npm run build:website
+```
+> **Note:** The Next.js pipeline uses the `sync-assets.js` script inside `scripts/` during `predev` and `prebuild` phases. It clears and copies all relevant simulator assets from `mobile/` into `website/public/` so that code changes remain single-sourced in `mobile/`.
+
+### 3. Mobile Workspace (Capacitor / Android)
+```bash
+# Compile and copy web files to mobile distribution (www/)
+npm run build:mobile
+
+# Synchronize Capacitor bridge config
+cd mobile
+npx cap sync android
+
+# Build or assemble Android Debug APK using local Gradle Wrapper
+# Uses Java 21 (jdk21) configured in gradle.properties
+npm run android:debug --workspace=mobile
+```
+
+---
+
+## 🛤️ Pink Line Reference Grid
+
+JaipurRide covers the entire Pink Line routing configuration:
+
+```
+[J01] Mansarovar  <-->  [J02] New Aatish Market  <-->  [J03] Vivek Vihar  <-->  [J04] Shyam Nagar
+       <-->  [J05] Ram Nagar  <-->  [J06] Civil Lines  <-->  [J07] Railway Station
+       <-->  [J08] Sindhi Camp (Interchange)  <-->  [J09] Chandpole
+       <-->  [J10] Chhoti Chaupar  <-->  [J11] Badi Chaupar
+```
+
+### 🏛️ Sightseeing & Proximity Guide
+
+| Station Node | Nearest Attraction | Proximity Metadata |
+| :--- | :--- | :--- |
+| **Badi Chaupar (J11)** | Hawa Mahal | 1.1 km (~14 min walk) |
+| **Badi Chaupar (J11)** | City Palace | 1.3 km (~16 min walk) |
+| **Badi Chaupar (J11)** | Jantar Mantar | 1.4 km (~18 min walk) |
+| **Chhoti Chaupar (J10)** | Albert Hall Museum | 1.8 km (~22 min walk) |
+| **Chandpole (J09)** | Nahargarh Fort | ~5.8 km drive (last-mile transfer) |
+| **Sindhi Camp (J08)** | Raj Mandir Cinema | 1.5 km (~18 min walk) |
+| **Civil Lines (J06)** | Central Park | ~2.5 km last-mile drive |
+| **Mansarovar (J01)** | Patrika Gate | ~6.5 km last-mile drive |
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to:
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
-- Add missing tourist attractions
-- Improve Hindi translations
-- Report bugs or suggest features
-
-Open a [pull request](https://github.com/Tusharjain-19/jaipur-ride/pulls) or [issue](https://github.com/Tusharjain-19/jaipur-ride/issues).
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ---
 
 ## 📄 License
 
-MIT License — free to use and modify.
+Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
 <div align="center">
 
-Made with ❤️ for the **Pink City** 🏰
-
-_Jaipur Metro Pink Line · 11 Stations · Est. 2015_
+Made with ❤️ for the **Pink City** 🏰  
+*Jaipur Metro Pink Line · 11 Stations · Established 2015*
 
 </div>
-
-

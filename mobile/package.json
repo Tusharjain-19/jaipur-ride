@@ -1,0 +1,32 @@
+{
+  "name": "jaipur-ride",
+  "version": "2.0.0",
+  "description": "JaipurRide — The unofficial Jaipur Metro companion app",
+  "main": "index.html",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "cap:sync": "npx cap sync",
+    "cap:open": "npx cap open android",
+    "android:debug": "cd android && .\\gradlew assembleDebug",
+    "android:release": "cd android && .\\gradlew assembleRelease",
+    "android:bundle": "cd android && .\\gradlew bundleRelease"
+  },
+  "author": "Tushar Jain",
+  "license": "MIT",
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/app": "^7.0.0",
+    "@capacitor/browser": "^7.0.0",
+    "@capacitor/cli": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/geolocation": "^7.0.0",
+    "@capacitor/haptics": "^7.0.0",
+    "@capacitor/keyboard": "^7.0.0",
+    "@capacitor/network": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^6.0.3"
+  }
+}

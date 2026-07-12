@@ -1,0 +1,107 @@
+apply plugin: 'com.android.application'
+
+def getLatestVersionCode() {
+    def apkFile = file("../../mobile/app-release.apk")
+    def baseCode = 19
+    if (apkFile.exists()) {
+        try {
+            def localProps = new Properties()
+            def localPropsFile = file("../local.properties")
+            if (localPropsFile.exists()) {
+                localPropsFile.withInputStream { localProps.load(it) }
+            }
+            def sdkDir = localProps.getProperty("sdk.dir")
+            if (sdkDir) {
+                def buildToolsDir = new File(sdkDir, "build-tools")
+                def toolsDirs = buildToolsDir.listFiles()
+                if (toolsDirs && toolsDirs.length > 0) {
+                    def latestToolsDir = toolsDirs.sort { it.name }.last()
+                    def isWindows = System.getProperty("os.name").toLowerCase().contains("win")
+                    def aaptFile = new File(latestToolsDir, isWindows ? "aapt2.exe" : "aapt2")
+                    if (aaptFile.exists()) {
+                        def process = [aaptFile.absolutePath, "dump", "badging", apkFile.absolutePath].execute()
+                        def output = process.text
+                        def matcher = java.util.regex.Pattern.compile("versionCode='(\\d+)'").matcher(output)
+                        if (matcher.find()) {
+                            def code = matcher.group(1).toInteger()
+                            println "Detected latest versionCode from mobile/app-release.apk: $code"
+                            if (code >= baseCode) {
+                                return code + 1
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            println "Error detecting version code automatically: $e"
+        }
+    }
+    return baseCode // Fallback if APK is not found or has lower code
+}
+
+android {
+    namespace "co.median.android.nmdabkl"
+    compileSdk rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "co.median.android.nmdabkl"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode getLatestVersionCode()
+        versionName "2.0.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+    signingConfigs {
+        release {
+            storeFile file("jaipurride-upload.jks")
+            storePassword "JpR_UploadKey_2026_Secured!"
+            keyAlias "jaipurride"
+            keyPassword "JpR_UploadKey_2026_Secured!"
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}
