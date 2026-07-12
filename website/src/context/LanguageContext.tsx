@@ -20,6 +20,7 @@ const translations: TranslationDict = {
   navExplore: { en: "Explore Jaipur", hi: "जयपुर घूमें" },
   navFeatures: { en: "Features", hi: "विशेषताएं" },
   navDownload: { en: "Download App", hi: "ऐप डाउनलोड करें" },
+  navSimulator: { en: "Simulator", hi: "सिम्युलेटर" },
   navAbout: { en: "About Us", hi: "हमारे बारे में" },
   navContact: { en: "Contact", hi: "संपर्क" },
   navFaq: { en: "FAQ", hi: "अक्सर पूछे जाने वाले सवाल" },

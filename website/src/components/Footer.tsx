@@ -13,6 +13,7 @@ export default function Footer() {
   const quickLinks = [
     { href: "/", label: t("navHome") },
     { href: "/journey-planner", label: t("navPlanner") },
+    { href: "/simulation", label: t("navSimulator") },
     { href: "/metro-stations", label: t("navStations") },
     { href: "/metro-map", label: t("navMap") },
     { href: "/explore-jaipur", label: t("navExplore") },

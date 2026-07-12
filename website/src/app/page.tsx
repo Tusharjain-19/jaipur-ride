@@ -251,7 +251,7 @@ export default function Home() {
         clearInterval(interval);
         setTimeout(() => {
           stopStationAmbience();
-          router.push("/journey-planner");
+          router.push("/simulation");
         }, 400);
       } else {
         setCurrentFrame(frame);
@@ -702,70 +702,60 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 6. WHY JAIPUR RIDE (APP VS WEB) */}
+      {/* 6. FEATURE COMPARISON MATRIX (APP VS WEB) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-[32px] p-8 lg:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none space-y-12">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
             <h2 className="font-heading font-extrabold text-3xl text-foreground tracking-tight">
-              Get the Full App Experience
+              {language === "en" ? "Native Android Client vs. Web Sandbox" : "एंड्रॉइड ऐप बनाम वेब सैंडबॉक्स"}
             </h2>
-            <p className="text-sm text-foreground/60">
-              While our website is optimized for planning and SEO guides, the native Android application built with Capacitor is the ultimate offline companion.
+            <p className="text-sm text-foreground/60 leading-relaxed">
+              While our website is optimized for quick reference and search engines, the official Play Store app offers direct hardware level integration for commuters.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
-            {/* Web features */}
-            <div className="p-6 rounded-2xl bg-light-accent dark:bg-navy-card/50 border border-light-border dark:border-navy-border/30 space-y-4">
-              <h3 className="font-heading font-bold text-lg text-foreground">Web Features (Simulation Only)</h3>
-              <ul className="space-y-2">
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                  <span>Online Journey routing calculations</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                  <span>Bilingual station directories and schedules</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-emerald-500 shrink-0" />
-                  <span>Tourism lists and opening hours documentation</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/50 line-through decoration-slate-400">
-                  <span>No location permissions or GPS tracking</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/50 line-through decoration-slate-400">
-                  <span>No offline service worker loading support</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Android features */}
-            <div className="p-6 rounded-2xl bg-brand-pink/5 border border-brand-pink/20 space-y-4">
-              <h3 className="font-heading font-bold text-lg text-brand-pink">Android App (Full Features)</h3>
-              <ul className="space-y-2">
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-brand-pink shrink-0" />
-                  <span className="font-semibold text-foreground">100% Offline-Capable without Internet</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-brand-pink shrink-0" />
-                  <span>Live GPS Journey tracking inside metro trains</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-brand-pink shrink-0" />
-                  <span>Proximity alerts (vibrates when destination arrives)</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-brand-pink shrink-0" />
-                  <span>Offline emergency assistance dialing</span>
-                </li>
-                <li className="flex items-center space-x-2 text-foreground/85">
-                  <CheckCircle className="w-4.5 h-4.5 text-brand-pink shrink-0" />
-                  <span>Tactile haptics navigation feedback</span>
-                </li>
-              </ul>
-            </div>
+          <div className="overflow-x-auto rounded-2xl border border-light-border dark:border-navy-border/20">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="bg-light-accent dark:bg-navy-deep border-b border-light-border dark:border-navy-border/20 text-sm">
+                  <th className="p-4 text-xs font-bold uppercase text-foreground/60 tracking-wider">Features</th>
+                  <th className="p-4 text-xs font-bold uppercase text-brand-pink tracking-wider text-center">Android Companion App</th>
+                  <th className="p-4 text-xs font-bold uppercase text-foreground/60 tracking-wider text-center">Web Sandbox Simulation</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-light-border dark:divide-navy-border/10 text-sm">
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">100% Offline Database (SQLite)</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center text-foreground/40">—</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">Live GPS Train Route Calculations</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">Arrival Vibration Alerts (Native Haptic)</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center text-foreground/40">—</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">One-Tap Emergency Hotline Dialer</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center text-foreground/40">—</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">Over-The-Air Database Updates</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center text-foreground/40">—</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-foreground">Low Battery Geo-Fencing Service</td>
+                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                  <td className="p-4 text-center text-foreground/40">—</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </section>
