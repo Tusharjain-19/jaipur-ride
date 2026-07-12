@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "sync": "node scripts/sync-assets.js",
+    "dev": "npm run dev:website",
     "dev:website": "npm run dev --workspace=website",
     "build:mobile": "npm run build --workspace=mobile",
     "build:website": "npm run build --workspace=website"
