@@ -8,7 +8,7 @@
 
 [![Google Play Store](https://img.shields.io/badge/Google_Play-Download_App-00D2FF?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-JaipurRide-EC4899?style=for-the-badge)](https://jaipurride.vercel.app)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![License](https://img.shields.io/badge/License-Non--Commercial-FF7B00?style=for-the-badge)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/Tusharjain-19/jaipur-ride?style=for-the-badge&color=gold)](https://github.com/Tusharjain-19/jaipur-ride/stargazers)
 
 </div>
@@ -20,6 +20,12 @@
 **JaipurRide** is a premium, open-source, offline-first navigation utility designed to simplify Jaipur Metro Pink Line transits. 
 
 Unlike standard map providers that sell user coordinates and fail inside deep underground tunnels, JaipurRide stores all database caches and routing graphs locally. Whether you are a tourist exploring historical palaces or a daily commuter planning routes, JaipurRide calculates coordinates, fares, and connections 100% on-device.
+
+### 🛡️ Why Download the Official Google Play App?
+While developers can build sideload packages directly from source, commuters are highly recommended to use the verified release distributed via the Google Play Store. The official app ensures:
+1. **Verified Security Protection**: The package is scanned by Google Play Protect, ensuring zero malware injections or tracking utilities.
+2. **Automatic Database Updates**: Ticket pricing formulas, station operating schedules, and tourist information caches are automatically updated in the background without needing a manual build.
+3. **Power-Optimized Location Services**: Leverages native Android positioning frameworks to conserve battery while tracking metro train coordinates for proximity alerts.
 
 ### 🌟 Key Pillars
 * **Privacy-First**: No telemetry, no analytical trackings, and local-only GPS calculation.
@@ -175,11 +181,16 @@ Contributions are what make the open source community such an amazing place to l
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
----
+## 📄 License & Distribution Terms
 
-## 📄 License
+JaipurRide is distributed under a **Custom Non-Commercial & Official App License**. 
 
-Distributed under the MIT License. See `LICENSE` for more information.
+### Key License Restraints:
+* **Personal & Educational Scope Only**: The code can be studied, modified, and run for personal exploration.
+* **Prohibition of Commercial Use**: You are strictly prohibited from compiling, rebranding, or hosting this codebase or its static metro database structures for commercial services, paid transport applications, wrapper portals, or display-advertising revenue.
+* **Official Client Requirement**: The official verified client must be installed via the [Google Play Store](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl). Redistribution of unofficial mirrors, sideloads, or forks under the "JaipurRide" brand name is disallowed.
+
+Please check the complete [LICENSE](file:///d:/jaipur-ride/jaipur-ride-main/LICENSE) file in the root directory for full legal terms.
 
 ---
 

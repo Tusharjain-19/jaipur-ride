@@ -1,0 +1,28 @@
+# JaipurRide Custom License (Non-Commercial & Official App Agreement)
+
+Copyright (c) 2026 Tushar Jain.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software, databases, and associated documentation files (the "Software"), to use, copy, modify, and merge the Software for **personal, educational, and non-commercial transit guidance purposes only**, subject to the following terms and conditions:
+
+---
+
+## 🚫 1. Strict Non-Commercial Limitation
+
+* **No Commercial Redistribution**: You may not sell, rent, lease, or license the Software, compiled binaries (`.apk`, `.aab`), or relational transit databases (including station nodes, fare schemas, coordinates, and tourist directories) for any commercial application, transit business, or monetary gain.
+* **No Monetized Wrappers**: You are strictly prohibited from repackaging the web simulator or mobile assets with display ads, paid subscriptions, or paid wrapper services.
+* **No Unauthorized Database Scraping**: Automated data harvesting or database scraping of JaipurRide's static datasets for use in commercial maps or applications is strictly forbidden.
+
+## 📱 2. Official App & Distribution Agreement
+
+* **Official Source**: The official, verified, and secure compilation of the JaipurRide Android application is distributed exclusively on the Google Play Store:
+  * **Link**: [https://play.google.com/store/apps/details?id=co.median.android.nmdabkl](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
+* **Security & Sideload Warning**: Downloading compiled binaries (`.apk` or `.aab`) from unauthorized third-party mirrors, websites, or file sharing tools is highly discouraged. The author is not responsible for malware, security vulnerabilities, or outdated caches in unofficial sideloads.
+* **Non-Commercial Forks**: If you fork this repository for personal study or improvements, you must remove the official app branding elements ("JaipurRide" logos) and configure your own application package namespace.
+
+## ✍️ 3. Attribution & Copyright Notice
+
+* The above copyright notice, this permission notice, and the official app store link must be included in all copies or substantial portions of the Software.
+
+## ⚠️ 4. Disclaimer of Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
