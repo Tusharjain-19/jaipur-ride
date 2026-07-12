@@ -6,10 +6,15 @@
 
 ### The Ultimate Offline-First Jaipur Metro Companion for Android & Web
 
-[![Google Play Store](https://img.shields.io/badge/Google_Play-Download_App-00D2FF?style=for-the-badge&logo=google-play&logoColor=white)](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-JaipurRide-EC4899?style=for-the-badge)](https://jaipurride.vercel.app)
 [![License](https://img.shields.io/badge/License-Non--Commercial-FF7B00?style=for-the-badge)](LICENSE)
 [![GitHub Stars](https://img.shields.io/github/stars/Tusharjain-19/jaipur-ride?style=for-the-badge&color=gold)](https://github.com/Tusharjain-19/jaipur-ride/stargazers)
+
+<br/>
+
+<a href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl" target="_blank">
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="70"/>
+</a>
 
 </div>
 
@@ -87,18 +92,34 @@ jaipur-ride/
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack & Frameworks
 
-### Mobile Application (`mobile/`)
-* **Core**: Vanilla HTML5, CSS Grid Layouts, ES Modules.
-* **Bridge**: Capacitor JS Native Runtime Bridge.
-* **Native**: Kotlin, Java, Gradle build automation.
+### 📱 Mobile Application Client (`mobile/`)
+* **Core Web Stack**: Vanilla HTML5, CSS Grid Layouts, ES Modules.
+* **Runtime Bridge**: Capacitor JS Native Bridge.
+* **Native Compilers**: Kotlin, Java, Gradle build wrapper.
 
-### Marketing Website (`website/`)
-* **Framework**: Next.js (React 19 + TypeScript).
-* **Styling**: Tailwind CSS v4 (using clean canonical layout classes).
-* **Icons**: Lucide React.
-* **Simulation**: Embedded iframe wrapper targeting synced mobile builds.
+[![Capacitor](https://img.shields.io/badge/Capacitor-1197F5?style=for-the-badge&logo=capacitor&logoColor=white)](#)
+[![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)](#)
+[![Kotlin](https://img.shields.io/badge/Kotlin-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white)](#)
+[![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)](#)
+[![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)](#)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](#)
+[![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](#)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
+
+### 🚇 Marketing Website & Simulator (`website/`)
+* **Architecture**: Next.js (React 19 Server Components + TypeScript).
+* **Styling & Layout**: Tailwind CSS v4 (responsive utility grids).
+* **Asset Pipelines**: Integrated build-time sync engine (`sync-assets.js`).
+* **Simulation**: Multi-device responsive iframe simulation wrapper.
+
+[![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](#)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](#)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](#)
+[![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](#)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](#)
 
 ---
 
