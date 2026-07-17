@@ -123,7 +123,7 @@ export default function DownloadPage() {
           <div className="lg:col-span-4 flex flex-col items-center justify-center space-y-4">
             <div className="bg-white p-5 rounded-3xl shadow-xl flex flex-col items-center space-y-3">
               <Image
-                src="/images/qrcraft.png"
+                src="/assets/icons/qrcraft.png"
                 alt="Google Play Store QR Code"
                 width={144}
                 height={144}
