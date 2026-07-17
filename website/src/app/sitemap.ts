@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/fare-calculator",
     "/timings",
     "/explore-jaipur",
+    "/simulation",
     "/download",
     "/features",
     "/about",
