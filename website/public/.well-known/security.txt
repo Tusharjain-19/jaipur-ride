@@ -1,0 +1,5 @@
+# Jaipur Ride — Vulnerability Disclosure Policy
+Contact: mailto:jaint0910@gmail.com
+Preferred-Languages: en, hi
+Canonical: https://jaipurride.vercel.app/.well-known/security.txt
+Policy: Please report security issues and vulnerabilities directly to jaint0910@gmail.com. Provide a detailed summary and proof of concept. We will review and address your report as quickly as possible.

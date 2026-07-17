@@ -1,0 +1,16 @@
+/* TEAM */
+Developer: Tushar Jain
+Contact: jaint0910@gmail.com
+Contact Page: https://tusharjain.in/contact
+GitHub Repo: https://github.com/Tusharjain-19/jaipur-ride.git
+From: Jaipur, Rajasthan, India
+
+/* SITE */
+Last update: 2026/07/17
+Standards: HTML5, CSS3, ES6+ Javascript
+Framework: Next.js (App Router), React
+Styling: Tailwind CSS v4
+Tools: Capacitor Runtime, SQLite Embedded
+Iconography: Lucide React Icons
+Typography: Inter, Outfit, Outfit SemiBold (Google Fonts)
+Software License: MIT License

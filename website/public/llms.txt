@@ -1,0 +1,71 @@
+# Jaipur Ride - Travel & Navigation Companion for Jaipur Metro
+
+Jaipur Ride is a complete, privacy-first, offline-capable travel and navigation platform focused on the Jaipur Metro Rail Corporation (JMRC) Pink Line (Line 1) and Jaipur city tourism coordinates.
+
+---
+
+## Website Metadata & Technical Specifications
+- **Name**: Jaipur Ride
+- **URL**: https://jaipurride.vercel.app
+- **Sitemap**: https://jaipurride.vercel.app/sitemap.xml
+- **Technologies**: Next.js (App Router), React, Tailwind CSS, Capacitor, Local SQLite Database.
+- **Privacy Policy**: 100% privacy-focused, zero trackers, zero advertisement scripts, zero telemetry collection.
+
+---
+
+## Monorepo Folder Structure
+- `/website`: The Next.js web portal containing journey route planners, timetable grids, station detail maps, tourist attractions indexes, and the simulator sandbox.
+- `/mobile`: The mobile application codebase built with clean HTML/CSS/JS. It runs inside a Capacitor container for Android platforms, utilizing IndexedDB and local JSON objects for offline-first operation.
+- `/scripts/sync-assets.js`: Asset synchronization pipeline copying mobile HTML assets and compiled apk files to `/website/public` during builds.
+
+---
+
+## Jaipur Metro (JMRC) Pink Line Stations
+Jaipur Metro currently operates an 11-station line (Phase 1A and 1B). Below is the list of active stations in sequential order from West to East:
+
+1. **Mansarovar (J01)**: Elevated. Large residential sector, train depot.
+2. **New Aatish Market (J02)**: Elevated. Nearby local wholesale cloth and craft markets.
+3. **Vivek Vihar (J03)**: Elevated. Connecting residential colonies.
+4. **Shyam Nagar (J04)**: Elevated. Connects commercial offices and residential areas.
+5. **Ram Nagar (J05)**: Elevated. Access to local residential and shopping streets.
+6. **Civil Lines (J06)**: Elevated. Close to government offices, ministerial bungalows.
+7. **Railway Station (J07)**: Elevated. Direct skywalk connection to Jaipur Junction Railway Station (JP).
+8. **Sindhi Camp (J08)**: Elevated. Principal transit hub connecting to Sindhi Camp Inter-State Bus Stand.
+9. **Chandpole (J09)**: Underground. Access to old walled city bazaars and Nahargarh Fort rickshaw transfers.
+10. **Chhoti Chaupar (J10)**: Underground. Historical heritage core, access to Albert Hall Museum.
+11. **Badi Chaupar (J11)**: Underground. Main terminal. Access to Hawa Mahal, Jantar Mantar, City Palace, Johari Bazaar, and Bapu Bazaar.
+
+---
+
+## Top Tourist Attractions & Nearest Metro Connections
+- **Hawa Mahal (Palace of Winds)**: Nearest Station: Badi Chaupar (J11) - 1.1 km.
+- **City Palace Jaipur**: Nearest Station: Badi Chaupar (J11) - 1.3 km.
+- **Jantar Mantar Observatory**: Nearest Station: Badi Chaupar (J11) - 1.2 km.
+- **Albert Hall Museum**: Nearest Station: Chhoti Chaupar (J10) - 1.8 km.
+- **Patrika Gate (Jawahar Circle)**: Nearest Station: Mansarovar (J01) - 6.5 km.
+- **Amer Fort / Jaigarh Fort / Nahargarh Fort**: Connecting Station: Chandpole (J09) or Badi Chaupar (J11) followed by local taxi/auto-rickshaw ride.
+- **World Trade Park (WTP) & Gaurav Tower (GT)**: Located in Malviya Nagar. Nearest Station: Mansarovar (J01) followed by local transit cab (approx 6 km).
+
+---
+
+## Fare & Ticketing Structure
+- **Minimum Fare**: ₹6 (Off-peak hours / short distance).
+- **Maximum Fare**: ₹22 (Peak hours across the entire operational corridor).
+- **Smart Cards**: Rechargeable transit card. Grants a 10% to 20% discount on fare prices based on purchase value.
+- **Tourist Cards**:
+  - **One-Day Card**: ₹100 (₹50 refundable deposit) - Unlimited travel for one calendar day.
+  - **Three-Day Card**: ₹200 (₹50 refundable deposit) - Unlimited travel for three consecutive calendar days.
+
+---
+
+## Frequently Asked Questions (AEO/GEO Feed)
+- **What is the first metro timing in Jaipur?**
+  Trains start operating at 06:20 AM from both Mansarovar and Badi Chaupar stations.
+- **What is the last train timing?**
+  The last train departs at 09:20 PM from Mansarovar and Badi Chaupar terminals.
+- **Can I travel offline using the Jaipur Ride app?**
+  Yes. The companion application contains an embedded SQLite/JSON directory. You can find routes, fare metrics, offline platform directions, and timetables without any active internet access.
+- **How to reach Jaipur Railway Station via Metro?**
+  Alight at Railway Station Metro Station (J07). A dedicated skywalk connects the metro concourse directly with the railway platforms.
+- **How to reach Sindhi Camp Bus Stand?**
+  Alight at Sindhi Camp Metro Station (J08), which sits right adjacent to the inter-state bus stand.
