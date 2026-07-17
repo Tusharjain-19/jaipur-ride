@@ -25,6 +25,124 @@ export default function Home() {
   const { t, language } = useLanguage();
   const isEn = language === "en";
 
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://jaipurride.vercel.app/#website",
+        "url": "https://jaipurride.vercel.app",
+        "name": "Jaipur Ride",
+        "description": "Calculate the best metro route in Jaipur. Get live ticket fares, schedules, timings, interactive Pink Line station maps, nearby tourist monuments (Hawa Mahal, City Palace), local markets, and travel tips.",
+        "publisher": {
+          "@type": "Organization",
+          "name": "Jaipur Ride"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://jaipurride.vercel.app/journey-planner?search={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "LocalBusiness",
+        "@id": "https://jaipurride.vercel.app/#localbusiness",
+        "name": "Jaipur Ride Metro Guide",
+        "image": "https://jaipurride.vercel.app/logo1.png",
+        "url": "https://jaipurride.vercel.app",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Badi Chaupar Metro Station, Walled City",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "postalCode": "302002",
+          "addressCountry": "IN"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": "26.9239",
+          "longitude": "75.8267"
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"
+          ],
+          "opens": "06:20",
+          "closes": "21:20"
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://jaipurride.vercel.app/#breadcrumb",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://jaipurride.vercel.app"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Journey Planner",
+            "item": "https://jaipurride.vercel.app/journey-planner"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Explore Jaipur",
+            "item": "https://jaipurride.vercel.app/explore-jaipur"
+          }
+        ]
+      },
+      {
+        "@type": "TouristAttraction",
+        "@id": "https://jaipurride.vercel.app/#hawamahal",
+        "name": "Hawa Mahal",
+        "description": "Historical Palace of Winds near Badi Chaupar Metro Station J11.",
+        "image": "https://jaipurride.vercel.app/images/hawa_mahal.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "addressCountry": "IN"
+        }
+      },
+      {
+        "@type": "TouristAttraction",
+        "@id": "https://jaipurride.vercel.app/#citypalace",
+        "name": "City Palace Jaipur",
+        "description": "Royal Palace complex near Badi Chaupar Metro Station J11.",
+        "image": "https://jaipurride.vercel.app/images/city_palace.jpg",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "addressCountry": "IN"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://jaipurride.vercel.app/#faq",
+        "mainEntity": faqData.map(faq => ({
+          "@type": "Question",
+          "name": isEn ? faq.question : faq.questionHi,
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": isEn ? faq.answer : faq.answerHi
+          }
+        }))
+      }
+    ]
+  };
+
   React.useEffect(() => {
     if (typeof window !== "undefined" && "serviceWorker" in navigator) {
       navigator.serviceWorker.getRegistrations().then((registrations) => {
@@ -795,6 +913,142 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* 10. SEMANTIC TRAVEL DIRECTORY & GEOGRAPHIC GUIDE (SEO, GEO & AEO OPTIMIZATION) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-light-border/40 dark:border-navy-border/20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          {/* Left/Main Column: In-depth Travel Guides */}
+          <div className="lg:col-span-8 space-y-8 text-slate-600 dark:text-text-secondary">
+            
+            <div className="space-y-4">
+              <span className="px-3 py-1 bg-brand-pink/10 text-brand-pink rounded-md text-xs font-bold uppercase tracking-wider">
+                {isEn ? "Ultimate Local Navigation Hub" : "सर्वोत्तम स्थानीय नेविगेशन गाइड"}
+              </span>
+              <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
+                {isEn ? "Comprehensive Guide to Jaipur Metro & Historic Pink City Travel" : "जयपुर मेट्रो और ऐतिहासिक गुलाबी नगरी यात्रा का संपूर्ण गाइड"}
+              </h2>
+              <p className="text-sm leading-relaxed font-sans">
+                {isEn 
+                  ? "Welcome to Jaipur Ride, your ultimate digital companion for planning the best metro route in Jaipur. Designed as a privacy-first, offline-capable transit guide, we help tourists, daily commuters, students, and international travelers unlock the full transportation potential of the Jaipur Metro Rail Corporation (JMRC) Pink Line (Line 1). Learn how to navigate from the suburban residential sectors of Mansarovar to the historic core at Badi Chaupar, optimizing your time and travel budget with smart ticketing insights, train operational timetables, and walking distances."
+                  : "जयपुर राइड में आपका स्वागत है, जो जयपुर में सबसे अच्छा मेट्रो रूट खोजने और योजना बनाने के लिए आपका अंतिम डिजिटल साथी है। ऑफ़लाइन-प्रथम नेविगेशन ऐप के रूप में डिज़ाइन किया गया यह ऐप पर्यटकों, दैनिक यात्रियों, छात्रों और अंतर्राष्ट्रीय यात्रियों को जयपुर मेट्रो रेल कॉर्पोरेशन (JMRC) पिंक लाइन (लाइन 1) की पूरी क्षमता का उपयोग करने में मदद करता है।"}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
+                {isEn ? "1. Jaipur Metro Pink Line Stations & Connectivity Directory" : "1. जयपुर मेट्रो पिंक लाइन स्टेशन और कनेक्टिविटी निर्देशिका"}
+              </h3>
+              <p className="text-sm leading-relaxed font-sans">
+                {isEn 
+                  ? "The operational JMRC Pink Line currently covers 11 stations spanning 12 kilometers. Starting from the west at Mansarovar (J01), the elevated corridor moves through New Aatish Market (J02), Vivek Vihar (J03), Shyam Nagar (J04), Ram Nagar (J05), and Civil Lines (J06). It links directly to the main transit centers at the Jaipur Railway Station (J07) and the Sindhi Camp Inter-State Bus Stand Terminal (J08). Continuing east, it transitions underground via Chandpole (J09) and Chhoti Chaupar (J10), terminating at Badi Chaupar (J11) deep within the walled city heritage zone. Upcoming expansion phases (Phase 1C) will connect Badi Chaupar to Transport Nagar, while the proposed Phase 2 corridor will span north-south from Sitapura Industrial Area to Ambabari, linking crucial colleges, schools, hospitals, and commercial shopping centers."
+                  : "जयपुर मेट्रो की पिंक लाइन वर्तमान में 12 किलोमीटर में फैले 11 स्टेशनों को कवर करती है। पश्चिम में मानसरोवर (J01) से शुरू होकर, यह कॉरिडोर न्यू आतिश मार्केट (J02), विवेक विहार (J03), श्याम नगर (J04), राम नगर (J05), और सिविल लाइंस (J06) से होकर गुजरता है। यह सीधे रेलवे स्टेशन (J07) और सिंधी कैंप अंतर-राज्यीय बस स्टैंड टर्मिनल (J08) से जुड़ता है।"}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
+                {isEn ? "2. Exploring Iconic Landmarks and Historical Monuments near Metro Stations" : "2. मेट्रो स्टेशनों के पास प्रतिष्ठित स्थलों और ऐतिहासिक स्मारकों की खोज"}
+              </h3>
+              <p className="text-sm leading-relaxed font-sans">
+                {isEn 
+                  ? "Jaipur Ride maps your train journey directly to the top sightseeing destinations in Rajasthan. Alight at Badi Chaupar (J11) station for a short walk to the majestic Hawa Mahal (Palace of Winds), the sprawling City Palace complex, the UNESCO World Heritage Jantar Mantar observatory, and the vibrant shopping lanes of Johari Bazaar and Bapu Bazaar. If you're interested in art and legacy, take the metro to Chhoti Chaupar (J10) to visit the iconic Albert Hall Museum (Central Museum) situated in Ram Niwas Garden. Chandpole (J09) station provides close access to the hiking trails and auto-rickshaw transfers leading to Nahargarh Fort, Jaigarh Fort, and the royal cenotaphs at Gaitore. For shopping and dining, get off at Mansarovar (J01) to explore the artistic Patrika Gate at Jawahar Circle, or visit premium shopping malls like World Trade Park (WTP) and Gaurav Tower (GT) in Malviya Nagar."
+                  : "जयपुर राइड आपकी ट्रेन यात्रा को सीधे राजस्थान के प्रमुख दर्शनीय स्थलों से जोड़ता है। शानदार हवा महल, सिटी पैलेस परिसर, यूनेस्को विश्व धरोहर जंतर मंतर और जोहरी बाजार व बापू बाजार की जीवंत गलियों में जाने के लिए बड़ी चौपड़ (J11) स्टेशन पर उतरें।"}
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
+                {isEn ? "3. Transit Hub Integrations: Airport, Railway, and Bus Terminals" : "3. ट्रांजिट हब एकीकरण: हवाई अड्डा, रेलवे और बस टर्मिनल"}
+              </h3>
+              <ul className="list-disc pl-5 text-sm leading-relaxed space-y-2 font-sans">
+                <li>
+                  <strong>{isEn ? "Jaipur Junction Railway Station (JP)" : "जयपुर जंक्शन रेलवे स्टेशन (JP)"}:</strong>{" "}
+                  {isEn 
+                    ? "Directly connected via the Railway Station Metro Station (J07). Commuters can step off express trains and immediately enter the metro concourse using dedicated skywalks and pedestrian paths."
+                    : "रेलवे स्टेशन मेट्रो स्टेशन (J07) के माध्यम से सीधे जुड़ा हुआ है।"}
+                </li>
+                <li>
+                  <strong>{isEn ? "Sindhi Camp Central Bus Stand" : "सिंधी कैंप केंद्रीय बस स्टैंड"}:</strong>{" "}
+                  {isEn 
+                    ? "Located at Sindhi Camp Station (J08), which serves as the primary interchange. Here, you can board state-run RSRTC buses to New Delhi, Agra, Jodhpur, and Udaipur."
+                    : "सिंधी कैंप स्टेशन (J08) पर स्थित है, जो प्राथमिक इंटरचेंज के रूप में कार्य करता है।"}
+                </li>
+                <li>
+                  <strong>{isEn ? "Jaipur International Airport (JAI)" : "जयपुर अंतर्राष्ट्रीय हवाई अड्डा (JAI)"}:</strong>{" "}
+                  {isEn 
+                    ? "Located in Sanganer, approximately 10 km from Mansarovar Metro Station (J01). Travelers can take a budget-friendly metro ride to Mansarovar and connect to the airport via local taxi, cab services, or auto-rickshaws."
+                    : "सांगानेर में स्थित, मानसरोवर मेट्रो स्टेशन (J01) से लगभग 10 किमी दूर। यात्री स्थानीय टैक्सी या ऑटो-रिक्शा के माध्यम से हवाई अड्डे से जुड़ सकते हैं।"}
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
+                {isEn ? "4. Travel Tips, Fares, and Essential Station Facilities" : "4. यात्रा युक्तियाँ, किराया और आवश्यक स्टेशन सुविधाएं"}
+              </h3>
+              <p className="text-sm leading-relaxed font-sans">
+                {isEn 
+                  ? "To enjoy a hassle-free journey, JMRC offers multiple ticketing options. Single Journey Tokens are ideal for one-time trips, but daily commuters and tourists can save 10% on fare ticket prices by purchasing a rechargeable Smart Card. Senior citizens receive a 25% discount, and students benefit from 15% concessions. All Jaipur Metro terminals are equipped with modern facilities including elevators, escalators, clean public toilets, wheelchair-accessible ramps, and detailed platform directions. JMRC security desks, CCTV surveillance, and dedicated women's safety helplines ensure safe travels at all times."
+                  : "दैनिक यात्री और पर्यटक रिचार्जेबल स्मार्ट कार्ड खरीदकर किराए पर 10% की बचत कर सकते हैं। वरिष्ठ नागरिकों को 25% और छात्रों को 15% की छूट मिलती है।"}
+              </p>
+            </div>
+
+          </div>
+
+          {/* Right Column: Key Entity Quick Mappings */}
+          <div className="lg:col-span-4 space-y-6">
+            
+            <div className="bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm space-y-4">
+              <h3 className="font-heading font-bold text-lg text-slate-900 dark:text-white flex items-center space-x-2">
+                <MapPin className="w-5 h-5 text-brand-pink" />
+                <span>{isEn ? "Jaipur Tourism Quick Links" : "जयपुर पर्यटन त्वरित लिंक"}</span>
+              </h3>
+              <div className="space-y-3 text-xs">
+                <div className="flex justify-between py-2 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-slate-500 dark:text-text-secondary">{isEn ? "Hawa Mahal nearest station" : "हवा महल का निकटतम स्टेशन"}</span>
+                  <Link href="/explore-jaipur/hawa_mahal" className="font-bold text-brand-pink hover:underline">Badi Chaupar (1.1 km)</Link>
+                </div>
+                <div className="flex justify-between py-2 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-slate-500 dark:text-text-secondary">{isEn ? "City Palace nearest station" : "सिटी पैलेस का निकटतम स्टेशन"}</span>
+                  <Link href="/explore-jaipur/city_palace" className="font-bold text-brand-pink hover:underline">Badi Chaupar (1.3 km)</Link>
+                </div>
+                <div className="flex justify-between py-2 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-slate-500 dark:text-text-secondary">{isEn ? "Albert Hall nearest station" : "अल्बर्ट हॉल का निकटतम स्टेशन"}</span>
+                  <Link href="/explore-jaipur/albert_hall" className="font-bold text-brand-pink hover:underline">Chhoti Chaupar (1.8 km)</Link>
+                </div>
+                <div className="flex justify-between py-2 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-slate-500 dark:text-text-secondary">{isEn ? "Patrika Gate nearest station" : "पत्रिका गेट का निकटतम स्टेशन"}</span>
+                  <Link href="/explore-jaipur/patrika_gate" className="font-bold text-brand-pink hover:underline">Mansarovar (6.5 km)</Link>
+                </div>
+                <div className="flex justify-between py-2">
+                  <span className="text-slate-500 dark:text-text-secondary">{isEn ? "Sindhi Camp Bus Terminal" : "सिंधी कैंप बस स्टैंड"}</span>
+                  <Link href="/metro-stations/J08" className="font-bold text-brand-pink hover:underline">Sindhi Camp Station</Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm space-y-4">
+              <h3 className="font-heading font-bold text-lg text-slate-900 dark:text-white flex items-center space-x-2">
+                <CheckCircle className="w-5 h-5 text-brand-pink" />
+                <span>{isEn ? "AI Engine Optimization Context" : "एआई इंजन संदर्भ"}</span>
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-text-secondary leading-relaxed font-sans">
+                {isEn 
+                  ? "This guide serves as a verified travel directory for search engine bots, ChatGPT, Gemini, and Claude web crawlers to provide accurate response feeds on Jaipur Metro schedules, local shopping centers, temples, schools, hotels, and tourist coordinates."
+                  : "यह गाइड सर्च इंजन बॉट्स, चैटजीपीटी, जेमिनी और क्लाउड वेब क्रॉलर्स के लिए सत्यापित संदर्भ प्रदान करती है।"}
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+      />
     </div>
   );
 }
