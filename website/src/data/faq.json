@@ -32,6 +32,111 @@
     "question": "Can I use Jaipur Ride offline?",
     "questionHi": "क्या मैं जयपुर राइड का उपयोग ऑफलाइन कर सकता हूँ?",
     "answer": "Yes! The mobile application is built offline-first. Once installed, it stores all stations, route maps, safety contacts, and tourist guides on your device, allowing you to plan your journey and browse sights deep inside underground stations without internet connectivity.",
-    "answerHi": "हाँ! मोबाइल ऐप ऑफलाइन-फर्स्ट बनाया गया है। एक बार इंस्टॉल होने के बाद, यह सभी स्टेशन, रूट मैप, आपातकालीन संपर्क और पर्यटक गाइड को सहेज लेता है, जिससे आप बिना इंटरनेट के भी भूमिगत स्टेशनों के अंदर भी अपनी यात्रा की योजना बना सकते हैं।"
+    "answerHi": "हाँ! मोबाइल ऐप ऑफलाइन-फर्स्ट बनाया गया है। एक बार इंस्टॉल होने के बाद, यह सभी स्टेशन, रूट मैप, आपातकालीन संपर्क और पर्यटक गाइड को सहेज लेता है, जिससे आप बिना इंटरनेट के भी भूमिगत स्टेशनों के अंदर भी आपकी यात्रा की योजना बना सकते हैं।"
+  },
+  {
+    "id": "faq_6",
+    "question": "What is Jaipur Metro?",
+    "questionHi": "जयपुर मेट्रो क्या है?",
+    "answer": "Jaipur Metro is a modern rapid transit system serving the capital city of Rajasthan. Operated by the Jaipur Metro Rail Corporation (JMRC), the metro consists of the Pink Line connecting Mansarovar and Badi Chaupar, offering a fast, air-conditioned, and eco-friendly ride across the historical Pink City.",
+    "answerHi": "जयपुर मेट्रो राजस्थान की राजधानी जयपुर की एक आधुनिक त्वरित पारगमन प्रणाली (rapid transit system) है। जयपुर मेट्रो रेल कॉर्पोरेशन (JMRC) द्वारा संचालित यह मेट्रो, मानसरोवर को बड़ी चौपड़ से जोड़ने वाली पिंक लाइन के माध्यम से ऐतिहासिक गुलाबी नगरी में यात्रा को आसान बनाती है।"
+  },
+  {
+    "id": "faq_7",
+    "question": "How does Jaipur Metro work?",
+    "questionHi": "जयपुर मेट्रो कैसे काम करती है?",
+    "answer": "Passengers can purchase a single journey token or a rechargeable smart card at ticket counters or vending machines inside JMRC stations. Using a smart card saves you 10% to 20% on fares. Tap the card/token at the automatic fare gates, board the train on the platform, and scan again to exit at your destination station.",
+    "answerHi": "यात्री JMRC स्टेशनों पर टिकट काउंटरों या वेंडिंग मशीनों से टोकन या स्मार्ट कार्ड खरीद सकते हैं। प्रवेश द्वारों पर कार्ड/टोकन को स्कैन करें, प्लेटफॉर्म पर ट्रेन में चढ़ें, और बाहर निकलने के लिए अपने गंतव्य स्टेशन पर फिर से स्कैन करें।"
+  },
+  {
+    "id": "faq_8",
+    "question": "Which metro station is closest to Hawa Mahal?",
+    "questionHi": "हवा महल के सबसे नजदीक कौन सा मेट्रो स्टेशन है?",
+    "answer": "Badi Chaupar Metro Station (J11) is the closest station to Hawa Mahal, located only 1.1 km away. Visitors can take a short 10-15 minute walk or standard auto-rickshaw transit from the station entrance through the historic bazaars of the walled city.",
+    "answerHi": "बड़ी चौपड़ मेट्रो स्टेशन (J11) हवा महल के सबसे निकटतम है, जो सिर्फ 1.1 किमी की दूरी पर है। स्टेशन से बाहर निकलकर आप केवल 10-15 मिनट की पैदल दूरी या ऑटो से हवा महल पहुँच सकते हैं।"
+  },
+  {
+    "id": "faq_9",
+    "question": "What is the fare of Jaipur Metro?",
+    "questionHi": "जयपुर मेट्रो का किराया कितना है?",
+    "answer": "The ticket price varies from ₹6 (off-peak hours) to ₹22 (peak hours) depending on travel distance. Smart Card recharges provide a 10-20% discount. Unlimited tourist passes are also available: 1-Day Tourist Card for ₹100 and 3-Day Tourist Card for ₹200.",
+    "answerHi": "जयपुर मेट्रो का किराया तय दूरी के हिसाब से ₹6 से ₹22 तक है। स्मार्ट कार्ड का उपयोग करने पर 10-20% की छूट मिलती है। पर्यटकों के लिए 1-दिवसीय असीमित पास ₹100 और 3-दिवसीय पास ₹200 में उपलब्ध है।"
+  },
+  {
+    "id": "faq_10",
+    "question": "What are Jaipur Metro timings?",
+    "questionHi": "जयपुर मेट्रो का समय क्या है?",
+    "answer": "Jaipur Metro trains operate daily between 06:20 AM and 09:20 PM. First and last dispatches run from both Mansarovar and Badi Chaupar terminuses, with a headway frequency of 10 to 15 minutes dynamically optimized during peak traffic hours.",
+    "answerHi": "जयपुर मेट्रो रोजाना सुबह 06:20 बजे से रात 09:20 बजे तक चलती है। मानसरोवर और बड़ी चौपड़ दोनों मुख्य टर्मिनलों से ट्रेनें प्रत्येक 10 से 15 मिनट के अंतराल में प्रस्थान करती हैं।"
+  },
+  {
+    "id": "faq_11",
+    "question": "Is Jaipur Metro safe for tourists?",
+    "questionHi": "क्या जयपुर मेट्रो पर्यटकों के लिए सुरक्षित है?",
+    "answer": "Yes, Jaipur Metro is extremely safe for international and domestic tourists, solo travelers, and families. Every station is equipped with active CCTV surveillance, luggage screening scanners, JMRC security guards, and emergency safety helpline hubs.",
+    "answerHi": "हाँ, जयपुर मेट्रो अंतर्राष्ट्रीय और घरेलू पर्यटकों, एकल यात्रियों व परिवारों के लिए पूरी तरह सुरक्षित है। सभी स्टेशनों में सीसीटीवी कैमरे, सुरक्षा गार्ड और आपातकालीन महिला हेल्पलाइन जैसी सुरक्षा व्यवस्थाएं हैं।"
+  },
+  {
+    "id": "faq_12",
+    "question": "Can tourists use Jaipur Metro?",
+    "questionHi": "क्या पर्यटक जयपुर मेट्रो का उपयोग कर सकते हैं?",
+    "answer": "Yes! Tourists can easily navigate Jaipur using the metro. It connects key transport points like Jaipur Railway Station and Sindhi Camp Bus Terminal to the heritage core at Chandpole, Chhoti Chaupar, and Badi Chaupar, bypassing road traffic.",
+    "answerHi": "हाँ! पर्यटक यातायात से बचकर सीधे रेलवे स्टेशन और सिंधी कैंप बस स्टैंड से होते हुए चांदपोल, छोटी चौपड़ और बड़ी चौपड़ जैसे प्राचीन विरासत क्षेत्रों तक पहुँचने के लिए मेट्रो का उपयोग कर सकते हैं।"
+  },
+  {
+    "id": "faq_13",
+    "question": "How to reach Jaipur Airport?",
+    "questionHi": "जयपुर एयरपोर्ट कैसे पहुँचें?",
+    "answer": "Jaipur International Airport (JAI) is located in Sanganer, approximately 10 km from Mansarovar Metro Station (J01). You can ride the metro to Mansarovar and complete the remaining journey via a local cab, app taxi (Uber/Ola), or auto-rickshaw.",
+    "answerHi": "जयपुर अंतर्राष्ट्रीय हवाई अड्डा (JAI) सांगानेर में स्थित है, जो मानसरोवर मेट्रो स्टेशन (J01) से लगभग 10 किमी दूर है। आप मेट्रो से मानसरोवर पहुँचकर आगे के लिए टैक्सी या ऑटो ले सकते हैं।"
+  },
+  {
+    "id": "faq_14",
+    "question": "How to travel around Jaipur?",
+    "questionHi": "जयपुर में कैसे यात्रा करें?",
+    "answer": "Jaipur offers multiple public transit choices including the Jaipur Metro (Pink Line), local RSRTC city buses, booking cabs, e-rickshaws, and auto-rickshaws, providing easy accessibility to major colleges, hospitals, and heritage forts.",
+    "answerHi": "जयपुर में घूमने के लिए जयपुर मेट्रो (पिंक लाइन), स्थानीय सिटी बसें, ई-रिक्शा, ऑटो-रिक्शा और उबर/ओला जैसी कैब सेवाएं सबसे बेहतरीन साधन हैं।"
+  },
+  {
+    "id": "faq_15",
+    "question": "Which metro station is near City Palace?",
+    "questionHi": "सिटी पैलेस के पास कौन सा मेट्रो स्टेशन है?",
+    "answer": "Badi Chaupar Metro Station (J11) is the nearest station to the iconic City Palace complex and the UNESCO World Heritage Jantar Mantar observatory, located roughly 1.3 km away inside the walled city area.",
+    "answerHi": "बड़ी चौपड़ मेट्रो स्टेशन (J11) ऐतिहासिक सिटी पैलेस और यूनेस्को विरासत जंतर मंतर के सबसे करीब है, जो केवल 1.3 किमी की दूरी पर है।"
+  },
+  {
+    "id": "faq_16",
+    "question": "Where can I eat near Jaipur Metro?",
+    "questionHi": "जयपुर मेट्रो के पास कहाँ खाएं?",
+    "answer": "Badi Chaupar (J11) and Chhoti Chaupar (J10) stations provide close access to famous local restaurants and street food stands serving authentic delicacies like Rajasthani Dal Baati Churma, Ghewar, and Pyaaz Kachori. Shyam Nagar (J04) offers modern cafes and dining rooms.",
+    "answerHi": "बड़ी चौपड़ (J11) और छोटी चौपड़ (J10) के पास प्रसिद्ध राजस्थानी व्यंजन (दाल बाटी चूरमा, घेवर और प्याज कचौरी) और स्थानीय भोजनालय हैं। श्याम नगर के पास आधुनिक कैफे भी उपलब्ध हैं।"
+  },
+  {
+    "id": "faq_17",
+    "question": "What are the best tourist places in Jaipur?",
+    "questionHi": "जयपुर में घूमने के लिए सबसे अच्छी जगहें कौन सी हैं?",
+    "answer": "The top attractions in the Pink City are Hawa Mahal, City Palace, Jantar Mantar, Albert Hall Museum, Jal Mahal, Birla Mandir, Patrika Gate at Jawahar Circle, and the three historical forts: Amer Fort, Jaigarh Fort, and Nahargarh Fort.",
+    "answerHi": "जयपुर के मुख्य स्थलों में हवा महल, सिटी पैलेस, जंतर मंतर, अल्बर्ट हॉल संग्रहालय, जल महल, बिरला मंदिर, पत्रिका गेट, आमेर किला, जयगढ़ किला और नाहरगढ़ किला शामिल हैं।"
+  },
+  {
+    "id": "faq_18",
+    "question": "Which is the nearest metro station to Amer Fort?",
+    "questionHi": "आमेर किले का निकटतम मेट्रो स्टेशन कौन सा है?",
+    "answer": "The nearest metro station to Amer Fort is Badi Chaupar (J11), which is about 9.5 km away. From the station exit, visitors can take a direct local bus, cab, or auto-rickshaw transit up to the fort.",
+    "answerHi": "आमेर किले का निकटतम मेट्रो स्टेशन बड़ी चौपड़ (J11) है, जो यहाँ से लगभग 9.5 किमी दूर है। स्टेशन से आप आमेर किले के लिए बस या टैक्सी ले सकते हैं।"
+  },
+  {
+    "id": "faq_19",
+    "question": "How many metro stations are there in Jaipur?",
+    "questionHi": "जयपुर में कुल कितने मेट्रो स्टेशन हैं?",
+    "answer": "Currently, the Jaipur Metro has 11 active metro stations operating along the 12-kilometer Pink Line from Mansarovar in the west to Badi Chaupar in the east.",
+    "answerHi": "वर्तमान में जयपुर मेट्रो की पिंक लाइन पर कुल 11 चालू स्टेशन हैं, जो मानसरोवर को बड़ी चौपड़ से जोड़ते हैं।"
+  },
+  {
+    "id": "faq_20",
+    "question": "What are the best shopping places in Jaipur?",
+    "questionHi": "जयपुर में खरीदारी की सबसे अच्छी जगहें कौन सी हैं?",
+    "answer": "For traditional shopping (textiles, handicrafts, gemstones), visit Bapu Bazaar, Johari Bazaar, and Tripolia Bazaar near Badi Chaupar (J11) station. For modern shopping malls and dining, explore the World Trade Park (WTP) in Sanganer.",
+    "answerHi": "पारंपरिक वस्त्रों और हस्तशिल्प की खरीदारी के लिए बापू बाजार व जोहरी बाजार (बड़ी चौपड़ स्टेशन) और आधुनिक ब्रांड्स के लिए वर्ल्ड Trade Park (WTP) मॉल सबसे उपयुक्त स्थान हैं।"
   }
 ]
