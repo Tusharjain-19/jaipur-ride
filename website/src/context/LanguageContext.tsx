@@ -24,6 +24,11 @@ const translations: TranslationDict = {
   navAbout: { en: "About Us", hi: "हमारे बारे में" },
   navContact: { en: "Contact", hi: "संपर्क" },
   navFaq: { en: "FAQ", hi: "अक्सर पूछे जाने वाले सवाल" },
+  navFareCalculator: { en: "Fare Calculator", hi: "किराया कैलकुलेटर" },
+  navTimingsLink: { en: "Timings", hi: "समय सारणी" },
+  navChangelog: { en: "Changelog", hi: "बदलाव सूची" },
+  navPrivacy: { en: "Privacy Policy", hi: "गोपनीयता नीति" },
+  navTerms: { en: "Terms & Conditions", hi: "नियम एवं शर्तें" },
 
   // General Buttons
   btnTryOnline: { en: "Try Online Simulator", hi: "ऑनलाइन सिम्युलेटर आज़माएं" },

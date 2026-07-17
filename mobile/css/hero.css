@@ -236,12 +236,12 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-size: 36px;
   font-weight: 800;
-  color: #1a0a10;
+  color: var(--white);
   letter-spacing: -1.2px;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
 }
 .hero-logo-text span {
-  color: #ec4899;
+  color: var(--pink);
 }
 
 /* ── Arrival Text (final frames) ── */
@@ -286,7 +286,7 @@
   line-height: 1.05;
 }
 .arrival-title span {
-  background: linear-gradient(135deg, #ec4899, #f472b6);
+  background: linear-gradient(135deg, var(--pink), var(--accent));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -413,11 +413,11 @@
 }
 .hero-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #be185d, #ec4899, #f472b6);
+  background: linear-gradient(90deg, var(--pink-dark), var(--pink), var(--accent));
   width: 0%;
   transition: width 0.4s linear;
   border-radius: 0 2px 2px 0;
-  box-shadow: 0 0 16px rgba(236, 72, 153, 0.5), 0 0 4px rgba(236, 72, 153, 0.8);
+  box-shadow: 0 0 16px var(--pink-glow), 0 0 4px var(--pink-glow);
 }
 
 /* ═══════════════════════════════════════════════════

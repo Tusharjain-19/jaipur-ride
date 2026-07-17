@@ -41,7 +41,7 @@ export default function MetroMapPage() {
             <span>Line Specification</span>
           </h3>
           <p className="text-sm text-foreground/75 leading-relaxed">
-            The Pink Line covers 11 stations spanning 11.3 kilometers. It transitions from an <strong>Elevated</strong> configuration at Chandpole gate to <strong>Underground</strong> stations through the historical walled city blocks.
+            The Pink Line covers 11 stations spanning 11.3 kilometers. It transitions from an <strong>Elevated</strong> configuration into <strong>3 Underground</strong> stations through the historical walled city: <strong>Chandpole</strong>, <strong>Chhoti Chaupar</strong>, and <strong>Badi Chaupar</strong>.
           </p>
         </div>
 

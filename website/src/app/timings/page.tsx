@@ -13,9 +13,7 @@ export default function TimingsPage() {
       
       {/* Title Header */}
       <div className="text-center lg:text-left space-y-4 max-w-3xl">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/10 text-brand-pink border border-brand-pink/20">
-          🕒 {language === "en" ? "Service Timetable" : "सेवा समय सारिणी"}
-        </span>
+
         <h1 className="font-heading font-extrabold text-4xl text-foreground tracking-tight">
           {language === "en" ? "Jaipur Metro Train Timings" : "जयपुर मेट्रो ट्रेन समय सारिणी"}
         </h1>
@@ -107,16 +105,16 @@ export default function TimingsPage() {
                     <div className="text-[10px] text-foreground/40">{st.id} • {st.type}</div>
                   </td>
                   <td className="py-3.5 text-center font-mono text-xs">
-                    {st.id === "J11" ? "—" : st.timings.firstTrain}
+                    {st.id === "J11" ? "-" : st.timings.firstTrain}
                   </td>
                   <td className="py-3.5 text-center font-mono text-xs">
-                    {st.id === "J11" ? "—" : st.timings.lastTrain}
+                    {st.id === "J11" ? "-" : st.timings.lastTrain}
                   </td>
                   <td className="py-3.5 text-center font-mono text-xs">
-                    {st.id === "J01" ? "—" : st.timings.firstTrain}
+                    {st.id === "J01" ? "-" : st.timings.firstTrain}
                   </td>
                   <td className="py-3.5 text-center font-mono text-xs">
-                    {st.id === "J01" ? "—" : st.timings.lastTrain}
+                    {st.id === "J01" ? "-" : st.timings.lastTrain}
                   </td>
                 </tr>
               ))}

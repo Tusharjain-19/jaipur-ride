@@ -9,7 +9,7 @@
   max-width: 430px;
   height: 100dvh;
   margin: 0 auto;
-  background: rgba(255, 255, 255, 0.75);
+  background: var(--bg);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   display: flex;
@@ -17,9 +17,9 @@
   align-items: stretch;
   overflow: hidden;
   position: relative;
-  border-left:  1px solid rgba(255, 255, 255, 0.5);
-  border-right: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 0 80px rgba(26, 26, 46, 0.3);
+  border-left:  1px solid var(--border);
+  border-right: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
 }
 
 @media (min-width: 431px) {
@@ -27,7 +27,7 @@
     height: 92vh;
     margin: 4vh auto;
     border-radius: 44px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--border);
   }
 }
 
@@ -41,11 +41,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.85);
+  background: var(--bg-header);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(236, 72, 153, 0.08);
-  box-shadow: 0 2px 12px rgba(26, 26, 46, 0.06);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
 }
 
 /* ── Bottom Nav ── */
@@ -57,14 +57,14 @@
   width: 100%;
   max-width: 430px;
   height: 68px;
-  background: rgba(255, 255, 255, 0.92);
+  background: var(--bg-nav);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border-top: 1px solid rgba(236, 72, 153, 0.1);
+  border-top: 1px solid var(--border);
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
   z-index: 100;
-  box-shadow: 0 -4px 20px rgba(26, 26, 46, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .bottom-nav button {
@@ -79,7 +79,7 @@
   background: none;
   border: none;
   -webkit-tap-highlight-color: transparent;
-  color: #9CA3AF;
+  color: var(--text-muted);
   transition: color 0.2s ease;
   cursor: pointer;
 }
@@ -130,7 +130,7 @@ h1, h2, h3, h4, h5, h6 { line-height: 1.2; }
 /* ── Custom Scrollbar ── */
 .custom-scrollbar::-webkit-scrollbar       { width: 3px; }
 .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(236,72,153,0.2); border-radius: 10px; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: var(--pink-glow); border-radius: 10px; }
 
 /* ── Utility classes ── */
 .flex-grow     { flex-grow: 1; }

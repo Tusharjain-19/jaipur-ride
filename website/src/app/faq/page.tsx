@@ -23,9 +23,7 @@ export default function FAQPage() {
       
       {/* Title Header */}
       <div className="text-center space-y-4 max-w-2xl mx-auto">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/10 text-brand-pink border border-brand-pink/20">
-          💬 {language === "en" ? "Knowledge Base" : "ज्ञान केंद्र"}
-        </span>
+
         <h1 className="font-heading font-extrabold text-4xl text-foreground tracking-tight">
           {language === "en" ? "Frequently Asked Questions" : "अक्सर पूछे जाने वाले प्रश्न"}
         </h1>

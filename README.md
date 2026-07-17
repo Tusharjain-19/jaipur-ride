@@ -1,30 +1,40 @@
 <div align="center">
 
-<img src="website/public/logo1.png" alt="JaipurRide Logo" width="120" height="120" style="border-radius:24px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);"/>
+<img src="website/public/logo1.png" alt="JaipurRide Logo" width="120" height="120" style="border-radius:28px; box-shadow: 0 8px 30px rgba(236,72,153,0.3);"/>
 
-# 🚇 JaipurRide
+# 🚇 Jaipur Ride
 
 ### The Ultimate Offline-First Jaipur Metro Companion for Android & Web
 
-[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-JaipurRide-EC4899?style=for-the-badge)](https://jaipurride.vercel.app)
-[![License](https://img.shields.io/badge/License-Non--Commercial-FF7B00?style=for-the-badge)](LICENSE)
-[![GitHub Stars](https://img.shields.io/github/stars/Tusharjain-19/jaipur-ride?style=for-the-badge&color=gold)](https://github.com/Tusharjain-19/jaipur-ride/stargazers)
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Jaipur_Ride-EC4899?style=for-the-badge&logo=vercel)](https://jaipurride.vercel.app)
+[![License](https://img.shields.io/badge/🛡️_License-Non--Commercial-FF7B00?style=for-the-badge)](LICENSE)
+[![GitHub Stars](https://img.shields.io/github/stars/Tusharjain-19/jaipur-ride?style=for-the-badge&color=gold&logo=github)](https://github.com/Tusharjain-19/jaipur-ride/stargazers)
+[![Platform](https://img.shields.io/badge/📱_Platform-Android-3DDC84?style=for-the-badge&logo=android)](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
 
 <br/>
 
 <a href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl" target="_blank">
-  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="70"/>
+  <img src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" alt="Get it on Google Play" height="75"/>
 </a>
 
 </div>
 
 ---
 
+## 📱 Project Showcase
+
+<div align="center">
+  <img src="website/public/images/real_app_screenshot_1.png" alt="Jaipur Ride Route Screen" width="385" style="border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 8px;"/>
+  <img src="website/public/images/real_app_screenshot_2.png" alt="Jaipur Ride Station Details" width="385" style="border-radius:20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin: 8px;"/>
+</div>
+
+---
+
 ## ✨ Overview
 
-**JaipurRide** is a premium, open-source, offline-first navigation utility designed to simplify Jaipur Metro Pink Line transits. 
+**Jaipur Ride** is a premium, open-source, offline-first navigation and travel utility designed to simplify Jaipur Metro Pink Line transits. 
 
-Unlike standard map providers that sell user coordinates and fail inside deep underground tunnels, JaipurRide stores all database caches and routing graphs locally. Whether you are a tourist exploring historical palaces or a daily commuter planning routes, JaipurRide calculates coordinates, fares, and connections 100% on-device.
+Unlike standard map providers that sell user coordinates and fail inside deep underground tunnels, **Jaipur Ride** stores all database caches and routing graphs locally. Whether you are a tourist exploring historical palaces or a daily commuter planning routes, Jaipur Ride calculates coordinates, fares, and connections 100% on-device.
 
 ### 🛡️ Why Download the Official Google Play App?
 While developers can build sideload packages directly from source, commuters are highly recommended to use the verified release distributed via the Google Play Store. The official app ensures:
@@ -33,27 +43,10 @@ While developers can build sideload packages directly from source, commuters are
 3. **Power-Optimized Location Services**: Leverages native Android positioning frameworks to conserve battery while tracking metro train coordinates for proximity alerts.
 
 ### 🌟 Key Pillars
-* **Privacy-First**: No telemetry, no analytical trackings, and local-only GPS calculation.
-* **Offline-First Architecture**: Cached tourist DBs, station parameters, and vector maps.
-* **Bilingual Support**: Fully localized in English and हिन्दी (Hindi).
-* **Workspaces Monorepo**: Segregated mobile code (`mobile/`) and Next.js website (`website/`).
-
----
-
-## 📱 Google Play Store App
-The compiled native Android release is available for download on the Google Play Store. It features:
-* **Background GPS alerts**: Triggers stop reminders even when your phone is in your pocket.
-* **Tactile Haptic Navigation**: Vibrate patterns corresponding to boarding and arrival.
-* **Zero Internet Requirements**: A self-contained APK for reliable underground operations.
-
-[📥 **Download JaipurRide on Google Play**](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl)
-
----
-
-## 📸 App Preview
-<div align="center">
-  <img src="website/public/images/hawa_mahal.jpg" alt="App Banner - Hawa Mahal" width="550" style="border-radius:18px"/>
-</div>
+* 🔒 **Privacy-First**: No telemetry, no analytical tracking, and local-only GPS calculation.
+* 📶 **Offline-First Architecture**: Cached tourist databases, station parameters, and vector maps.
+* 🗣️ **Bilingual Support**: Fully localized in English and हिन्दी (Hindi).
+* 📦 **Workspaces Monorepo**: Segregated mobile code (`mobile/`) and Next.js website (`website/`).
 
 ---
 
@@ -62,7 +55,7 @@ The compiled native Android release is available for download on the Google Play
 * 🗺️ **Interactive Route Pathfinder**: Select origin and destination nodes; get the shortest route path, transfers, and ride duration instantly.
 * 🎫 **Ticket Fare Audit**: Live ticket price checks including Cash Tokens, Smart Cards (10% off), Student Cards (15% off), and Senior Citizen Cards (25% off) based on the latest JMRC regulations.
 * 🔴 **Real-Time Journey Simulator**: Simulates time-progress points along your path to estimate arrival offsets.
-* 🏛️ **Tourism Explore Directory**: Offline list of heritage palaces, bazaars, and monuments mapped to their nearest metro terminal, detailing walks and maps links.
+* 🏛️ **Tourism Explore Directory**: Offline list of heritage palaces, bazaars, and monuments mapped to their nearest metro terminal, detailing walks and map links.
 * 🕐 **Timings Board**: Comprehensive schedules for first/last train dispatches and peak vs. off-peak frequencies.
 * 🛡️ **Safety & Help Desk**: Direct offline hotlines for Jaipur Metro safety, women's helpline, police, and ambulances.
 
@@ -70,7 +63,7 @@ The compiled native Android release is available for download on the Google Play
 
 ## 🗂️ Project Structure
 
-JaipurRide is managed as a unified monorepo with npm Workspaces:
+Jaipur Ride is managed as a unified monorepo with npm Workspaces:
 
 ```
 jaipur-ride/
@@ -109,7 +102,7 @@ jaipur-ride/
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](#)
 
 ### 🚇 Marketing Website & Simulator (`website/`)
-* **Architecture**: Next.js (React 19 Server Components + TypeScript).
+* **Architecture**: Next.js (React Server Components + TypeScript).
 * **Styling & Layout**: Tailwind CSS v4 (responsive utility grids).
 * **Asset Pipelines**: Integrated build-time sync engine (`sync-assets.js`).
 * **Simulation**: Multi-device responsive iframe simulation wrapper.
@@ -134,7 +127,7 @@ jaipur-ride/
 ```bash
 # Clone the repository
 git clone https://github.com/Tusharjain-19/jaipur-ride.git
-cd jaipur-ride-main
+cd jaipur-ride
 
 # Install dependencies for all workspaces
 npm install
@@ -168,7 +161,7 @@ npm run android:debug --workspace=mobile
 
 ## 🛤️ Pink Line Reference Grid
 
-JaipurRide covers the entire Pink Line routing configuration:
+Jaipur Ride covers the entire Pink Line routing configuration:
 
 ```
 [J01] Mansarovar  <-->  [J02] New Aatish Market  <-->  [J03] Vivek Vihar  <-->  [J04] Shyam Nagar
@@ -204,14 +197,14 @@ Contributions are what make the open source community such an amazing place to l
 
 ## 📄 License & Distribution Terms
 
-JaipurRide is distributed under a **Custom Non-Commercial & Official App License**. 
+Jaipur Ride is distributed under a **Custom Non-Commercial & Official App License**. 
 
 ### Key License Restraints:
 * **Personal & Educational Scope Only**: The code can be studied, modified, and run for personal exploration.
 * **Prohibition of Commercial Use**: You are strictly prohibited from compiling, rebranding, or hosting this codebase or its static metro database structures for commercial services, paid transport applications, wrapper portals, or display-advertising revenue.
 * **Official Client Requirement**: The official verified client must be installed via the [Google Play Store](https://play.google.com/store/apps/details?id=co.median.android.nmdabkl). Redistribution of unofficial mirrors, sideloads, or forks under the "JaipurRide" brand name is disallowed.
 
-Please check the complete [LICENSE](file:///d:/jaipur-ride/jaipur-ride-main/LICENSE) file in the root directory for full legal terms.
+Please check the complete [LICENSE](LICENSE) file in the root directory for full legal terms.
 
 ---
 

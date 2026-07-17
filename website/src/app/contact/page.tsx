@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { useLanguage } from "@/context/LanguageContext";
-import { Mail, HelpCircle, CheckCircle, MessageSquare, AlertTriangle, Lightbulb } from "lucide-react";
+import { Mail, HelpCircle, CheckCircle, MessageSquare, AlertTriangle, Lightbulb, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const feedbackSchema = zod.object({
@@ -20,6 +20,7 @@ type FeedbackFormValues = zod.infer<typeof feedbackSchema>;
 export default function ContactPage() {
   const { t } = useLanguage();
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
     register,
@@ -37,11 +38,39 @@ export default function ContactPage() {
   });
 
   const onSubmit = async (data: FeedbackFormValues) => {
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log("Feedback data submitted successfully:", data);
-    setIsSubmitted(true);
-    reset();
+    setSubmitError(null);
+    try {
+      const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeOctJoiOgVLzt18pNkMihlSjO1BxUKsq40Nqxsr6zc-QOvlg/formResponse";
+      const formData = new URLSearchParams();
+      
+      // Google Form Entry IDs extracted from forms.gle/yRXyMuhEdd8G8KVH8
+      formData.append("entry.1365438817", data.name);
+      formData.append("entry.2038720898", data.email);
+      
+      let mappedType = "Inquiry";
+      if (data.feedbackType === "bug") mappedType = "Bug Report";
+      if (data.feedbackType === "feature") mappedType = "Feature Request";
+      formData.append("entry.1323163345", mappedType);
+      
+      formData.append("entry.278843534", data.message);
+
+      // no-cors is used because Google Form formResponse does not support CORS requests.
+      // Opaque response status 0 is expected and handled as a success.
+      await fetch(formUrl, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
+      });
+
+      setIsSubmitted(true);
+      reset();
+    } catch (err) {
+      console.error("Form submission failed:", err);
+      setSubmitError("Failed to submit feedback. Please check your connection and try again.");
+    }
   };
 
   return (
@@ -59,33 +88,28 @@ export default function ContactPage() {
 
         {/* Contact list channels */}
         <div className="space-y-4 pt-6">
+          {/* Website Contact */}
+          <div className="flex items-center space-x-4 p-4 bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-2xl">
+            <div className="w-10 h-10 rounded-xl bg-brand-pink/10 flex items-center justify-center text-brand-pink shrink-0">
+              <Globe className="w-5 h-5" />
+            </div>
+            <div>
+              <p className="text-xs text-foreground/50 font-bold uppercase tracking-wider">Contact Website</p>
+              <a href="https://tusharjain.in/contact" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-foreground hover:text-brand-pink transition-colors">
+                tusharjain.in/contact
+              </a>
+            </div>
+          </div>
+
+          {/* Email Inquiry */}
           <div className="flex items-center space-x-4 p-4 bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-2xl">
             <div className="w-10 h-10 rounded-xl bg-brand-pink/10 flex items-center justify-center text-brand-pink shrink-0">
               <Mail className="w-5 h-5" />
             </div>
             <div>
               <p className="text-xs text-foreground/50 font-bold uppercase tracking-wider">Email Inquiry</p>
-              <a href="mailto:support@jaipurride.com" className="text-sm font-semibold text-foreground hover:text-brand-pink transition-colors">
-                support@jaipurride.com
-              </a>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-4 p-4 bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-2xl">
-            <div className="w-10 h-10 rounded-xl bg-brand-pink/10 flex items-center justify-center text-brand-pink shrink-0">
-              <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-              </svg>
-            </div>
-            <div>
-              <p className="text-xs text-foreground/50 font-bold uppercase tracking-wider">GitHub Project</p>
-              <a
-                href="https://github.com/Tusharjain-19/jaipur-ride"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-semibold text-foreground hover:text-brand-pink transition-colors"
-              >
-                Tusharjain-19/jaipur-ride
+              <a href="mailto:jaint0910@gmail.com" className="text-sm font-semibold text-foreground hover:text-brand-pink transition-colors">
+                jaint0910@gmail.com
               </a>
             </div>
           </div>
@@ -201,6 +225,10 @@ export default function ContactPage() {
                     <p className="text-xs text-red-500 font-bold">{errors.message.message}</p>
                   )}
                 </div>
+
+                {submitError && (
+                  <p className="text-xs text-red-500 font-bold text-center">{submitError}</p>
+                )}
 
                 {/* Submit button */}
                 <button

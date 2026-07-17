@@ -211,11 +211,12 @@ export default function InteractiveMap() {
           />
 
           {/* Station Labels and Circles */}
-          {stations.map((st) => {
+          {stations.map((st, idx) => {
             const coords = stationCoordinates[st.id] || { x: 0, y: 0 };
             const isSelected = selectedId === st.id;
             const isHovered = hoveredId === st.id;
             const isSearched = isHighlighted(st.id);
+            const isEven = idx % 2 === 0;
 
             return (
               <g
@@ -264,7 +265,7 @@ export default function InteractiveMap() {
                 {/* Label text */}
                 <text
                   x={coords.x}
-                  y={coords.y - 20}
+                  y={isEven ? coords.y - 20 : coords.y + 24}
                   textAnchor="middle"
                   className={`font-heading text-[11px] select-none font-bold transition-colors ${
                     isSelected
@@ -280,9 +281,9 @@ export default function InteractiveMap() {
                 {/* Subtext type under */}
                 <text
                   x={coords.x}
-                  y={coords.y + 24}
+                  y={isEven ? coords.y + 22 : coords.y - 18}
                   textAnchor="middle"
-                  className="font-sans text-[8px] fill-foreground/40 dark:fill-white/30"
+                  className="font-sans text-[8px] fill-foreground/45 dark:fill-white/35 font-bold"
                 >
                   {st.id}
                 </text>

@@ -5,47 +5,47 @@
    ───────────────────────────────────────── */
 :root {
   /* Core Colors */
-  --white:          #FFFFFF;
-  --off-white:      #FDF9F7;       /* Warm cream */
-  --ink:            #1A1A2E;       /* Deep navy-black for high contrast */
-  --ink-light:      #3D3D5C;       /* Secondary text */
-  --stone:          #8A8A9A;       /* Muted labels */
+  --white:          #F8FAFC;       /* text-primary */
+  --off-white:      #dde1fa;       /* on-surface / on-background */
+  --ink:            #0d1324;       /* surface / background / navy-deep */
+  --ink-light:      #2e3447;       /* surface-container-highest */
+  --stone:          #94A3B8;       /* text-secondary */
 
   /* Primary Brand — Jaipur Pink */
-  --pink:           #EC4899;
-  --pink-light:     #FCE7F3;
-  --pink-dark:      #BE185D;
+  --pink:           #EC4899;       /* pink-city */
+  --pink-light:     #ffd9e4;       /* primary-fixed */
+  --pink-dark:      #b4136d;       /* inverse-primary */
   --pink-glow:      rgba(236, 72, 153, 0.25);
 
   /* Secondary — Warm Saffron (accents only) */
-  --saffron:        #EC4899;       /* Remapped to pink for consistency */
+  --saffron:        #EC4899;
   --saffron-vibrant:#EC4899;
 
   /* Semantic */
-  --success-green:  #22C55E;
-  --warning:        #F59E0B;
+  --success-green:  #68e04b;       /* tertiary */
+  --warning:        #ffb2b7;       /* secondary */
 
   /* Borders & Surfaces */
-  --border-subtle:  rgba(236, 72, 153, 0.12);
-  --border-card:    rgba(255, 255, 255, 0.4);
-  --input-border:   #E8E0F0;       /* Subtle lavender-tinted border */
+  --border-subtle:  rgba(166, 137, 146, 0.12); /* outline */
+  --border-card:    rgba(166, 137, 146, 0.4);
+  --input-border:   #574048;       /* outline-variant */
 
-  /* Glass Surfaces */
-  --glass-white:    rgba(255, 255, 255, 0.72);
-  --glass-card:     rgba(255, 255, 255, 0.55);
-  --glass-subtle:   rgba(255, 255, 255, 0.35);
+  /* Glass Surfaces (remap to dark containers since Heritage Pulse is dark first) */
+  --glass-white:    rgba(25, 31, 49, 0.85); /* surface-container */
+  --glass-card:     rgba(36, 41, 60, 0.8);  /* surface-container-high */
+  --glass-subtle:   rgba(21, 27, 44, 0.7);  /* surface-container-low */
   --blur:           20px;
   --blur-heavy:     32px;
 
   /* Shadows */
-  --shadow-soft:    0 4px 20px rgba(26, 26, 46, 0.06);
-  --shadow-medium:  0 10px 32px rgba(26, 26, 46, 0.12);
-  --shadow-premium: 0 20px 60px rgba(26, 26, 46, 0.18);
+  --shadow-soft:    0 4px 20px rgba(8, 13, 30, 0.2);
+  --shadow-medium:  0 10px 32px rgba(8, 13, 30, 0.4);
+  --shadow-premium: 0 20px 60px rgba(8, 13, 30, 0.6);
   --shadow-pink:    0 8px 24px rgba(236, 72, 153, 0.3);
 
   /* Fonts */
-  --font-heading: 'Cormorant Garamond', serif;
-  --font-body:    'DM Sans', sans-serif;
+  --font-heading: 'Outfit', sans-serif;
+  --font-body:    'Inter', sans-serif;
 }
 
 /* ── Body ── */
@@ -54,8 +54,8 @@ body {
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  background-color: #1A1A2E;
-  color: var(--ink);
+  background-color: #0B1122;
+  color: var(--off-white);
   font-family: var(--font-body);
   margin: 0;
   padding: 0;
@@ -71,21 +71,21 @@ body::before {
   inset: 0;
   background: linear-gradient(
     160deg,
-    rgba(26, 26, 46, 0.55) 0%,
-    rgba(100, 20, 60, 0.35) 50%,
-    rgba(26, 26, 46, 0.6) 100%
+    rgba(13, 19, 36, 0.75) 0%,
+    rgba(180, 19, 109, 0.25) 50%,
+    rgba(11, 17, 34, 0.85) 100%
   );
   z-index: -1;
 }
 
 /* ── Typography ── */
-h1 { font-family: var(--font-heading); font-size: 22px; color: var(--ink); }
-h2 { font-family: var(--font-heading); font-size: 30px; color: var(--ink); }
-h3 { font-family: var(--font-heading); font-size: 24px; color: var(--ink); }
+h1 { font-family: var(--font-heading); font-size: 22px; color: var(--white); }
+h2 { font-family: var(--font-heading); font-size: 30px; color: var(--white); }
+h3 { font-family: var(--font-heading); font-size: 24px; color: var(--white); }
 
 .font-heading {
   font-family: var(--font-heading);
-  color: var(--ink);
+  color: var(--white);
   font-weight: 600;
   line-height: 1.2;
 }
@@ -95,11 +95,11 @@ h3 { font-family: var(--font-heading); font-size: 24px; color: var(--ink); }
 }
 
 /* ── Global Utilities ── */
-.text-ink    { color: var(--ink)   !important; }
+.text-ink    { color: var(--white) !important; }
 .text-stone  { color: var(--stone) !important; }
 .text-saffron, .text-pink { color: var(--pink) !important; }
-.bg-off-white { background-color: var(--off-white) !important; }
-.bg-white     { background-color: var(--white)     !important; }
+.bg-off-white { background-color: var(--glass-subtle) !important; }
+.bg-white     { background-color: var(--glass-card) !important; }
 
 /* ── Scrollbar ── */
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -111,13 +111,13 @@ h3 { font-family: var(--font-heading); font-size: 24px; color: var(--ink); }
 /* ── Inputs ── */
 input, select {
   height: 52px;
-  background-color: rgba(255,255,255,0.9);
+  background-color: var(--glass-white);
   border: 1.5px solid var(--input-border);
   border-radius: 14px;
   padding: 0 16px;
   font-family: var(--font-body);
   font-size: 14px;
-  color: var(--ink);
+  color: var(--white);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 input:focus, select:focus {
@@ -132,7 +132,7 @@ input[type], select, textarea { font-size: 16px !important; }
 /* ── Buttons ── */
 button.primary {
   height: 52px;
-  background: var(--ink);
+  background: var(--pink);
   color: var(--white);
   border: none;
   border-radius: 14px;
@@ -142,17 +142,17 @@ button.primary {
   transition: all 0.2s ease;
   cursor: pointer;
 }
-button.primary:hover  { background: #2a2a4a; }
+button.primary:hover  { background: #d81b60; }
 button.primary:active { transform: scale(0.98); }
 
 /* ── Toast ── */
 #toast {
-  background: var(--ink);
+  background: var(--glass-card);
   color: var(--white);
   font-size: 13px;
   padding: 12px 24px;
   border-radius: 24px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-medium);
   border: 1px solid rgba(236, 72, 153, 0.3);
 }
 

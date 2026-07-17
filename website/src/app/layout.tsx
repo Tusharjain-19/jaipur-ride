@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "Jaipur Ride — Official Website & Metro Guide",
+    default: "Jaipur Ride | Official Website & Metro Guide",
     template: "%s | Jaipur Ride",
   },
   description: "Plan your Jaipur Metro journey instantly. Official website for Jaipur Ride companion app. Get routes, interactive map, fares, station facilities, and local sightseeing guides.",
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     "google-site-verification": "XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo",
   },
   openGraph: {
-    title: "Jaipur Ride — Official Website & Metro Guide",
+    title: "Jaipur Ride | Official Website & Metro Guide",
     description: "Navigate the Jaipur Metro Pink Line with ease. Compute fares, view interactive route maps, find stations, and explore historic places near you.",
     url: "https://jaipurride.vercel.app",
     siteName: "Jaipur Ride",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaipur Ride — Official Website & Metro Guide",
+    title: "Jaipur Ride | Official Website & Metro Guide",
     description: "Plan your Jaipur Metro journey instantly. Fast, responsive, offline-first companion app.",
     images: ["/splash.png"],
   },
@@ -96,6 +96,23 @@ export default function RootLayout({
       className="h-full antialiased"
       suppressHydrationWarning
     >
+      <head>
+        <meta name="google-site-verification" content="XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                var saved = localStorage.getItem('jaipur-ride-theme');
+                if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                  document.documentElement.classList.add('dark');
+                } else {
+                  document.documentElement.classList.remove('dark');
+                }
+              } catch (_) {}
+            `,
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-light-bg dark:bg-navy-deep text-foreground font-sans selection:bg-brand-pink/30 selection:text-brand-pink">
         <Providers>
           <Navbar />

@@ -1,629 +1,473 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import PhoneMockup from "@/components/PhoneMockup";
+import { motion } from "framer-motion";
 import statistics from "@/data/statistics.json";
 import faqData from "@/data/faq.json";
 import tourismData from "@/data/tourism.json";
 import { useLanguage } from "@/context/LanguageContext";
-import {
-  playMetroHorn,
-  playDoorOpen,
-  playDoorClose,
-  playStationAmbience,
-  stopStationAmbience
-} from "@/components/audioHelper";
+import PhoneMockup from "@/components/PhoneMockup";
 import {
   Train as TrainIcon,
-  Map,
-  Compass,
+  MapPin,
   Download,
   CheckCircle,
   Star,
   ArrowRight,
   Shield,
   Smartphone,
-  Check,
-  Volume2,
-  VolumeX
+  Check
 } from "lucide-react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
-
-const features = [
-  {
-    icon: <Compass className="w-6 h-6 text-brand-pink" />,
-    title: "Offline Journey Planner",
-    titleHi: "ऑफलाइन यात्रा योजनाकार",
-    desc: "Calculate routes, ticket fares, and platform numbers completely offline.",
-    descHi: "पूरी तरह से ऑफ़लाइन मार्ग, टिकट किराया और प्लेटफ़ॉर्म नंबरों की गणना करें।"
-  },
-  {
-    icon: <Map className="w-6 h-6 text-brand-pink" />,
-    title: "Live GPS Tracking",
-    titleHi: "लाइव जीपीएस ट्रैकिंग",
-    desc: "Track your metro journey in real-time with accurate distance to your stop.",
-    descHi: "अपने स्टॉप की सटीक दूरी के साथ वास्तविक समय में अपनी मेट्रो यात्रा को ट्रैक करें।"
-  },
-  {
-    icon: <Smartphone className="w-6 h-6 text-brand-pink" />,
-    title: "Bilingual Support",
-    titleHi: "द्विभाषी सहायता",
-    desc: "Seamlessly transition between English and Hindi for all station details.",
-    descHi: "सभी स्टेशन विवरणों के लिए अंग्रेजी और हिंदी के बीच आसानी से बदलें।"
-  },
-  {
-    icon: <Shield className="w-6 h-6 text-brand-pink" />,
-    title: "Zero Ads & Privacy-First",
-    titleHi: "शून्य विज्ञापन और गोपनीयता-प्रथम",
-    desc: "Enjoy a completely ad-free, clutter-free utility app with zero tracking.",
-    descHi: "शून्य ट्रैकिंग के साथ पूरी तरह से विज्ञापन-मुक्त, अव्यवस्था-मुक्त उपयोगिता ऐप का आनंद लें।"
-  }
-];
-
-const testimonials = [
-  {
-    content: "Jaipur Ride made my tourist experience so easy! I could find the closest metro station to Hawa Mahal and check the fare offline without internet.",
-    contentHi: "जयपुर राइड ने मेरे पर्यटक अनुभव को बहुत आसान बना दिया! मैं हवा महल के निकटतम मेट्रो स्टेशन को खोज सका और बिना इंटरनेट के ऑफ़लाइन किराया देख सका।",
-    name: "Aarav Mehta",
-    role: "Tourist from Mumbai",
-    roleHi: "मुंबई से पर्यटक"
-  },
-  {
-    content: "As a daily commuter, the live GPS tracking and offline capabilities are life-savers. Highly recommend this app to anyone traveling in Jaipur.",
-    contentHi: "एक दैनिक यात्री के रूप में, लाइव जीपीएस ट्रैकिंग और ऑफ़लाइन क्षमताएं जीवनरक्षक हैं। जयपुर में यात्रा करने वाले किसी भी व्यक्ति को इस ऐप की अत्यधिक अनुशंसा करते हैं।",
-    name: "Priya Sharma",
-    role: "Daily Commuter",
-    roleHi: "दैनिक यात्री"
-  }
-];
 
 export default function Home() {
   const { t, language } = useLanguage();
-  const router = useRouter();
+  const isEn = language === "en";
 
-  // Intro states
-  const [introPlayed, setIntroPlayed] = useState(false);
-  const [timelineStep, setTimelineStep] = useState("idle");
-  const [soundEnabled, setSoundEnabled] = useState(false);
-  const [isNavigating, setIsNavigating] = useState(false);
-
-  // Scroll frame animation states
-  const [currentFrame, setCurrentFrame] = useState(1);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-
-  // Statistics counters
-  const [downloadCount, setDownloadCount] = useState(0);
-  const [activeUsersCount, setActiveUsersCount] = useState(0);
-
-  // Scroll storytelling tracking
-  const containerRef = useRef<HTMLDivElement>(null);
-  const heroContainerRef = useRef<HTMLDivElement>(null);
-
-  // Global page scroll (for station timeline indicator)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const springScroll = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
-  const trainY = useTransform(springScroll, [0, 1], [0, 360]);
-
-  // Hero section container scroll
-  const { scrollYProgress: heroScrollY } = useScroll({
-    target: heroContainerRef,
-    offset: ["start start", "end end"]
-  });
-
-  const frameIndex = useTransform(heroScrollY, [0, 0.9], [1, 15]);
-
-  // Track page section indices to highlight station stops on scroll
-  const [activeStationIdx, setActiveStationIdx] = useState(0);
-
-  // Preload hero frame assets on mount
-  useEffect(() => {
-    for (let i = 1; i <= 15; i++) {
-      const img = new window.Image();
-      img.src = `/assets/hero/frame_${String(i).padStart(2, "0")}.png`;
+  React.useEffect(() => {
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then((registrations) => {
+        for (const registration of registrations) {
+          if (registration.scope === window.location.origin + "/") {
+            registration.unregister().then((success) => {
+              if (success) {
+                console.log("Cleared hijacked root service worker registration");
+                if ("caches" in window) {
+                  caches.keys().then((names) => {
+                    names.forEach((name) => caches.delete(name));
+                  });
+                }
+                window.location.reload();
+              }
+            });
+          }
+        }
+      });
     }
   }, []);
 
-  // Monitor scroll progress of the hero section
-  useEffect(() => {
-    const unsubscribe = frameIndex.on("change", (latest) => {
-      // Disengage autoplay once user starts scrolling
-      if (latest > 1.05) {
-        setIsAutoPlaying(false);
-      }
-      if (!isAutoPlaying) {
-        const rounded = Math.min(15, Math.max(1, Math.round(latest)));
-        setCurrentFrame(rounded);
-        if (rounded === 15) {
-          setTimelineStep("complete");
-          setIntroPlayed(true);
-        }
-      }
-    });
-    return () => unsubscribe();
-  }, [frameIndex, isAutoPlaying]);
-
-  // Autoplay cinematic timeline if user is idle at top of page
-  useEffect(() => {
-    if (isAutoPlaying) {
-      let frame = 1;
-      const interval = setInterval(() => {
-        frame += 1;
-        if (frame > 15) {
-          clearInterval(interval);
-          setTimelineStep("complete");
-          setIntroPlayed(true);
-        } else {
-          setCurrentFrame(frame);
-          if (frame === 4 && soundEnabled) {
-            playMetroHorn();
-          }
-          if (frame === 9 && soundEnabled) {
-            playDoorOpen();
-          }
-        }
-      }, 400);
-      return () => clearInterval(interval);
+  const testimonials = [
+    {
+      content: "Your commute won't feel like a maze. 🌀 With the JaipurRide App, everything you need is in one place! Trip Planner to find the route. Details like public convenience, ticket counter, lift access, escalator, checking the availability of a taxi stand, auto-rickshaw and bus stands near metro stations, divyang-friendly features and parking availability and directions to metro stations. New! Explore nearby monuments. No more confusion. Just seamless travel, doorstep to destination.",
+      contentHi: "आपकी यात्रा अब भूलभुलैया जैसी नहीं लगेगी। 🌀 जयपुरराइड ऐप के साथ, वह सब कुछ जो आपको चाहिए, एक ही स्थान पर है! मार्ग खोजने के लिए ट्रिप प्लानर, मेट्रो स्टेशनों के पास सार्वजनिक सुविधा, टिकट काउंटर, लिफ्ट एक्सेस, एस्केलेटर, टैक्सी स्टैंड, ऑटो-रिक्शा और बस स्टैंड की उपलब्धता, दिव्यांग-अनुकूल सुविधाएं और पार्किंग उपलब्धता जैसी जानकारी। नया! पास के स्मारकों को एक्सप्लोर करें। कोई भ्रम नहीं, बस निर्बाध यात्रा।",
+      name: "Pooja Pal Jain",
+      date: "April 21, 2026"
+    },
+    {
+      content: "I've been using this app for a while now, and honestly, it's really impressive. The interface is clean and easy to navigate, which makes planning trips much less stressful. I especially liked how smoothly everything works, from searching destinations to checking details and plus point it also show best time to visit, it feels very user-friendly. The features are practical and actually useful, not just there for show. It saves a lot of time and makes travel planning more organized.",
+      contentHi: "मैं कुछ समय से इस ऐप का उपयोग कर रही हूँ, और ईमानदारी से कहूँ तो यह वास्तव में प्रभावशाली है। इंटरफ़ेस साफ और नेविगेट करने में आसान है, जो यात्राओं की योजना बनाने को तनावमुक्त बनाता है। मुझे विशेष रूप से पसंद आया कि सब कुछ कितनी आसानी से काम करता है - स्थलों को खोजने से लेकर विवरणों की जांच करने तक और प्लस पॉइंट यह है कि यह घूमने का सबसे अच्छा समय भी दिखाता है।",
+      name: "Tanisha Meena",
+      date: "April 22, 2026"
+    },
+    {
+      content: "useful app, jaipur metro needed this !!",
+      contentHi: "उपयोगी ऐप, जयपुर मेट्रो को इसकी सख्त जरूरत थी !!",
+      name: "Harshit Chhipa",
+      date: "April 21, 2026"
+    },
+    {
+      content: "Works great as always 🔥",
+      contentHi: "हमेशा की तरह शानदार काम करता है 🔥",
+      name: "Pari Sharma",
+      date: "April 21, 2026"
+    },
+    {
+      content: "perfect app for travel guide in jaipur and with safety ✨ 👍",
+      contentHi: "जयपुर में यात्रा गाइड के लिए सुरक्षा के साथ एक आदर्श ऐप ✨ 👍",
+      name: "Madhav Sharma",
+      date: "April 21, 2026"
+    },
+    {
+      content: "Super convenient and reliable. Never faced any issues. 5 stars!",
+      contentHi: "अत्यंत सुविधाजनक और विश्वसनीय। कभी किसी समस्या का सामना नहीं करना पड़ा। 5 सितारे!",
+      name: "Aashna Jaiman",
+      date: "April 21, 2026"
+    },
+    {
+      content: "Great App .... It's features are Amazing 🤠 ....It helps alot in jaipur...",
+      contentHi: "शानदार ऐप .... इसकी विशेषताएं अद्भुत हैं 🤠 ....यह जयपुर में बहुत मदद करता है...",
+      name: "Snehil Gaming",
+      date: "April 22, 2026"
+    },
+    {
+      content: "wonderful app for jaipur metro , truly satisfied with service and this platform ❤️",
+      contentHi: "जयपुर मेट्रो के लिए अद्भुत ऐप, सेवा और इस प्लेटफॉर्म से पूरी तरह से संतुष्ट हैं ❤️",
+      name: "Hansu Sharma",
+      date: "April 21, 2026"
     }
-  }, [isAutoPlaying, soundEnabled]);
+  ];
 
-  // Trigger audio feedback on specific frame thresholds during scroll
-  const lastPlayedFrame = useRef(1);
-  useEffect(() => {
-    if (!isAutoPlaying && soundEnabled) {
-      if (currentFrame === 4 && lastPlayedFrame.current !== 4) {
-        playMetroHorn();
-      }
-      if (currentFrame === 9 && lastPlayedFrame.current !== 9) {
-        playDoorOpen();
-      }
-      lastPlayedFrame.current = currentFrame;
+  // Features Comparison data
+  const compareFeatures = [
+    {
+      label: isEn ? "100% Offline Database (SQLite)" : "100% ऑफ़लाइन डेटाबेस (SQLite)",
+      app: true,
+      web: false
+    },
+    {
+      label: isEn ? "Live GPS Train Route Calculations" : "लाइव जीपीएस ट्रेन रूट गणना",
+      app: true,
+      web: true
+    },
+    {
+      label: isEn ? "Arrival Vibration Alerts (Native Haptic)" : "आगमन कंपन अलर्ट (मूल हैप्टिक)",
+      app: true,
+      web: false
+    },
+    {
+      label: isEn ? "One-Tap Emergency Hotline Dialer" : "वन-टैप आपातकालीन हॉटलाइन डायलर",
+      app: true,
+      web: false
+    },
+    {
+      label: isEn ? "Over-The-Air Database Updates" : "ओवर-द-एयर डेटाबेस अपडेट",
+      app: true,
+      web: false
+    },
+    {
+      label: isEn ? "Smart Card Value & Fare Integration" : "स्मार्ट कार्ड मूल्य और किराया एकीकरण",
+      app: true,
+      web: false
     }
-  }, [currentFrame, isAutoPlaying, soundEnabled]);
+  ];
 
-  // Sync station nodes with overall scroll progress
-  useEffect(() => {
-    const unsubscribe = scrollYProgress.on("change", (latest) => {
-      if (latest < 0.2) setActiveStationIdx(0);       // Mansarovar (Hero)
-      else if (latest < 0.4) setActiveStationIdx(1);  // Civil Lines (Stats)
-      else if (latest < 0.6) setActiveStationIdx(2);  // Sindhi Camp (Features)
-      else if (latest < 0.8) setActiveStationIdx(3);  // Chandpole (Explore)
-      else setActiveStationIdx(4);                    // Badi Chaupar (Download)
-    });
-
-    return () => unsubscribe();
-  }, [scrollYProgress]);
-
-  // Animate statistics counter when hero transition completes
-  useEffect(() => {
-    if (currentFrame >= 11) {
-      let dl = 0;
-      let users = 0;
-      const interval = setInterval(() => {
-        dl += 2000;
-        users += 500;
-        if (dl >= 50000) {
-          setDownloadCount(50000);
-          setActiveUsersCount(12000);
-          clearInterval(interval);
-        } else {
-          setDownloadCount(dl);
-          setActiveUsersCount(users);
-        }
-      }, 40);
-      return () => clearInterval(interval);
+  // 9 Vastu Shastra Corridor items
+  const corridors = [
+    {
+      num: "01",
+      title: isEn ? "Corridor Map" : "कॉरिडोर मैप",
+      subtitle: isEn ? "Line 1 Layout" : "लाइन 1 लेआउट",
+      desc: isEn ? "Seamless SVG route vector tracking all 11 active station coordinates from Mansarovar to Badi Chaupar." : "मानसरोवर से बड़ी चौपड़ तक सभी 11 सक्रिय स्टेशन निर्देशांकों की ट्रैकिंग करने वाला निर्बाध एसवीजी रूट वेक्टर।",
+      link: "/metro-map",
+      linkText: isEn ? "View Map Guide" : "मानचित्र गाइड देखें"
+    },
+    {
+      num: "02",
+      title: isEn ? "Local DB" : "स्थानीय डीबी",
+      subtitle: isEn ? "SQLite Storage" : "SQLite स्टोरेज",
+      desc: isEn ? "Zero network requests required. All station metadata, gates, and schedules are local to your smartphone." : "शून्य नेटवर्क अनुरोधों की आवश्यकता। सभी स्टेशन मेटाडेटा, द्वार और समय सारणी आपके स्मार्टफोन में स्थानीय रूप से सहेजे हैं।",
+      subtext: isEn ? "100% Offline Capable" : "100% ऑफ़लाइन सक्षम"
+    },
+    {
+      num: "03",
+      title: isEn ? "Exploration" : "पर्यटन अन्वेषण",
+      subtitle: isEn ? "Heritage Landmarks" : "विरासत स्थल",
+      desc: isEn ? "Step off the train and straight into history. Walking guides to Hawa Mahal, Jantar Mantar, and local bazaars." : "ट्रेन से उतरें और सीधे इतिहास में प्रवेश करें। हवा महल, जंतर मंतर और स्थानीय बाजारों के लिए पैदल मार्ग निर्देश।",
+      link: "/explore-jaipur",
+      linkText: isEn ? "View Sights Directory" : "दर्शनीय स्थल निर्देशिका देखें"
+    },
+    {
+      num: "04",
+      title: isEn ? "Symmetry" : "समरूपता",
+      subtitle: isEn ? "Bilingual Layout" : "द्विभाषी लेआउट",
+      desc: isEn ? "Complete support for Hindi and English. All station metrics, fares, and help parameters align dynamically." : "हिंदी और अंग्रेजी के लिए पूर्ण समर्थन। सभी स्टेशन विवरण, किराए और सहायता पैरामीटर गतिशील रूप से बदलते हैं।",
+      subtext: "English / हिंदी"
+    },
+    {
+      num: "05",
+      title: isEn ? "The Core" : "मुख्य कोर",
+      subtitle: isEn ? "Simulator Sandbox" : "सिम्युलेटर सैंडबॉक्स",
+      desc: isEn ? "Test the mobile companion application instantly in our digital sandbox. Estimate ticket fares and boarding directions." : "हमारे डिजिटल सैंडबॉक्स में तुरंत मोबाइल एप्लिकेशन का परीक्षण करें। टिकट किराए और बोर्डिंग दिशाओं का अनुमान लगाएं।",
+      link: "/simulation",
+      linkText: isEn ? "Open Simulator Sandbox" : "सिम्युलेटर सैंडबॉक्स खोलें",
+      highlight: true
+    },
+    {
+      num: "06",
+      title: isEn ? "Underpasses" : "अंडरपास",
+      subtitle: isEn ? "Underground Stations" : "भूमिगत स्टेशन",
+      desc: isEn ? "Detailed blueprints of stations like Chhoti Chaupar, combining modern underground engineering with classical arches." : "छोटी चौपड़ जैसे स्टेशनों के विस्तृत विवरण, जो आधुनिक भूमिगत इंजीनियरिंग को पारंपरिक मेहराबों के साथ जोड़ते हैं।",
+      subtext: isEn ? "Platform Map Layouts" : "प्लेटफॉर्म मैप लेआउट"
+    },
+    {
+      num: "07",
+      title: isEn ? "Finance" : "वित्त",
+      subtitle: isEn ? "Fare Auditing" : "किराया ऑडिटिंग",
+      desc: isEn ? "Calculate smart card values (10-20% discounts) and compare against cash rates to optimize budget." : "स्मार्ट कार्ड मूल्यों (10-20% छूट) की गणना करें और बजट को अनुकूलित करने के लिए नकद दरों के साथ तुलना करें।",
+      link: "/journey-planner",
+      linkText: isEn ? "Calculate Fare" : "किराया की गणना करें"
+    },
+    {
+      num: "08",
+      title: isEn ? "Frequency" : "आवृत्ति",
+      subtitle: isEn ? "Timing Schedules" : "समय सारणी",
+      desc: isEn ? "First and last dispatch listings from Mansarovar and Badi Chaupar, with adaptive peak hours frequencies." : "मानसरोवर और बड़ी चौपड़ से पहली और आखिरी ट्रेन की प्रस्थान सूची, पीक आवर्स की आवृत्ति के साथ।",
+      link: "/timings",
+      linkText: isEn ? "Check Schedules" : "समय सारणी की जाँच करें"
+    },
+    {
+      num: "09",
+      title: isEn ? "Helpline" : "हेल्पलाइन",
+      subtitle: isEn ? "Safety Hub" : "सुरक्षा हब",
+      desc: isEn ? "Instant access to JMRC control center numbers, metro police stations, and women safety helplines." : "JMRC नियंत्रण कक्ष नंबरों, मेट्रो पुलिस स्टेशनों और महिला सुरक्षा हेल्पलाइन नंबरों तक तुरंत पहुंच।",
+      link: "/faq",
+      linkText: isEn ? "Support & FAQs" : "सहायता और अक्सर पूछे जाने वाले प्रश्न"
     }
-  }, [currentFrame]);
-
-  // Sound toggling logic
-  const handleToggleSound = () => {
-    const nextState = !soundEnabled;
-    setSoundEnabled(nextState);
-    if (nextState) {
-      playStationAmbience();
-      playMetroHorn();
-    } else {
-      stopStationAmbience();
-    }
-  };
-
-  // Handle CTA simulator click with interactive door closing animation
-  const handleTrySimulation = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (isNavigating) return;
-    setIsNavigating(true);
-    setIsAutoPlaying(false);
-
-    if (soundEnabled) {
-      playDoorClose();
-    }
-
-    let frame = currentFrame;
-    const interval = setInterval(() => {
-      frame -= 1;
-      if (frame < 8) {
-        clearInterval(interval);
-        setTimeout(() => {
-          stopStationAmbience();
-          router.push("/simulation");
-        }, 400);
-      } else {
-        setCurrentFrame(frame);
-      }
-    }, 100);
-  };
-
-  // Scroll metro stations
-  const metroStations = [
-    { name: "Mansarovar", id: "J01", label: "Hero Center" },
-    { name: "Civil Lines", id: "J03", label: "Ridership Stats" },
-    { name: "Sindhi Camp", id: "J07", label: "Core Features" },
-    { name: "Chandpole", id: "J09", label: "Explore Guide" },
-    { name: "Badi Chaupar", id: "J11", label: "Download App" },
   ];
 
   return (
-    <div ref={containerRef} className="space-y-24 pb-24 overflow-hidden relative min-h-screen">
+    <div className="space-y-20 pb-20 overflow-hidden relative min-h-screen bg-light-bg dark:bg-navy-deep text-foreground transition-colors duration-300">
       
-      {/* Sound Toggle Floating Control */}
-      <div className="fixed bottom-6 right-6 z-50">
-        <button
-          onClick={handleToggleSound}
-          className={`p-3.5 rounded-full shadow-lg transition-all flex items-center justify-center space-x-2 border ${
-            soundEnabled 
-              ? "bg-brand-pink text-white border-brand-pink animate-pulse" 
-              : "bg-white dark:bg-navy-card text-foreground/60 border-light-border dark:border-navy-border/40"
-          }`}
-          title="Toggle Station Audio"
-        >
-          {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-          <span className="text-xs font-bold hidden md:inline">
-            {soundEnabled ? "Audio Active" : "Enable Audio"}
-          </span>
-        </button>
-      </div>
-
-      {/* VERTICAL SCROLL STORYTELLER TIMELINE (Desktop Only) */}
-      <div className="hidden lg:block fixed left-6 top-1/4 h-[400px] w-48 z-40">
+      {/* 1. ROYAL JAIPUR HERO SECTION */}
+      <section className="relative overflow-hidden pt-12 pb-8 lg:pt-14 lg:pb-8 bg-light-bg dark:bg-navy-deep">
         
-        {/* Track Line */}
-        <div className="absolute left-[15px] top-4 bottom-4 w-1 bg-slate-200 dark:bg-navy-border/50 rounded-full"></div>
-        
-        {/* Active Track Highlight */}
-        <motion.div
-          className="absolute left-[15px] top-4 w-1 bg-brand-pink rounded-full origin-top"
-          style={{ height: trainY }}
-        ></motion.div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
 
-        {/* Floating Mini Metro Train */}
-        <motion.div
-          className="absolute left-[7px] w-[20px] h-[20px] rounded-lg bg-brand-pink text-white flex items-center justify-center shadow-lg border border-white z-50 pointer-events-none"
-          style={{ y: trainY }}
-        >
-          <TrainIcon className="w-3 h-3" />
-        </motion.div>
+        {/* Jali pattern background grid */}
+        <div className="absolute inset-0 jali-screen pointer-events-none opacity-20"></div>
 
-        {/* Station Markers */}
-        <div className="absolute inset-0 flex flex-col justify-between py-2 pl-8 text-xs font-semibold select-none">
-          {metroStations.map((station, idx) => {
-            const isActive = idx === activeStationIdx;
-            return (
-              <div key={idx} className="relative flex items-center h-6">
-                
-                {/* Station Node Indicator Dot */}
-                <div
-                  className={`absolute left-[-29px] w-3 h-3 rounded-full border-2 transition-all duration-300 ${
-                    isActive 
-                      ? "bg-white border-brand-pink scale-125 shadow-[0_0_8px_#ec4899]" 
-                      : idx < activeStationIdx
-                      ? "bg-brand-pink border-brand-pink"
-                      : "bg-slate-100 dark:bg-navy-card border-slate-300 dark:border-navy-border"
-                  }`}
-                ></div>
-
-                {/* Station labels */}
-                <div className="flex flex-col text-left">
-                  <span className={`leading-none transition-colors ${isActive ? "text-brand-pink font-bold text-sm" : "text-foreground/50 text-[11px]"}`}>
-                    {station.name} ({station.id})
-                  </span>
-                  {isActive && (
-                    <span className="text-[10px] text-foreground/40 font-normal leading-none mt-0.5">
-                      {station.label}
-                    </span>
-                  )}
-                </div>
-
-              </div>
-            );
-          })}
-        </div>
-
-      </div>
-
-      {/* 1. CINEMATIC HERO SECTION */}
-      <div ref={heroContainerRef} className="relative h-[300vh] w-full bg-white dark:bg-navy-deep">
-        <div className="sticky top-0 left-0 w-full h-screen overflow-hidden flex flex-col justify-between">
-          
-          {/* Frame Background */}
-          <div className="absolute inset-0 z-0 select-none pointer-events-none">
-            <img
-              src={`/assets/hero/frame_${String(currentFrame).padStart(2, "0")}.png`}
-              alt="Jaipur Metro Station"
-              className="w-full h-full object-cover transition-all duration-300 ease-out"
-            />
-            {/* Dark radial overlay to ensure text readability */}
-            <div className="absolute inset-0 bg-linear-to-b from-black/20 via-black/30 to-black/60"></div>
-          </div>
-
-          {/* Skip Intro Overlay */}
-          {isAutoPlaying && currentFrame < 15 && (
-            <div className="absolute top-24 right-6 z-35">
-              <button
-                onClick={() => {
-                  setIsAutoPlaying(false);
-                  setCurrentFrame(15);
-                  setTimelineStep("complete");
-                  setIntroPlayed(true);
-                }}
-                className="px-4 py-2 bg-black/50 hover:bg-black/70 backdrop-blur-md text-white text-xs font-bold rounded-full transition-all border border-white/10"
-              >
-                Skip Intro ➔
-              </button>
-            </div>
-          )}
-
-          {/* Main Content Layout */}
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-24 pb-12 flex-1 flex flex-col justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            <div className="w-full flex justify-between items-center">
-              {/* Optional top spacer or logo container */}
-            </div>
+            {/* Left Column: Core pitch */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="lg:col-span-7 space-y-6 text-center lg:text-left"
+            >
 
-            {/* Dynamic Content overlays corresponding to scroll progression */}
-            <div className="flex-1 flex flex-col justify-center items-center text-center max-w-4xl mx-auto space-y-6">
-              
-              {/* Text overlays mapped to frames */}
-              {currentFrame <= 3 && (
-                <motion.div
-                  key="scene-1"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className="space-y-4"
+
+              <h1 className="font-heading font-extrabold text-4xl sm:text-6xl text-slate-900 dark:text-text-primary tracking-tight leading-none">
+                {isEn ? "Explore Jaipur" : "जयपुर मेट्रो यात्रा"}{" "}<br className="hidden sm:inline" />
+                <span className="bg-linear-to-r from-brand-pink via-pink-city to-brand-pink-dark bg-clip-text text-transparent">
+                  {isEn ? "Smarter & Offline" : "स्मार्ट और ऑफ़लाइन"}
+                </span>
+              </h1>
+
+              <p className="max-w-2xl mx-auto lg:mx-0 text-base sm:text-lg text-slate-600 dark:text-text-secondary leading-relaxed font-sans">
+                {isEn
+                  ? "Navigate the historic Pink City with Jaipur Ride, the definitive Jaipur Metro transit companion. Find platform directions, estimate ticket fares, and plan walking journeys, all with zero tracking and zero ads."
+                  : "जयपुर राइड के साथ ऐतिहासिक गुलाबी नगरी के मेट्रो सफर को आसान बनाएं। बिना विज्ञापन और बिना किसी ट्रैकिंग के प्लेटफ़ॉर्म दिशा-निर्देश प्राप्त करें, टिकट किराए की गणना करें और पैदल यात्रा की योजना बनाएं।"}
+              </p>
+
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                <Link
+                  href="/simulation"
+                  className="w-full sm:w-auto px-8 py-4 bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-base font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2 border-none cursor-pointer"
                 >
-                  <h1 className="font-heading font-extrabold text-5xl sm:text-8xl text-white tracking-tight drop-shadow-md">
-                    Jaipur Ride
-                  </h1>
-                  <p className="text-lg sm:text-2xl text-white/90 font-medium tracking-wide">
-                    {language === "en" ? "The Journey Begins at Mansarovar" : "यात्रा मानसरोवर से शुरू होती है"}
-                  </p>
-                </motion.div>
-              )}
+                  <TrainIcon className="w-5 h-5" />
+                  <span>{isEn ? "Try Web Simulator" : "वेब सिम्युलेटर आज़माएं"}</span>
+                </Link>
 
-              {currentFrame >= 4 && currentFrame <= 6 && (
-                <motion.div
-                  key="scene-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-4"
+                <a
+                  href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto hover:scale-[1.05] active:scale-[0.95] transition-all shrink-0 inline-flex justify-center h-[64px] items-center"
                 >
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/20 text-brand-pink border border-brand-pink/30 backdrop-blur-md">
-                    🔔 Train Approaching
-                  </span>
-                  <h1 className="font-heading font-extrabold text-4xl sm:text-7xl text-white tracking-tight drop-shadow-lg leading-tight">
-                    {language === "en" ? "Step Onto the Platform" : "प्लेटफ़ॉर्म पर कदम रखें"}
-                  </h1>
-                  <p className="max-w-2xl text-sm sm:text-lg text-white/80">
-                    {language === "en" ? "Watch the Jaipur Metro Pink Line arrive in real-time." : "जयपुर मेट्रो पिंक लाइन को वास्तविक समय में आते हुए देखें।"}
-                  </p>
-                </motion.div>
-              )}
-
-              {currentFrame >= 7 && currentFrame <= 10 && (
-                <motion.div
-                  key="scene-3"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="space-y-4"
-                >
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-md">
-                    ✓ Arrived & Docked
-                  </span>
-                  <h1 className="font-heading font-extrabold text-4xl sm:text-7xl text-white tracking-tight drop-shadow-lg leading-tight">
-                    {language === "en" ? "Doors Opening..." : "दरवाजे खुल रहे हैं..."}
-                  </h1>
-                  <p className="max-w-2xl text-sm sm:text-lg text-white/80">
-                    {language === "en" ? "Stand behind the yellow safety line and prepare to board." : "पीली सुरक्षा रेखा के पीछे खड़े रहें और चढ़ने के लिए तैयार हों।"}
-                  </p>
-                </motion.div>
-              )}
-
-              {currentFrame >= 11 && (
-                <motion.div
-                  key="scene-4"
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8 }}
-                  className="w-full flex flex-col items-center text-center space-y-6"
-                >
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/20 text-brand-pink border border-brand-pink/30 backdrop-blur-md">
-                    🚀 {t("appVersionLabel")}
-                  </span>
-                  
-                  <h1 className="font-heading font-extrabold text-4xl sm:text-7xl text-white tracking-tight leading-tight drop-shadow-lg">
-                    {language === "en" ? (
-                      <>Explore Jaipur Metro <br className="hidden sm:inline" /><span className="bg-linear-to-r from-brand-pink to-brand-pink-light bg-clip-text text-transparent">Smarter</span>.</>
-                    ) : (
-                      <>जयपुर मेट्रो को <br className="hidden sm:inline" /><span className="bg-linear-to-r from-brand-pink to-brand-pink-light bg-clip-text text-transparent">स्मार्टली</span> समझें।</>
-                    )}
-                  </h1>
-
-                  <p className="max-w-2xl mx-auto text-base sm:text-lg text-white/95 leading-relaxed drop-shadow-md">
-                    {t("heroSubtitle")}
-                  </p>
-
-                  {/* Cinematic CTA Buttons */}
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4 w-full sm:w-auto z-30">
-                    <button
-                      onClick={handleTrySimulation}
-                      className="w-full sm:w-auto px-8 py-4 bg-brand-pink hover:bg-brand-pink-dark text-white rounded-2xl text-base font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center space-x-2 cursor-pointer border-none"
-                    >
-                      <TrainIcon className="w-5 h-5 animate-pulse" />
-                      <span>{t("btnTryOnline")}</span>
-                    </button>
-                    
-                    <Link
-                      href="/download"
-                      className="w-full sm:w-auto px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-md text-white rounded-2xl text-base font-bold border border-white/20 transition-all hover:scale-[1.02] flex items-center justify-center space-x-2 shadow-sm"
-                    >
-                      <Download className="w-5 h-5 text-brand-pink animate-bounce" />
-                      <span>{t("btnDownloadApp")}</span>
-                    </Link>
-                  </div>
-                  
-                  <div className="flex justify-center space-x-6 pt-2 text-white/70 text-xs">
-                    <span className="flex items-center space-x-1.5"><Check className="w-4 h-4 text-emerald-400" /> <span>Offline Maps</span></span>
-                    <span className="flex items-center space-x-1.5"><Check className="w-4 h-4 text-emerald-400" /> <span>Zero Ads</span></span>
-                  </div>
-                </motion.div>
-              )}
-
-            </div>
-
-            {/* Scroll Indicator */}
-            {currentFrame < 15 && (
-              <div className="w-full flex flex-col items-center space-y-2 text-white/60 animate-bounce">
-                <span className="text-[11px] font-bold uppercase tracking-widest">Scroll to Board</span>
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-                </svg>
+                  <Image
+                    src="/assets/icons/google-play.svg"
+                    alt="Get it on Google Play"
+                    width={214}
+                    height={64}
+                    className="h-[64px] w-auto shrink-0 select-none object-contain"
+                  />
+                </a>
               </div>
-            )}
+
+              {/* Specs checklist */}
+              <div className="flex justify-center lg:justify-start space-x-6 pt-2 text-slate-500 dark:text-text-secondary text-xs font-semibold">
+                <span className="flex items-center space-x-1.5"><Check className="w-4 h-4 text-emerald-500" /> <span>{isEn ? "Offline SQLite Database" : "ऑफ़लाइन SQLite डेटाबेस"}</span></span>
+                <span className="flex items-center space-x-1.5"><Check className="w-4 h-4 text-emerald-500" /> <span>{isEn ? "No Ads or Permissions" : "विज्ञापन और ट्रैकिंग रहित"}</span></span>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Real Mobile App Preview Card using PhoneMockup */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+              className="lg:col-span-5 flex justify-center py-2 lg:-mt-14 lg:mb-0 relative"
+            >
+              <div className="absolute -inset-8 bg-brand-pink/5 blur-[80px] rounded-full pointer-events-none"></div>
+              <PhoneMockup />
+            </motion.div>
 
           </div>
         </div>
-      </div>
+      </section>
 
       {/* 2. STATISTICS COUNTERS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-[32px] p-8 lg:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none">
+      <motion.section 
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <div className="bg-white dark:bg-navy-card border border-light-border dark:border-navy-border/40 rounded-3xl p-8 lg:p-12 shadow-xl shadow-slate-200/40 dark:shadow-none">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
               <p className="font-heading font-extrabold text-3xl sm:text-5xl text-brand-pink tracking-tight">
-                {timelineStep === "complete" ? "50,000+" : `${downloadCount.toLocaleString()}+`}
+                1,000+
               </p>
-              <p className="text-xs sm:text-sm text-foreground/65 font-semibold">{t("statsDownloads")}</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary font-bold uppercase tracking-wider">{t("statsDownloads")}</p>
             </div>
-            <div className="space-y-2 border-l border-light-border dark:border-navy-border/30">
-              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-foreground tracking-tight">
-                {timelineStep === "complete" ? "12,000+" : `${activeUsersCount.toLocaleString()}+`}
+            <div className="space-y-2 border-l border-light-border dark:border-navy-border/20">
+              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight">
+                250+
               </p>
-              <p className="text-xs sm:text-sm text-foreground/65 font-semibold">{t("statsActiveUsers")}</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary font-bold uppercase tracking-wider">{t("statsActiveUsers")}</p>
             </div>
-            <div className="space-y-2 border-l border-light-border dark:border-navy-border/30">
-              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-foreground tracking-tight">
+            <div className="space-y-2 border-l border-light-border dark:border-navy-border/20">
+              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight">
                 {statistics.totalStations}
               </p>
-              <p className="text-xs sm:text-sm text-foreground/65 font-semibold">{t("statsStations")}</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary font-bold uppercase tracking-wider">{t("statsStations")}</p>
             </div>
-            <div className="space-y-2 border-l border-light-border dark:border-navy-border/30">
-              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-foreground tracking-tight">
+            <div className="space-y-2 border-l border-light-border dark:border-navy-border/20">
+              <p className="font-heading font-extrabold text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight">
                 {statistics.touristAttractions}
               </p>
-              <p className="text-xs sm:text-sm text-foreground/65 font-semibold">{t("statsAttractions")}</p>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary font-bold uppercase tracking-wider">{t("statsAttractions")}</p>
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
 
-      {/* 3. CORE FEATURES */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-foreground tracking-tight">
-            {language === "en" ? "Designed for Commuters & Tourists" : "यात्रियों और पर्यटकों के लिए निर्मित"}
+      {/* 3. 3x3 SYMMETRICAL GRID */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative">
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center space-y-4 mb-16 max-w-3xl mx-auto"
+        >
+
+          <h2 className="font-heading font-extrabold text-3xl sm:text-5xl text-slate-900 dark:text-white tracking-tight leading-tight">
+            {isEn ? "Designed on the Principles of" : "जयपुर शहर की तरह"}{" "}<span className="text-brand-pink font-bold">{isEn ? "Vastu Shastra" : "वास्तु शास्त्र के सिद्धांतों पर आधारित"}</span>
           </h2>
-          <p className="max-w-2xl mx-auto text-sm sm:text-base text-foreground/60">
-            Jaipur Ride bridges the gap between fast route estimation and rich historical tour guides.
+          <p className="text-sm sm:text-base text-slate-600 dark:text-text-secondary leading-relaxed font-sans">
+            {isEn
+              ? "Just as Maharaja Sawai Jai Singh II planned Jaipur old city in a symmetrical 3x3 grid, our digital guide splits transit utility into 9 seamless corridors."
+              : "जिस प्रकार महाराजा सवाई जयसिंह द्वितीय ने जयपुर के पुराने शहर की योजना एक व्यवस्थित 3x3 ग्रिड में बनाई थी, वैसे ही हमारी डिजिटल गाइड इस मेट्रो सेवा को 9 सहज विभागों में विभाजित करती है।"}
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {features.map((feat, idx) => (
-            <div
-              key={idx}
-              className="bg-white dark:bg-navy-card hover:bg-light-accent dark:hover:bg-navy-accent/20 border border-light-border dark:border-navy-border/40 p-6 rounded-3xl transition-all duration-300 shadow-md hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 rounded-2xl bg-brand-pink/10 flex items-center justify-center mb-6">
-                {feat.icon}
-              </div>
-              <h3 className="font-heading font-bold text-lg text-foreground mb-2">
-                {language === "en" ? feat.title : feat.titleHi}
-              </h3>
-              <p className="text-sm text-foreground/70 leading-relaxed">
-                {language === "en" ? feat.desc : feat.descHi}
-              </p>
-            </div>
-          ))}
+        {/* 3x3 Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+          {corridors.map((item, idx) => {
+            const isHighlight = item.highlight;
+            if (isHighlight) {
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 15 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.05 }}
+                  className="bg-linear-to-br from-brand-pink to-brand-pink-dark text-white p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-[220px] shadow-lg shadow-brand-pink/20"
+                >
+                  <div>
+                    <span className="text-xs font-bold text-white/80 tracking-widest uppercase mb-2 block font-heading">{item.num} / {item.title}</span>
+                    <h3 className="font-heading font-bold text-2xl mb-3 text-white">{item.subtitle}</h3>
+                    <p className="text-xs text-white/90 leading-relaxed font-sans">{item.desc}</p>
+                  </div>
+                  {item.link && (
+                    <Link href={item.link} className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-white text-brand-pink-dark font-extrabold rounded-xl text-xs shadow-md transition-all hover:scale-[1.02] mt-4 border-none cursor-pointer w-fit">
+                      <span>{item.linkText}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  )}
+                </motion.div>
+              );
+            }
+
+            return (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                className="bg-white dark:bg-navy-card p-8 rounded-3xl border border-light-border dark:border-navy-border/40 relative overflow-hidden flex flex-col justify-between min-h-[220px] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
+                <div>
+                  <span className="text-xs font-bold text-brand-pink tracking-widest uppercase mb-2 block font-heading">{item.num} / {item.title}</span>
+                  <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white mb-3">{item.subtitle}</h3>
+                  <p className="text-xs text-slate-500 dark:text-text-secondary leading-relaxed font-sans">{item.desc}</p>
+                </div>
+                {item.link ? (
+                  <Link href={item.link} className="text-xs font-bold text-brand-pink hover:text-brand-pink-dark flex items-center space-x-1 mt-4">
+                    <span>{item.linkText}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                ) : (
+                  <span className="text-xs font-semibold text-slate-400 dark:text-text-secondary/60 mt-4 block">{item.subtext}</span>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
-      {/* 4. PREVIEW MAP & SIMULATION LINK */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      {/* 4. PREVIEW MAP TEASER */}
+      <motion.section 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+      >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div className="lg:col-span-5 space-y-6">
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-foreground tracking-tight">
-              {language === "en" ? "Simulate Routes Instantly" : "मार्गों का तुरंत सिमुलेशन करें"}
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
+              {isEn ? "Simulate Routes Instantly" : "मार्गों का तुरंत सिमुलेशन करें"}
             </h2>
-            <p className="text-sm sm:text-base text-foreground/75 leading-relaxed">
-              Don&apos;t wait until you stand inside the station. Estimate your cash or smart-card ticket fare, examine the intermediates stops lists, and find the correct platform numbers directly from any browser.
+            <p className="text-sm sm:text-base text-slate-600 dark:text-text-secondary leading-relaxed font-sans">
+              {isEn
+                ? "Don't wait until you stand inside the station. Estimate your cash or smart-card ticket fare, examine the intermediate stops list, and find correct platform directions directly from any browser."
+                : "स्टेशन के अंदर खड़े होने तक प्रतीक्षा न करें। किसी भी ब्राउज़र से सीधे नकद या स्मार्ट-कार्ड टिकट किराए का अनुमान लगाएं, मध्यवर्ती स्टॉप सूची देखें और सही प्लेटफॉर्म दिशा-निर्देश ढूंढें।"}
             </p>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2.5 text-sm text-foreground/80">
+            <div className="space-y-3 font-semibold text-xs sm:text-sm text-slate-700 dark:text-text-secondary">
+              <div className="flex items-center space-x-2.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>Zero location permissions needed</span>
+                <span>{isEn ? "Zero location permissions needed for web check" : "वेब जांच के लिए स्थान अनुमति की कोई आवश्यकता नहीं"}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-sm text-foreground/80">
+              <div className="flex items-center space-x-2.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>Cash vs Smart Card fare calculations</span>
+                <span>{isEn ? "Cash vs Smart Card fare calculations" : "नकद बनाम स्मार्ट कार्ड किराए की गणना"}</span>
               </div>
-              <div className="flex items-center space-x-2.5 text-sm text-foreground/80">
+              <div className="flex items-center space-x-2.5">
                 <Check className="w-4 h-4 text-emerald-500" />
-                <span>Platform directions included</span>
+                <span>{isEn ? "Platform directions included" : "प्लेटफ़ॉर्म दिशा-निर्देश शामिल"}</span>
               </div>
             </div>
             <div className="pt-2">
               <Link
-                href="/journey-planner"
-                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-brand-pink hover:bg-brand-pink-dark text-white font-bold rounded-xl shadow-md transition-all hover:scale-[1.02]"
+                href="/simulation"
+                className="inline-flex items-center space-x-2 px-6 py-3.5 bg-brand-pink hover:bg-brand-pink-dark text-white font-bold rounded-xl shadow-md transition-all hover:scale-[1.02] border-none cursor-pointer"
               >
-                <span>Open Journey Planner</span>
+                <span>{isEn ? "Try Web Simulator" : "वेब सिम्युलेटर आज़माएं"}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-white dark:bg-navy-dark rounded-3xl border border-light-border dark:border-navy-border/40 p-6 flex flex-col justify-between shadow-xl relative overflow-hidden group min-h-[300px]">
+          <div className="lg:col-span-7 bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 p-8 flex flex-col justify-between shadow-xl relative overflow-hidden group min-h-[300px]">
             {/* Background Map teaser graphic */}
-            <div className="absolute right-0 bottom-0 opacity-20 dark:opacity-10 group-hover:scale-105 transition-transform duration-500 pointer-events-none">
+            <div className="absolute right-0 bottom-0 opacity-15 dark:opacity-10 group-hover:scale-105 transition-transform duration-500 pointer-events-none">
               <Image src="/images/metro_map.jpg" alt="Map Grid" width={400} height={250} className="object-cover" />
             </div>
             
             <div className="space-y-4 max-w-lg relative z-10">
-              <span className="px-3 py-1 bg-brand-pink/15 text-brand-pink text-xs font-bold rounded-lg uppercase tracking-wider inline-block">
-                Interactive SVG Route
+              <span className="px-3 py-1 bg-brand-pink/10 text-brand-pink text-xs font-bold rounded-lg uppercase tracking-wider inline-block">
+                {isEn ? "Interactive SVG Route" : "इंटरैक्टिव एसवीजी रूट"}
               </span>
-              <h3 className="font-heading font-extrabold text-2xl text-foreground">
-                Line 1: Pink Line map Guide
+              <h3 className="font-heading font-extrabold text-2xl text-slate-900 dark:text-white">
+                {isEn ? "Line 1: Pink Line Map Guide" : "लाइन 1: पिंक लाइन मैप गाइड"}
               </h3>
-              <p className="text-sm text-foreground/75 leading-relaxed">
-                Examine the complete layout of Jaipur Metro Line 1. Hover nodes to view opening dates, platforms configuration, and connectivity routes.
+              <p className="text-sm text-slate-500 dark:text-text-secondary leading-relaxed font-sans">
+                {isEn
+                  ? "Examine the complete layout of Jaipur Metro Line 1. Hover nodes to view opening dates, platforms configuration, and connectivity routes."
+                  : "जयपुर मेट्रो लाइन 1 के संपूर्ण लेआउट की जांच करें। उद्घाटन तिथियों, प्लेटफॉर्म कॉन्फ़िगरेशन और कनेक्टिविटी मार्गों को देखने के लिए नोड्स पर कर्सर ले जाएं।"}
               </p>
             </div>
 
@@ -632,240 +476,289 @@ export default function Home() {
                 href="/metro-map"
                 className="inline-flex items-center space-x-1 text-sm font-bold text-brand-pink hover:text-brand-pink-dark group"
               >
-                <span>Open Interactive Map</span>
+                <span>{isEn ? "Open Interactive Map" : "इंटरैक्टिव मानचित्र खोलें"}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           </div>
 
         </div>
-      </section>
+      </motion.section>
 
       {/* 5. TOURIST CARDS PREVIEW */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-12 gap-4">
           <div className="space-y-2">
-            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-foreground tracking-tight">
-              {language === "en" ? "Explore Historical Sightseeing" : "ऐतिहासिक पर्यटन स्थलों को खोजें"}
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
+              {isEn ? "Explore the" : "जयपुर"}{" "}<span className="text-brand-pink font-bold">{isEn ? "Pink Line" : "पिंक लाइन गाइड"}</span>
             </h2>
-            <p className="text-sm sm:text-base text-foreground/60">
-              Find the nearest metro stations and walking distance to Jaipur&apos;s landmarks.
+            <p className="text-sm sm:text-base text-slate-500 dark:text-text-secondary">
+              {isEn ? "Landmarks just steps away from our major stations." : "मेट्रो स्टेशनों से कुछ ही कदमों की दूरी पर स्थित प्रमुख ऐतिहासिक स्थल।"}
             </p>
           </div>
           <Link
             href="/explore-jaipur"
             className="flex items-center space-x-2 text-sm font-bold text-brand-pink hover:text-brand-pink-dark group whitespace-nowrap"
           >
-            <span>View All Attractions</span>
+            <span>{isEn ? "View All Attractions" : "सभी पर्यटन स्थल देखें"}</span>
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tourismData.slice(11, 14).map((att) => (
-            <div
+          {tourismData.slice(11, 14).map((att, idx) => (
+            <motion.div
               key={att.id}
-              className="bg-white dark:bg-navy-dark rounded-3xl border border-light-border dark:border-navy-border/40 overflow-hidden shadow-lg flex flex-col justify-between"
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              className="bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 overflow-hidden shadow-md hover:shadow-lg flex flex-col justify-between group"
             >
-              <div className="relative h-48 w-full bg-slate-100 dark:bg-slate-800">
+              <div className="relative h-60 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                 <Image
                   src={att.image}
                   alt={att.name}
                   fill
-                  className="object-cover"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
               <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center text-xs">
-                    <span className="px-2.5 py-0.5 rounded-full bg-brand-pink/15 text-brand-pink font-semibold">
-                      {att.type}
+                    <span className="px-2.5 py-0.5 rounded-full bg-brand-pink/10 text-brand-pink font-semibold">
+                      {isEn ? att.type : att.typeHi}
                     </span>
-                    <span className="text-foreground/50">{att.entry_fee}</span>
+                    <span className="text-slate-400 dark:text-text-secondary">{att.entry_fee}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-xl text-foreground">
-                    {language === "en" ? att.name : att.nameHi}
+                  <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
+                    {isEn ? att.name : att.nameHi}
                   </h3>
-                  <p className="text-xs text-foreground/75 leading-relaxed line-clamp-2">
-                    {language === "en" ? att.summary : att.summaryHi}
+                  <p className="text-xs text-slate-500 dark:text-text-secondary leading-relaxed font-sans line-clamp-2">
+                    {isEn ? att.summary : att.summaryHi}
                   </p>
                 </div>
 
-                <div className="pt-4 border-t border-light-border dark:border-navy-border/20 text-xs flex justify-between items-center text-foreground/60 font-medium">
-                  <span>Metro: {att.stationId}</span>
-                  <span>{att.walk_time_min ? `${att.walk_time_min} min walk` : `${att.approx_drive_time_min} min drive`}</span>
+                <div className="pt-4 border-t border-light-border dark:border-navy-border/20 text-xs flex justify-between items-center text-slate-400 dark:text-text-secondary font-semibold">
+                  <span className="flex items-center space-x-1"><MapPin className="w-3.5 h-3.5 text-brand-pink" /> <span>{isEn ? att.stationId : T_STATION(att.stationId)}</span></span>
+                  <span>{att.walk_time_min ? `${att.walk_time_min} ${isEn ? "min walk" : "मिनट पैदल"}` : `${att.approx_drive_time_min} ${isEn ? "min drive" : "मिनट ड्राइव"}`}</span>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>
 
       {/* 6. FEATURE COMPARISON MATRIX (APP VS WEB) */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-[32px] p-8 lg:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none space-y-12">
+      <motion.section 
+        initial={{ opacity: 0, y: 15 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-100px" }}
+        transition={{ duration: 0.5 }}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
+      >
+        <div className="bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 p-8 lg:p-12 shadow-xl space-y-12">
           <div className="text-center space-y-4 max-w-2xl mx-auto">
-            <h2 className="font-heading font-extrabold text-3xl text-foreground tracking-tight">
-              {language === "en" ? "Native Android Client vs. Web Sandbox" : "एंड्रॉइड ऐप बनाम वेब सैंडबॉक्स"}
+            <h2 className="font-heading font-extrabold text-3xl text-slate-900 dark:text-white tracking-tight">
+              {isEn ? "Choose Your Experience" : "अपनी आवश्यकता चुनें"}
             </h2>
-            <p className="text-sm text-foreground/60 leading-relaxed">
-              While our website is optimized for quick reference and search engines, the official Play Store app offers direct hardware level integration for commuters.
+            <p className="text-sm text-slate-500 dark:text-text-secondary leading-relaxed font-sans">
+              {isEn
+                ? "Whether you're on the move with our Android app or planning from home via the web, we've got you covered."
+                : "चाहे आप हमारे एंड्रॉइड ऐप के साथ यात्रा पर हों या वेब के माध्यम से घर से योजना बना रहे हों, हम आपकी सहायता के लिए तैयार हैं।"}
             </p>
           </div>
 
           <div className="overflow-x-auto rounded-2xl border border-light-border dark:border-navy-border/20">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full text-left border-collapse font-sans">
               <thead>
-                <tr className="bg-light-accent dark:bg-navy-deep border-b border-light-border dark:border-navy-border/20 text-sm">
-                  <th className="p-4 text-xs font-bold uppercase text-foreground/60 tracking-wider">Features</th>
-                  <th className="p-4 text-xs font-bold uppercase text-brand-pink tracking-wider text-center">Android Companion App</th>
-                  <th className="p-4 text-xs font-bold uppercase text-foreground/60 tracking-wider text-center">Web Sandbox Simulation</th>
+                <tr className="bg-light-accent/50 dark:bg-navy-accent/20 border-b border-light-border dark:border-navy-border/30 text-sm">
+                  <th className="p-6 text-xs font-bold uppercase text-slate-500 dark:text-text-secondary tracking-wider font-heading">{isEn ? "Features" : "सुविधाएं"}</th>
+                  <th className="p-6 text-center bg-brand-pink/5 rounded-t-lg">
+                    <span className="block text-brand-pink font-heading font-bold text-base">{isEn ? "Android App" : "एंड्रॉइड ऐप"}</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5 block">{isEn ? "Best for Daily Travel" : "दैनिक यात्रा के लिए श्रेष्ठ"}</span>
+                  </th>
+                  <th className="p-6 text-center">
+                    <span className="block text-slate-900 dark:text-white font-heading font-bold text-base">{isEn ? "Web Simulator" : "वेब सिम्युलेटर"}</span>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5 block">{isEn ? "Best for Planning" : "योजना बनाने के लिए श्रेष्ठ"}</span>
+                  </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-light-border dark:divide-navy-border/10 text-sm">
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">100% Offline Database (SQLite)</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center text-foreground/40">—</td>
-                </tr>
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">Live GPS Train Route Calculations</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                </tr>
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">Arrival Vibration Alerts (Native Haptic)</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center text-foreground/40">—</td>
-                </tr>
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">One-Tap Emergency Hotline Dialer</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center text-foreground/40">—</td>
-                </tr>
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">Over-The-Air Database Updates</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center text-foreground/40">—</td>
-                </tr>
-                <tr>
-                  <td className="p-4 font-semibold text-foreground">Low Battery Geo-Fencing Service</td>
-                  <td className="p-4 text-center"><Check className="w-5 h-5 text-emerald-500 mx-auto" /></td>
-                  <td className="p-4 text-center text-foreground/40">—</td>
-                </tr>
+              <tbody className="divide-y divide-light-border dark:divide-navy-border/20 text-sm text-slate-700 dark:text-slate-300">
+                {compareFeatures.map((feat, fIdx) => (
+                  <tr key={fIdx}>
+                    <td className="p-6 font-semibold">{feat.label}</td>
+                    <td className="p-6 text-center bg-brand-pink/5"><CheckCircle className="w-5 h-5 text-emerald-500 mx-auto" /></td>
+                    <td className="p-6 text-center text-slate-400">
+                      {feat.web ? <CheckCircle className="w-5 h-5 text-emerald-500 mx-auto" /> : "-"}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* 7. APP DOWNLOAD BANNER (QR Code & Version notes) */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="bg-linear-to-r from-brand-pink to-brand-pink-dark rounded-[36px] p-8 lg:p-16 text-white shadow-xl shadow-brand-pink/10 relative overflow-hidden">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="rounded-[36px] overflow-hidden relative min-h-[400px] flex items-center p-8 lg:p-16 text-white shadow-xl shadow-brand-pink/15"
+        >
+          {/* Background image & gradient overlay */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none"
+            style={{ backgroundImage: `url('https://lh3.googleusercontent.com/aida-public/AB6AXuBEN15dDd_3ppZqLHJV5mSNyPx7_EX4Vn2jyOFHhKJReiQTZLsxKTLM6SoND7YLU5SgdMBfBojw_x7ypvzxc2g1l-21BAEuWqrHlORt_3sTBlFAo9l7nXW0ddLmNUug4jW5tZ6T3mHRMERXOgjTdhIVLs4xXr_w-8PzrOmwT_Hyft0JxjM5DVNwSTyt1rSTYf3f7eD4LGly6_d4ayBdJGYzE-XM1LTvvq56xo9A6l8oVAPf96_UUTFmZjdCR7IbQUOkcgf8CFb8')` }}
+          />
+          <div className="absolute inset-0 bg-linear-to-r from-navy-deep via-navy-deep/90 to-navy-deep/30 z-0"></div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10 w-full">
             {/* Texts */}
             <div className="lg:col-span-8 space-y-6 text-center lg:text-left">
               <h2 className="font-heading font-extrabold text-3xl sm:text-5xl tracking-tight leading-tight">
                 {t("downloadTitle")}
               </h2>
-              <p className="max-w-2xl text-white/80 leading-relaxed text-sm sm:text-base">
+              <p className="max-w-2xl text-white/80 leading-relaxed text-sm sm:text-base font-sans">
                 {t("downloadSubtitle")}
               </p>
 
               {/* Release Notes */}
-              <div className="p-5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 max-w-xl text-left space-y-3">
+              <div className="p-5 rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 max-w-xl text-left space-y-3">
                 <div className="flex items-center space-x-2 text-xs font-bold text-white uppercase tracking-wider">
-                  <Shield className="w-4 h-4" />
-                  <span>Release Notes (v2.0.4)</span>
+                  <Shield className="w-4 h-4 text-brand-pink" />
+                  <span>{isEn ? "Release Notes (v2.0.4)" : "रिलीज नोट्स (v2.0.4)"}</span>
                 </div>
-                <p className="text-xs text-white/90 leading-relaxed">
-                  • Fixed Lucide offline visuals for true network disconnection capability. <br />
-                  • Refined modal permission checks under Android target nodes. <br />
-                  • Local storage localization state sync updates.
+                <p className="text-xs text-white/90 leading-relaxed font-sans">
+                  {isEn
+                    ? "• Fixed Lucide offline visuals for true network disconnection capability. \n• Refined modal permission checks under Android target nodes."
+                    : "• नेटवर्क डिस्कनेक्शन क्षमता के लिए ऑफ़लाइन विज़ुअल्स को ठीक किया गया। \n• एंड्रॉइड लक्षित नोड्स के तहत अनुमति जांच को परिष्कृत किया गया।"}
                 </p>
                 <div className="text-[10px] text-white/60">
-                  Minimum version: Android 7.0 (Nougat) • Size: 53.4 MB
+                  {isEn ? "Play Store Release • Size: ~53 MB" : "प्ले स्टोर रिलीज • साइज: ~53 MB"}
                 </div>
               </div>
             </div>
 
             {/* Badges and QR */}
             <div className="lg:col-span-4 flex flex-col items-center justify-center space-y-6">
-              <div className="bg-white p-4 rounded-3xl shadow-lg shadow-black/15 flex flex-col items-center space-y-2">
-                <svg className="w-36 h-36 text-slate-900" viewBox="0 0 100 100">
-                  <rect x="5" y="5" width="25" height="25" fill="none" stroke="currentColor" strokeWidth="6" />
-                  <rect x="10" y="10" width="15" height="15" fill="currentColor" />
-                  <rect x="70" y="5" width="25" height="25" fill="none" stroke="currentColor" strokeWidth="6" />
-                  <rect x="75" y="10" width="15" height="15" fill="currentColor" />
-                  <rect x="5" y="70" width="25" height="25" fill="none" stroke="currentColor" strokeWidth="6" />
-                  <rect x="10" y="75" width="15" height="15" fill="currentColor" />
-                  <rect x="35" y="15" width="10" height="10" fill="currentColor" />
-                  <rect x="40" y="35" width="15" height="5" fill="currentColor" />
-                  <rect x="15" y="45" width="5" height="15" fill="currentColor" />
-                  <rect x="45" y="70" width="10" height="15" fill="currentColor" />
-                  <rect x="70" y="45" width="20" height="10" fill="currentColor" />
-                  <rect x="55" y="55" width="10" height="10" fill="currentColor" />
-                  <rect x="75" y="75" width="15" height="15" fill="currentColor" />
-                </svg>
-                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Scan to Download</span>
+              <div className="bg-white p-4 rounded-3xl shadow-xl flex flex-col items-center space-y-3">
+                <Image
+                  src="/images/qrcraft.png"
+                  alt="Google Play QR Code"
+                  width={144}
+                  height={144}
+                  className="object-contain rounded-xl select-none"
+                />
+                <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">{isEn ? "Scan to Download" : "डाउनलोड करने के लिए स्कैन करें"}</span>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-                <Link
-                  href="/download"
-                  className="px-6 py-3 bg-white hover:bg-slate-100 text-brand-pink-dark font-extrabold rounded-2xl shadow-md transition-all text-sm flex items-center justify-center space-x-2 hover:scale-[1.02]"
+              <div className="flex gap-4 w-full justify-center">
+                <a
+                  href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:scale-[1.05] active:scale-[0.95] transition-all duration-200 shrink-0 inline-block"
                 >
-                  <Download className="w-4 h-4" />
-                  <span>Get App Info & APK</span>
-                </Link>
+                  <Image
+                    src="/assets/icons/google-play.svg"
+                    alt="Get it on Google Play"
+                    width={200}
+                    height={60}
+                    className="h-14 w-auto shrink-0 select-none"
+                  />
+                </a>
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* 8. TESTIMONIALS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        <div className="text-center space-y-4 mb-16">
-          <h2 className="font-heading font-extrabold text-3xl text-foreground tracking-tight">
-            What Commuters Say
+      <section className="w-full overflow-hidden py-10 bg-slate-50 dark:bg-navy-dark/30 border-y border-light-border dark:border-navy-border/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10 text-center space-y-3">
+          <h2 className="font-heading font-extrabold text-3xl text-slate-900 dark:text-white tracking-tight">
+            {isEn ? "What Commuters Say" : "यात्रियों के अनुभव"}
           </h2>
+          <p className="text-sm text-slate-500 dark:text-text-secondary font-sans">
+            {isEn ? "Real reviews from Google Play Store users" : "गूगल प्ले स्टोर उपयोगकर्ताओं की वास्तविक समीक्षाएं"}
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {testimonials.map((test, idx) => (
-            <div
-              key={idx}
-              className="bg-white dark:bg-navy-dark rounded-3xl p-8 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none space-y-6"
-            >
-              <div className="flex space-x-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 fill-amber-400" />
-                ))}
-              </div>
-              <p className="text-sm sm:text-base text-foreground/80 leading-relaxed italic">
-                &ldquo;{language === "en" ? test.content : test.contentHi}&rdquo;
-              </p>
-              <div className="flex items-center space-x-3 pt-4 border-t border-light-border dark:border-navy-border/20">
-                <div>
-                  <p className="font-bold text-foreground">{test.name}</p>
-                  <p className="text-xs text-foreground/50">{language === "en" ? test.role : test.roleHi}</p>
+        {/* Scrolling strip wrapper */}
+        <div className="w-full overflow-hidden flex relative select-none">
+          {/* Shadow gradients for smooth fade out at edges */}
+          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-linear-to-r from-light-bg dark:from-navy-deep to-transparent z-10 pointer-events-none"></div>
+          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-linear-to-l from-light-bg dark:from-navy-deep to-transparent z-10 pointer-events-none"></div>
+
+          {/* Marquee Track moving from LEFT to RIGHT */}
+          <div className="animate-marquee-right flex space-x-6 py-4">
+            {/* Set 1 */}
+            {testimonials.map((test, idx) => (
+              <div
+                key={`m1-${idx}`}
+                className="w-[280px] sm:w-[350px] shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">{test.name}</span>
+                    <div className="flex space-x-0.5 text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary leading-relaxed font-sans line-clamp-4">
+                    &ldquo;{isEn ? test.content : test.contentHi}&rdquo;
+                  </p>
+                </div>
+                <div className="text-[10px] text-slate-400 dark:text-text-secondary/60 font-semibold border-t border-light-border dark:border-navy-border/20 pt-3 flex justify-between">
+                  <span>{isEn ? "Google Play Store" : "गूगल प्ले स्टोर"}</span>
+                  <span>{isEn ? test.date : test.date.replace("April", "अप्रैल").replace("2026", "२०२६")}</span>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+            
+            {/* Set 2 (Identical duplicate for infinite scroll) */}
+            {testimonials.map((test, idx) => (
+              <div
+                key={`m2-${idx}`}
+                className="w-[280px] sm:w-[350px] shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+              >
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                    <span className="font-bold text-slate-900 dark:text-white text-sm sm:text-base">{test.name}</span>
+                    <div className="flex space-x-0.5 text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary leading-relaxed font-sans line-clamp-4">
+                    &ldquo;{isEn ? test.content : test.contentHi}&rdquo;
+                  </p>
+                </div>
+                <div className="text-[10px] text-slate-400 dark:text-text-secondary/60 font-semibold border-t border-light-border dark:border-navy-border/20 pt-3 flex justify-between">
+                  <span>{isEn ? "Google Play Store" : "गूगल प्ले स्टोर"}</span>
+                  <span>{isEn ? test.date : test.date.replace("April", "अप्रैल").replace("2026", "२०२६")}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* 9. FAQ ACCORDION */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="text-center space-y-4 mb-16">
-          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-foreground tracking-tight">
+          <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
             {t("faqTitle")}
           </h2>
-          <p className="text-sm text-foreground/60">
+          <p className="text-sm text-slate-500 dark:text-text-secondary">
             {t("faqSubtitle")}
           </p>
         </div>
@@ -874,11 +767,11 @@ export default function Home() {
           {faqData.map((faq) => (
             <details
               key={faq.id}
-              className="group bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-2xl overflow-hidden shadow-sm transition-all duration-200 [&_summary::-webkit-details-marker]:hidden"
+              className="group bg-white dark:bg-navy-card rounded-2xl border border-light-border dark:border-navy-border/40 overflow-hidden shadow-sm transition-all duration-200 [&_summary::-webkit-details-marker]:hidden"
             >
               <summary className="flex items-center justify-between px-6 py-5 cursor-pointer focus:outline-none select-none">
-                <h3 className="font-heading font-bold text-base text-foreground group-hover:text-brand-pink transition-colors pr-4">
-                  {language === "en" ? faq.question : faq.questionHi}
+                <h3 className="font-heading font-bold text-base text-slate-900 dark:text-white group-hover:text-brand-pink transition-colors pr-4">
+                  {isEn ? faq.question : faq.questionHi}
                 </h3>
                 <span className="transition-transform duration-200 group-open:-rotate-180 shrink-0 text-brand-pink">
                   <svg
@@ -895,8 +788,8 @@ export default function Home() {
                   </svg>
                 </span>
               </summary>
-              <div className="px-6 pb-6 text-sm text-foreground/75 leading-relaxed border-t border-light-border/40 dark:border-navy-border/20 pt-4 bg-light-accent/30 dark:bg-navy-card/10">
-                <p>{language === "en" ? faq.answer : faq.answerHi}</p>
+              <div className="px-6 pb-6 text-sm text-slate-600 dark:text-on-surface-variant leading-relaxed border-t border-light-border dark:border-navy-border/20 pt-4 bg-light-accent/30 dark:bg-navy-accent/10 font-sans">
+                <p>{isEn ? faq.answer : faq.answerHi}</p>
               </div>
             </details>
           ))}
@@ -904,4 +797,22 @@ export default function Home() {
       </section>
     </div>
   );
+}
+
+function T_STATION(name: string): string {
+  // Simple fallback translation helper
+  const stationTranslations: Record<string, string> = {
+    "Mansarovar": "मानसरोवर",
+    "New Aatish Market": "न्यू आतिश मार्केट",
+    "Vivek Vihar": "विवेक विहार",
+    "Shyam Nagar": "श्याम नगर",
+    "Ram Nagar": "राम नगर",
+    "Civil Lines": "सिविल लाइन्स",
+    "Railway Station": "रेलवे स्टेशन",
+    "Sindhi Camp": "सिंधी कैंप",
+    "Chandpole": "चांदपोल",
+    "Chhoti Chaupar": "छोटी चौपड़",
+    "Badi Chaupar": "बड़ी चौपड़"
+  };
+  return stationTranslations[name] || name;
 }

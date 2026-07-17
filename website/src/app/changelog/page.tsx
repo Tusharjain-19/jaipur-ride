@@ -53,9 +53,7 @@ export default function ChangelogPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-10">
       <div className="space-y-4">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/10 text-brand-pink border border-brand-pink/20">
-          📜 {metadata.title}
-        </span>
+
         <h1 className="font-heading font-extrabold text-4xl text-foreground tracking-tight">Version Releases Changelog</h1>
         <p className="text-base text-foreground/75 leading-relaxed">
           Follow the progress and release history of Jaipur Ride as we roll out new features.

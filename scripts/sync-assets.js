@@ -20,6 +20,17 @@ const RELEASES_DEST = path.join(WEBSITE_DIR, 'public', 'release');
  */
 function cleanAndCreateDir(dirPath) {
   if (fs.existsSync(dirPath)) {
+    if (dirPath === IMAGES_DEST) {
+      console.log(`🧹 Smart cleaning images directory: ${path.relative(ROOT, dirPath)}`);
+      const preserveFiles = ['qrcraft.png', 'google-play.svg', 'google play.svg'];
+      fs.readdirSync(dirPath).forEach((file) => {
+        if (!preserveFiles.includes(file)) {
+          const filePath = path.join(dirPath, file);
+          fs.rmSync(filePath, { recursive: true, force: true });
+        }
+      });
+      return;
+    }
     console.log(`🧹 Cleaning target directory: ${path.relative(ROOT, dirPath)}`);
     fs.rmSync(dirPath, { recursive: true, force: true });
   }
@@ -61,7 +72,8 @@ function sync() {
     { src: 'logo1.png', dest: 'logo1.png' },
     { src: 'css', dest: 'css' },
     { src: 'js', dest: 'js' },
-    { src: 'assets', dest: 'assets' }
+    { src: 'assets', dest: 'assets' },
+    { src: 'sw.js', dest: 'sw.js' }
   ];
 
   for (const item of simItems) {
@@ -75,6 +87,8 @@ function sync() {
       console.warn(`  ⚠️ Skipping missing mobile file: ${item.src}`);
     }
   }
+
+  // Note: sw.js is copied only to website/public/simulator/sw.js via the simItems loop.
 
   // 2. Sync tourist images to website public/images
   cleanAndCreateDir(IMAGES_DEST);

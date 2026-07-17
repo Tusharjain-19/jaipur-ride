@@ -4,7 +4,7 @@ import React, { useState, useMemo } from "react";
 import Link from "next/link";
 import stationsData from "@/data/stations.json";
 import { useLanguage } from "@/context/LanguageContext";
-import { Search, Train, Clock, Compass, MapPin, Eye, Filter } from "lucide-react";
+import { Search, Train, Clock, MapPin, Eye, Filter } from "lucide-react";
 
 interface Station {
   id: string;
@@ -22,9 +22,10 @@ interface Station {
 }
 
 export default function StationsDirectory() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
   const [searchQuery, setSearchQuery] = useState("");
   const [filterType, setFilterType] = useState<"all" | "Elevated" | "Underground">("all");
+  const isEn = language === "en";
 
   const stations = stationsData as Station[];
 
@@ -41,15 +42,35 @@ export default function StationsDirectory() {
     });
   }, [searchQuery, filterType, stations]);
 
+  const translateFacility = (f: string) => {
+    if (isEn) return f;
+    const map: Record<string, string> = {
+      'Toilets': 'शौचालय',
+      'Escalator': 'एस्केलेटर',
+      'Elevator': 'लिफ्ट',
+      'Ticket Counter': 'टिकट काउंटर',
+      'Smart Card Recharge': 'स्मार्ट कार्ड रिचार्ज',
+      'Wheelchair Access': 'व्हीलचेयर एक्सेस',
+      'Parking': 'पार्किंग'
+    };
+    let res = f;
+    for (let key in map) {
+      if (res.includes(key)) res = res.replace(key, map[key]);
+    }
+    return res;
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
       {/* Title */}
       <div className="text-center space-y-4 mb-12">
         <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-foreground tracking-tight">
-          Jaipur Metro Stations Guide
+          {isEn ? "Jaipur Metro Stations Guide" : "जयपुर मेट्रो स्टेशन गाइड"}
         </h1>
         <p className="max-w-2xl mx-auto text-base sm:text-lg text-foreground/70">
-          Complete directory of all 11 stations along the Pink Line. Browse layout types, facilities, timings, and tourist links.
+          {isEn 
+            ? "Complete directory of all 11 stations along the Pink Line. Browse layout types, facilities, timings, and tourist links."
+            : "पिंक लाइन के सभी 11 स्टेशनों की विस्तृत सूची। स्टेशन संरचना, सुविधाएं, समय और पर्यटन लिंक देखें।"}
         </p>
       </div>
 
@@ -61,7 +82,7 @@ export default function StationsDirectory() {
           <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/45" />
           <input
             type="text"
-            placeholder="Search stations (e.g. Mansarovar, Chandpole)..."
+            placeholder={isEn ? "Search stations (e.g. Mansarovar, Chandpole)..." : "स्टेशन खोजें (जैसे मानसरोवर, चांदपोल)..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-11 pr-4 py-3 bg-light-accent dark:bg-navy-card border border-light-border dark:border-navy-border/40 rounded-xl text-sm focus:outline-none focus:border-brand-pink transition-colors text-foreground"
@@ -72,37 +93,37 @@ export default function StationsDirectory() {
         <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
           <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap">
             <Filter className="w-4 h-4" />
-            <span>Filter Type:</span>
+            <span>{isEn ? "Filter Type:" : "फ़िल्टर प्रकार:"}</span>
           </div>
           <button
             onClick={() => setFilterType("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               filterType === "all"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
             }`}
           >
-            All Stations
+            {isEn ? "All Stations" : "सभी स्टेशन"}
           </button>
           <button
             onClick={() => setFilterType("Elevated")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               filterType === "Elevated"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
             }`}
           >
-            Elevated
+            {isEn ? "Elevated" : "एलिवेटेड"}
           </button>
           <button
             onClick={() => setFilterType("Underground")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
               filterType === "Underground"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
             }`}
           >
-            Underground
+            {isEn ? "Underground" : "भूमिगत"}
           </button>
         </div>
 
@@ -123,14 +144,14 @@ export default function StationsDirectory() {
                       {st.code}
                     </span>
                     <span className="text-xs px-2.5 py-0.5 rounded-full bg-foreground/10 text-foreground">
-                      {st.type}
+                      {isEn ? st.type : (st.type === "Elevated" ? "एलिवेटेड" : "भूमिगत")}
                     </span>
                   </div>
                   <h3 className="font-heading font-bold text-2xl text-foreground group-hover:text-brand-pink transition-colors">
-                    {language === "en" ? st.name : st.nameHi}
+                    {isEn ? st.name : st.nameHi}
                   </h3>
                   <p className="text-xs text-foreground/50 font-medium">
-                    {language === "en" ? st.nameHi : st.name}
+                    {isEn ? st.nameHi : st.name}
                   </p>
                 </div>
 
@@ -139,25 +160,27 @@ export default function StationsDirectory() {
                   <div className="flex items-center space-x-2 text-foreground/70">
                     <Clock className="w-4 h-4 text-brand-pink" />
                     <span>
-                      Timings: {st.timings.firstTrain} AM - {st.timings.lastTrain} PM
+                      {isEn ? "Timings:" : "समय सारणी:"} {st.timings.firstTrain} AM - {st.timings.lastTrain} PM
                     </span>
                   </div>
 
                   {/* Facilities */}
                   <div className="space-y-1.5">
-                    <p className="text-[10px] text-foreground/45 uppercase tracking-wider font-bold">Top Amenities</p>
+                    <p className="text-[10px] text-foreground/45 uppercase tracking-wider font-bold">
+                      {isEn ? "Top Amenities" : "प्रमुख सुविधाएं"}
+                    </p>
                     <div className="flex flex-wrap gap-1">
                       {st.facilities.slice(0, 3).map((f) => (
                         <span
                           key={f}
                           className="px-2 py-0.5 bg-light-accent dark:bg-navy-card/60 border border-light-border/40 dark:border-navy-border/20 rounded text-[10px] text-foreground/75"
                         >
-                          {f}
+                          {translateFacility(f)}
                         </span>
                       ))}
                       {st.facilities.length > 3 && (
                         <span className="px-2 py-0.5 bg-light-accent dark:bg-navy-card/60 rounded text-[10px] text-foreground/40">
-                          +{st.facilities.length - 3} more
+                          +{st.facilities.length - 3} {isEn ? "more" : "और"}
                         </span>
                       )}
                     </div>
@@ -172,7 +195,7 @@ export default function StationsDirectory() {
                   className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-xs font-semibold transition-all hover:scale-[1.02]"
                 >
                   <Eye className="w-3.5 h-3.5" />
-                  <span>View Details</span>
+                  <span>{isEn ? "View Details" : "विवरण देखें"}</span>
                 </Link>
                 <a
                   href={st.location.mapsLink}
@@ -181,7 +204,7 @@ export default function StationsDirectory() {
                   className="flex items-center justify-center space-x-1.5 px-3 py-2 bg-white dark:bg-navy-card hover:bg-light-accent dark:hover:bg-navy-accent/50 text-foreground rounded-xl text-xs font-semibold transition-all border border-light-border dark:border-navy-border/40"
                 >
                   <MapPin className="w-3.5 h-3.5 text-brand-pink" />
-                  <span>Navigate</span>
+                  <span>{isEn ? "Navigate" : "दिशा-निर्देश"}</span>
                 </a>
               </div>
             </div>
@@ -189,10 +212,14 @@ export default function StationsDirectory() {
         </div>
       ) : (
         <div className="bg-white dark:bg-navy-dark rounded-3xl p-12 border border-light-border dark:border-navy-border/40 text-center space-y-3">
-          <Train className="w-12 h-12 text-foreground/20 mx-auto animate-bounce" />
-          <h3 className="font-heading font-bold text-lg text-foreground">No stations match search criteria</h3>
+          <Train className="w-12 h-12 text-foreground/20 mx-auto" />
+          <h3 className="font-heading font-bold text-lg text-foreground">
+            {isEn ? "No stations match search criteria" : "कोई स्टेशन खोज से मेल नहीं खाता"}
+          </h3>
           <p className="text-sm text-foreground/60 max-w-sm mx-auto">
-            Try adjusting your search filters or spelling to locate Pink Line station directory files.
+            {isEn 
+              ? "Try adjusting your search filters or spelling to locate Pink Line station directory files."
+              : "पिंक लाइन स्टेशन सूची को खोजने के लिए अपने फ़िल्टर या वर्तनी को बदलने का प्रयास करें।"}
           </p>
         </div>
       )}

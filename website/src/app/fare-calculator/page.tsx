@@ -57,9 +57,7 @@ export default function FareCalculatorPage() {
       
       {/* Title Header */}
       <div className="text-center lg:text-left space-y-4 max-w-3xl">
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-brand-pink/10 text-brand-pink border border-brand-pink/20">
-          💰 {language === "en" ? "Ticketing Guide" : "टिकट गाइड"}
-        </span>
+
         <h1 className="font-heading font-extrabold text-4xl text-foreground tracking-tight">
           {language === "en" ? "Jaipur Metro Fare Calculator" : "जयपुर मेट्रो किराया कैलकुलेटर"}
         </h1>
@@ -92,7 +90,7 @@ export default function FareCalculatorPage() {
                 >
                   {stationsData.map((st) => (
                     <option key={st.id} value={st.id}>
-                      {st.id} — {language === "en" ? st.name : st.nameHi}
+                      {st.id} - {language === "en" ? st.name : st.nameHi}
                     </option>
                   ))}
                 </select>
@@ -119,7 +117,7 @@ export default function FareCalculatorPage() {
                 >
                   {stationsData.map((st) => (
                     <option key={st.id} value={st.id}>
-                      {st.id} — {language === "en" ? st.name : st.nameHi}
+                      {st.id} - {language === "en" ? st.name : st.nameHi}
                     </option>
                   ))}
                 </select>
@@ -133,7 +131,7 @@ export default function FareCalculatorPage() {
                 Please select different starting and destination stations.
               </div>
             ) : (
-              <div className="grid grid-cols-3 gap-3 pt-2">
+              <div className="grid grid-cols-1 min-[480px]:grid-cols-3 gap-3 pt-2">
                 
                 {/* Cash Token */}
                 <div className="p-4 bg-brand-pink/5 rounded-2xl border border-brand-pink/15 text-center space-y-1">

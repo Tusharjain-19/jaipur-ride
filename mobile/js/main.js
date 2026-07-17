@@ -132,6 +132,7 @@ function setTheme(theme) {
   // Sync Android status bar with theme
   setStatusBarStyle(theme === "dark");
 }
+window.setTheme = setTheme;
 
 // ═══════════════════════════════════════
 //  LANGUAGE
