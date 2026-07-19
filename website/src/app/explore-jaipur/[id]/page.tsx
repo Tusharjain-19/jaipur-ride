@@ -1,4 +1,5 @@
 import React from "react";
+import { Metadata } from "next";
 import tourismData from "@/data/tourism.json";
 import stationsData from "@/data/stations.json";
 import AttractionDetailsClient from "@/components/AttractionDetailsClient";
@@ -31,6 +32,29 @@ export async function generateStaticParams() {
   }));
 }
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const attraction = (tourismData as Attraction[]).find((a) => a.id === id);
+  
+  if (!attraction) {
+    return {
+      title: "Attraction Not Found | Jaipur Ride Guide",
+    };
+  }
+
+  return {
+    title: `${attraction.name} Nearest Metro Station & Complete Guide`,
+    description: `Calculate the best way to reach ${attraction.name} via Jaipur Metro. Nearest station is ${attraction.stationId} (distance ${attraction.distance_km} km). Check ticket entry fees, timings, and tourist map routes.`,
+    keywords: [
+      `${attraction.name} nearest metro`,
+      `${attraction.name} Jaipur ticket price`,
+      `how to reach ${attraction.name} by train`,
+      `Jaipur sightseeing nearest station`,
+      `Jaipur metro tourism guide`
+    ]
+  };
+}
+
 export default async function AttractionDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const attractions = tourismData as Attraction[];
@@ -52,5 +76,41 @@ export default async function AttractionDetailPage({ params }: { params: Promise
     .filter((a) => a.id !== attraction.id && (a.stationId === attraction.stationId || a.type === attraction.type))
     .slice(0, 3);
 
-  return <AttractionDetailsClient attraction={attraction} station={station} related={related} />;
+  // JSON-LD Schema Markup
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "TouristAttraction",
+    "@id": `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
+    "name": attraction.name,
+    "description": attraction.summary,
+    "image": `https://jaipurride.vercel.app${attraction.image}`,
+    "touristType": ["Culture", "History", "Sightseeing", "Tourism"],
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Jaipur",
+      "addressRegion": "Rajasthan",
+      "addressCountry": "IN"
+    },
+    "location": {
+      "@type": "Place",
+      "name": attraction.name,
+      "hasMap": attraction.maps_link
+    },
+    "publicAccess": true,
+    "offers": {
+      "@type": "Offer",
+      "price": attraction.entry_fee.toLowerCase().includes("free") ? "0" : attraction.entry_fee.replace(/[^0-9]/g, "") || "100",
+      "priceCurrency": "INR"
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+      />
+      <AttractionDetailsClient attraction={attraction} station={station} related={related} />
+    </>
+  );
 }

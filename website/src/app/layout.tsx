@@ -3,6 +3,8 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import seoDb from "@/data/seo-knowledge-base.json";
+
 
 export const metadata: Metadata = {
   title: {
@@ -94,6 +96,34 @@ export default function RootLayout({
         "@type": "WebSite",
         "name": "Jaipur Ride",
         "url": "https://jaipurride.vercel.app"
+      },
+      {
+        "@type": "Dataset",
+        "@id": "https://jaipurride.vercel.app/#seo-dataset",
+        "name": "Jaipur Ride Travel Directory & Semantic Search Index",
+        "description": "A comprehensive local transit and tourism database mapping all Jaipur Metro Pink Line stations (Mansarovar to Badi Chaupar) to historical monuments, cafes, shopping markets, hotels, hospitals, and educational facilities in the Pink City.",
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "creator": {
+          "@type": "Organization",
+          "name": "Jaipur Ride"
+        },
+        "hasPart": [
+          {
+            "@type": "CreativeWork",
+            "name": "Long-tail Travel Search Terms",
+            "description": seoDb.data.longTailKeywords.slice(0, 15).join(", ")
+          },
+          {
+            "@type": "CreativeWork",
+            "name": "Voice Assistant Prompts",
+            "description": seoDb.data.voiceSearch.slice(0, 15).join(", ")
+          },
+          {
+            "@type": "CreativeWork",
+            "name": "Alternate Transit Terms",
+            "description": seoDb.data.synonyms.slice(0, 15).join(", ")
+          }
+        ]
       }
     ]
   };

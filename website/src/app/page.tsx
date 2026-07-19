@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import statistics from "@/data/statistics.json";
 import faqData from "@/data/faq.json";
 import tourismData from "@/data/tourism.json";
+import seoDb from "@/data/seo-knowledge-base.json";
 import { useLanguage } from "@/context/LanguageContext";
 import PhoneMockup from "@/components/PhoneMockup";
 import {
@@ -131,14 +132,24 @@ export default function Home() {
       {
         "@type": "FAQPage",
         "@id": "https://jaipurride.vercel.app/#faq",
-        "mainEntity": faqData.map(faq => ({
-          "@type": "Question",
-          "name": isEn ? faq.question : faq.questionHi,
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": isEn ? faq.answer : faq.answerHi
-          }
-        }))
+        "mainEntity": [
+          ...faqData.map(faq => ({
+            "@type": "Question",
+            "name": isEn ? faq.question : faq.questionHi,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": isEn ? faq.answer : faq.answerHi
+            }
+          })),
+          ...seoDb.data.conversationalQueries.slice(0, 15).map((q, idx) => ({
+            "@type": "Question",
+            "name": q,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": seoDb.data.naturalSentences[idx]
+            }
+          }))
+        ]
       }
     ]
   };
