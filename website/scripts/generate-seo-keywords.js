@@ -9,7 +9,15 @@ const attractions = tourismData.map(t => t.name);
 
 const categories = {
   jaipur: ['Jaipur', 'Pink City', 'Jaipur Rajasthan', 'Jaipur India', 'Capital of Rajasthan', 'Walled City of Jaipur', 'UNESCO Heritage City Jaipur', 'Pink City Jaipur'],
-  metro: ['Jaipur Metro', 'Jaipur Metro Route', 'Jaipur Metro Station', 'Jaipur Metro Map', 'Metro Timings', 'Metro Fare', 'Metro Smart Card', 'JMRC Pink Line', 'Underground Metro Jaipur', 'Elevated Metro Track', 'Jaipur Metro App', 'JMRC Line 1'],
+  metro: [
+    'Jaipur Metro', 'Jaipur Metro Route', 'Jaipur Metro Station', 'Jaipur Metro Map',
+    'Metro Timings', 'Metro Fare', 'Metro Smart Card', 'JMRC Pink Line',
+    'Underground Metro Jaipur', 'Elevated Metro Track', 'Jaipur Metro App', 'JMRC Line 1',
+    'best metro app', 'best matro app', 'metro app jaipur', 'best jaipur metro app',
+    'top metro app jaipur', 'offline jaipur metro app', 'jaipur metro guide app',
+    'jaipur metro app download', 'best transit app jaipur', 'jaipur metro route app',
+    'jaipur metro fare calculator app', 'jaipur metro timing app', 'jaipur metro official app'
+  ],
   tourism: ['Jaipur Tourist Places', 'Jaipur Tourism', 'Visit Jaipur', 'Jaipur Travel Guide', 'Jaipur Sightseeing', 'Jaipur Trip Planner', 'Jaipur Holiday Packages', 'Jaipur Monuments', 'Things to do in Jaipur', 'Weekend in Jaipur', 'One day Jaipur itinerary'],
   transport: ['Jaipur Bus', 'Auto Rickshaw', 'Cab', 'Taxi', 'Uber Jaipur', 'Ola Jaipur', 'RSRTC Low Floor Bus', 'E-Rickshaw Jaipur', 'Last Mile Transit', 'Jaipur Local Transport'],
   railway: ['Jaipur Junction', 'Gandhinagar Jaipur Station', 'Durgapura Railway Station', 'Jaipur Railway Station Metro'],

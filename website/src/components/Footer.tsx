@@ -191,10 +191,10 @@ export default function Footer() {
 
         {/* Bottom Banner */}
         <div className="mt-10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-slate-500 text-center md:text-left">
+          <p className="text-xs text-slate-400 text-center md:text-left leading-relaxed">
             {isEn
-              ? `© ${currentYear} Jaipur Ride. All rights reserved. Built with Next.js & Tailwind CSS. Licensed for Personal, Non-Commercial usage only.`
-              : `© ${currentYear} जयपुर राइड। सर्वाधिकार सुरक्षित। Next.js और Tailwind CSS द्वारा निर्मित। केवल व्यक्तिगत, गैर-व्यावसायिक उपयोग के लिए।`}
+              ? `© ${currentYear} Jaipur Ride & Jaipur Metro Transit Guide. All rights reserved. Built for fast, modern & offline transit navigation across the Pink City.`
+              : `© ${currentYear} जयपुर राइड एवं जयपुर मेट्रो ट्रांजिट गाइड। सर्वाधिकार सुरक्षित। गुलाबी शहर में तेज़, आधुनिक एवं ऑफ़लाइन यात्रा के लिए निर्मित।`}
           </p>
           <div className="text-xs text-slate-500 flex items-center justify-center gap-1">
             <span>{isEn ? "Made with" : "जयपुर शहर के लिए"}</span>

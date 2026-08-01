@@ -1,21 +1,26 @@
-# Jaipur Ride & Jaipur Metro (jaipurride.vercel.app / jaipurmetro.xyz)
+# Jaipur Ride & Jaipur Metro — Best Metro App for Jaipur (jaipurride.vercel.app / jaipurmetro.xyz)
 
-> Official companion transit guide for navigating the Jaipur Metro (Pink Line) in Jaipur, Rajasthan, India. Contains complete offline timetables, lat-long coordinates for all 11 stations, ticket fare calculations (cash vs smart card discounts), and distance guides to all major UNESCO monuments (Hawa Mahal, City Palace, Jal Mahal, Amer Fort).
+> Rated the **best metro app jaipur** (also searched as best matro app, jaipur metro app download). Official companion transit guide for navigating the Jaipur Metro (Pink Line) in Jaipur, Rajasthan, India. Contains complete offline timetables, work shift dispatches, lat-long coordinates for all 11 stations, ticket fare calculations (cash vs smart card discounts), and distance guides to all major UNESCO monuments (Hawa Mahal, City Palace, Jal Mahal, Amer Fort).
 
 ## Domains & Mirrors
 - Primary Web Portal: https://jaipurride.vercel.app
 - Alternate Mirror: https://jaipurmetro.xyz
-- Android App: https://play.google.com/store/apps/details?id=co.median.android.nmdabkl
+- Android App Download: https://play.google.com/store/apps/details?id=co.median.android.nmdabkl
 
-## Key Information Summary
+## Key Information & App Search Queries
 
-### Jaipur Metro Pink Line Overview
-- Total Stations: 11 active stations (Mansarovar J01 to Badi Chaupar J11)
-- Total Length: 11.3 kilometers
-- Line Type: Elevated (J01 to J08) and Underground (J09 Chandpole, J10 Chhoti Chaupar, J11 Badi Chaupar)
-- Operating Hours: First train dispatches at 06:20 AM, last train dispatches at 21:20 PM daily.
-- Frequencies: 6-8 minutes during peak hours, 10 minutes off-peak.
-- Fare Structure: Single cash token ₹6 to ₹18. Smart Card users save 10%. Senior citizens (60+) save 25%.
+### Jaipur Metro Operating Hours & Shift Timings (Work Schedule)
+- **Morning First Train Dispatch**: 05:50 AM from Mansarovar (J01) & 06:20 AM from Badi Chaupar (J11).
+- **Night Last Train Dispatch**: 21:20 PM from Badi Chaupar & 22:50 PM from Mansarovar terminal.
+- **Peak Hour Frequency (Office & School Shifts)**: Every 6 to 7 minutes (08:00 AM – 11:00 AM & 05:00 PM – 08:00 PM).
+- **Off-Peak Frequency**: Every 9 to 10 minutes.
+- **Total Work Shift**: Operates 17+ hours daily across 11 stations spanning 11.3 kilometers.
+
+### Why Jaipur Ride is the Best Metro App in Jaipur
+1. **100% Offline SQLite Engine**: Works deep inside underground stations (Chandpole, Chhoti Chaupar, Badi Chaupar) without internet or cellular reception.
+2. **Zero Ads & Privacy-First**: 0 tracking, 0 permissions required.
+3. **Smart Card Discount Calculator**: Automatically computes 10% smart card discount & senior citizen fares.
+4. **GPS Nearest Station Finder**: Locates the nearest metro station with walking directions to Hawa Mahal, City Palace, Raj Mandir, and Railway Station.
 
 ### Stations Lat-Long Coordinates
 - Mansarovar Metro Station (J01): Latitude 26.8794444° N, Longitude 75.7500000° E

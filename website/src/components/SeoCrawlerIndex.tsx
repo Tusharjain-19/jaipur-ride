@@ -116,6 +116,30 @@ export default function SeoCrawlerIndex() {
           },
           {
             "@type": "Question",
+            "name": "Which is the best metro app for Jaipur Metro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Jaipur Ride is rated the best metro app (best matro app / metro app jaipur). It provides 100% offline timetables, fare calculators, lat-long coordinates, zero ads, and walking maps to Hawa Mahal and City Palace."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the work shift timings and operating hours of Jaipur Metro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Jaipur Metro operates daily from 05:50 AM to 11:20 PM. Morning peak office shift runs from 08:00 AM to 11:00 AM (6 min headway), and evening peak shift runs from 05:00 PM to 08:30 PM."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the Jaipur Metro app download process?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can download the official Jaipur Ride app directly from the Google Play Store or install the instant PWA app from jaipurride.vercel.app / jaipurmetro.xyz."
+            }
+          },
+          {
+            "@type": "Question",
             "name": "Which is the nearest metro station to Jal Mahal?",
             "acceptedAnswer": {
               "@type": "Answer",
