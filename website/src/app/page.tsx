@@ -377,9 +377,9 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   href="/simulation"
-                  className="w-full sm:w-auto px-8 py-4 bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-base font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] transition-all flex items-center justify-center space-x-2 border-none cursor-pointer"
+                  className="w-[214px] h-[52px] bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center space-x-2 border-none cursor-pointer shrink-0"
                 >
-                  <TrainIcon className="w-5 h-5" />
+                  <TrainIcon className="w-4.5 h-4.5" />
                   <span>{isEn ? "Try Web Simulator" : "वेब सिम्युलेटर आज़माएं"}</span>
                 </Link>
 
@@ -387,14 +387,14 @@ export default function Home() {
                   href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto hover:scale-[1.05] active:scale-[0.95] transition-all shrink-0 inline-flex justify-center h-[64px] items-center"
+                  className="w-[214px] h-[52px] hover:scale-[1.05] active:scale-[0.95] transition-all shrink-0 inline-flex items-center justify-center"
                 >
                   <Image
                     src="/assets/icons/google-play.svg"
                     alt="Get it on Google Play"
                     width={214}
-                    height={64}
-                    className="h-[64px] w-auto shrink-0 select-none object-contain"
+                    height={52}
+                    className="h-[52px] w-auto shrink-0 select-none object-contain"
                   />
                 </a>
               </div>

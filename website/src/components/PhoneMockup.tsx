@@ -78,8 +78,8 @@ const STATIONS = [
 ];
 
 export default function PhoneMockup() {
-  const [simStep, setSimStep] = useState<SimStep>("splash");
-  const [simTheme, setSimTheme] = useState<"light" | "dark">("light");
+  const [simStep, setSimStep] = useState<SimStep>("plan-idle");
+  const [simTheme, setSimTheme] = useState<"light" | "dark">("dark");
   const [statusBarTime, setStatusBarTime] = useState("08:00");
 
   // Keep simulated time updated
@@ -95,34 +95,32 @@ export default function PhoneMockup() {
     return () => clearInterval(interval);
   }, []);
 
-  // Main chronological simulation loop
+  // Main chronological simulation loop (Smooth & Steady without splash or vibration)
   useEffect(() => {
     const stepsList: StepConfig[] = [
-      { step: "splash", duration: 2600 },
-      { step: "plan-idle", duration: 1800 },
-      { step: "plan-toggle-theme", duration: 1600 },
-      { step: "plan-select-from", duration: 1600 },
-      { step: "plan-select-to", duration: 1600 },
-      { step: "plan-click-route", duration: 1400 },
-      { step: "results", duration: 2500 },
-      { step: "live-journey-intro", duration: 1500 },
-      { step: "live-journey-moving-1", duration: 1800 },
-      { step: "live-journey-moving-2", duration: 3200 }, // Railway Station (Haptic Shake)
-      { step: "live-journey-moving-3", duration: 2000 },
-      { step: "live-journey-arrived", duration: 3800 },  // Badi Chaupar (Explore popup)
-      { step: "live-journey-finish", duration: 1500 },
-      { step: "stations-tab", duration: 1500 },
-      { step: "stations-click-detail", duration: 1500 },
-      { step: "stations-detail-open", duration: 2500 },
-      { step: "stations-close-detail", duration: 1400 },
-      { step: "timings-tab", duration: 1500 },
-      { step: "timings-idle", duration: 2200 },
-      { step: "explore-tab", duration: 1500 },
-      { step: "explore-click-card", duration: 1600 },
-      { step: "explore-detail-open", duration: 3000 },
-      { step: "explore-back", duration: 1500 },
-      { step: "safety-tab", duration: 1500 },
-      { step: "safety-idle", duration: 2200 },
+      { step: "plan-idle", duration: 2200 },
+      { step: "plan-select-from", duration: 1800 },
+      { step: "plan-select-to", duration: 1800 },
+      { step: "plan-click-route", duration: 1600 },
+      { step: "results", duration: 2800 },
+      { step: "live-journey-intro", duration: 1800 },
+      { step: "live-journey-moving-1", duration: 2200 },
+      { step: "live-journey-moving-2", duration: 2500 },
+      { step: "live-journey-moving-3", duration: 2200 },
+      { step: "live-journey-arrived", duration: 3800 },
+      { step: "live-journey-finish", duration: 1800 },
+      { step: "stations-tab", duration: 1800 },
+      { step: "stations-click-detail", duration: 1800 },
+      { step: "stations-detail-open", duration: 2800 },
+      { step: "stations-close-detail", duration: 1600 },
+      { step: "timings-tab", duration: 1800 },
+      { step: "timings-idle", duration: 2500 },
+      { step: "explore-tab", duration: 1800 },
+      { step: "explore-click-card", duration: 1800 },
+      { step: "explore-detail-open", duration: 3200 },
+      { step: "explore-back", duration: 1600 },
+      { step: "safety-tab", duration: 1800 },
+      { step: "safety-idle", duration: 2500 },
     ];
 
     let currentIdx = 0;
@@ -131,13 +129,6 @@ export default function PhoneMockup() {
     const runStep = () => {
       const current = stepsList[currentIdx];
       setSimStep(current.step);
-
-      // Handle simulated theme changes dynamically in sync with simulation steps
-      if (current.step === "splash") {
-        setSimTheme("light");
-      } else if (current.step === "plan-toggle-theme") {
-        setSimTheme("dark");
-      }
 
       timer = setTimeout(() => {
         currentIdx = (currentIdx + 1) % stepsList.length;
@@ -151,7 +142,6 @@ export default function PhoneMockup() {
 
   // Determine current active bottom nav tab based on simulation step
   const getActiveTab = () => {
-    if (simStep === "splash") return null;
     if (
       simStep.startsWith("plan-") ||
       simStep === "results" ||
@@ -179,12 +169,8 @@ export default function PhoneMockup() {
   // Virtual cursor positions (x, y percentages relative to inner screen)
   const getCursorProps = () => {
     switch (simStep) {
-      case "splash":
-        return { x: "50%", y: "50%", opacity: 0, clicked: false };
       case "plan-idle":
         return { x: "50%", y: "60%", opacity: 1, clicked: false };
-      case "plan-toggle-theme":
-        return { x: "78%", y: "11%", opacity: 1, clicked: true };
       case "plan-select-from":
         return { x: "50%", y: "24%", opacity: 1, clicked: true };
       case "plan-select-to":
@@ -232,26 +218,12 @@ export default function PhoneMockup() {
 
   const cursor = getCursorProps();
   const isDark = simTheme === "dark";
-  const isShaking = simStep === "live-journey-moving-2";
 
   return (
     <motion.div
       className={`relative mx-auto w-[285px] h-[580px] sm:w-[315px] sm:h-[630px] rounded-[48px] border-10 border-slate-900 dark:border-slate-800 bg-slate-950 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.55)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.9)] overflow-hidden transition-colors duration-300`}
-      initial={{ y: 30, opacity: 0 }}
-      animate={
-        isShaking
-          ? {
-              y: [0, -3, 3, -3, 3, -2, 2, 0],
-              x: [0, 2, -2, 2, -2, 1, -1, 0],
-              scale: 1.01,
-            }
-          : { y: 0, opacity: 1 }
-      }
-      transition={
-        isShaking
-          ? { duration: 0.4, repeat: 3, ease: "easeInOut" }
-          : { duration: 0.8, delay: 0.2 }
-      }
+      initial={{ y: 0, opacity: 1 }}
+      animate={{ y: 0, opacity: 1 }}
     >
       {/* 1. APPLE DYNAMIC ISLAND/NOTCH */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-6 bg-slate-900 dark:bg-slate-800 rounded-b-2xl z-50 flex items-center justify-center pointer-events-none">

@@ -21,19 +21,19 @@ interface Station {
   location: { lat: number; lon: number; mapsLink: string };
 }
 
-// Coordinate mappings for SVG layout (viewBox 0 0 1000 350)
+// Coordinate mappings for SVG layout (viewBox 0 0 1020 350)
 const stationCoordinates: Record<string, { x: number; y: number }> = {
-  J01: { x: 80, y: 120 },    // Mansarovar (Elevated)
-  J02: { x: 160, y: 120 },   // New Aatish Market (Elevated)
-  J03: { x: 240, y: 120 },   // Vivek Vihar (Elevated)
-  J04: { x: 320, y: 120 },   // Shyam Nagar (Elevated)
-  J05: { x: 400, y: 120 },   // Ram Nagar (Elevated)
-  J06: { x: 480, y: 120 },   // Civil Lines (Elevated)
-  J07: { x: 560, y: 120 },   // Railway Station (Elevated)
-  J08: { x: 640, y: 120 },   // Sindhi Camp (Elevated Interchange Node)
-  J09: { x: 730, y: 180 },   // Chandpole (Transition to Underground)
-  J10: { x: 820, y: 240 },   // Chhoti Chaupar (Underground)
-  J11: { x: 910, y: 240 }    // Badi Chaupar (Underground)
+  J01: { x: 95, y: 120 },    // Mansarovar (Elevated)
+  J02: { x: 175, y: 120 },   // New Aatish Market (Elevated)
+  J03: { x: 255, y: 120 },   // Vivek Vihar (Elevated)
+  J04: { x: 335, y: 120 },   // Shyam Nagar (Elevated)
+  J05: { x: 415, y: 120 },   // Ram Nagar (Elevated)
+  J06: { x: 495, y: 120 },   // Civil Lines (Elevated)
+  J07: { x: 575, y: 120 },   // Railway Station (Elevated)
+  J08: { x: 655, y: 120 },   // Sindhi Camp (Elevated Interchange Node)
+  J09: { x: 745, y: 180 },   // Chandpole (Transition to Underground)
+  J10: { x: 835, y: 240 },   // Chhoti Chaupar (Underground)
+  J11: { x: 925, y: 240 }    // Badi Chaupar (Underground)
 };
 
 export default function InteractiveMap() {
@@ -171,126 +171,133 @@ export default function InteractiveMap() {
         </AnimatePresence>
       </div>
 
-      {/* SVG Canvas Map */}
-      <div className="lg:col-span-2 relative flex items-center justify-center bg-light-bg/50 dark:bg-navy-deep/40 rounded-2xl overflow-x-auto min-h-[300px] border border-light-border dark:border-navy-border/20 p-4">
-        <svg
-          viewBox="0 0 1000 350"
-          className="w-full min-w-[700px] h-auto select-none"
-        >
-          {/* Background grid markings for modern layout */}
-          <defs>
-            <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-slate-200 dark:text-navy-border/20" />
-            </pattern>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-          <rect width="1000" height="350" fill="url(#grid)" className="opacity-70" />
+      {/* SVG Canvas Map Container with fixed Left-Align Scrollable Wrapper */}
+      <div className="lg:col-span-2 space-y-2">
+        <div className="text-[11px] text-foreground/50 flex items-center justify-between px-1 lg:hidden">
+          <span>← Swipe horizontally to view all stations (Mansarovar to Badi Chaupar) →</span>
+        </div>
+        <div className="w-full bg-light-bg/50 dark:bg-navy-deep/40 rounded-2xl overflow-x-auto min-h-[300px] border border-light-border dark:border-navy-border/20 p-2 sm:p-4 scrollbar-thin">
+          <div className="min-w-[800px] w-full flex justify-start lg:justify-center items-center py-2">
+            <svg
+              viewBox="0 0 1020 350"
+              className="w-full h-auto select-none shrink-0"
+            >
+              {/* Background grid markings for modern layout */}
+              <defs>
+                <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" className="text-slate-200 dark:text-navy-border/20" />
+                </pattern>
+                <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="6" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              <rect width="1020" height="350" fill="url(#grid)" className="opacity-70" />
 
-          {/* Connection Lines (Pink line track) */}
-          {/* Elevated section path (Mansarovar J01 to Sindhi Camp J08) */}
-          <path
-            d="M 80 120 H 640"
-            fill="none"
-            stroke="#EC4899"
-            strokeWidth="8"
-            strokeLinecap="round"
-            className="drop-shadow-[0_2px_8px_rgba(236,72,153,0.3)]"
-          />
-          {/* Underground transition path (Sindhi Camp J08 to Badi Chaupar J11) */}
-          <path
-            d="M 640 120 C 680 120, 690 180, 730 180 C 770 180, 780 240, 820 240 H 910"
-            fill="none"
-            stroke="#EC4899"
-            strokeWidth="8"
-            strokeDasharray="10 8"
-            strokeLinecap="round"
-            className="drop-shadow-[0_2px_8px_rgba(236,72,153,0.3)]"
-          />
+              {/* Connection Lines (Pink line track) */}
+              {/* Elevated section path (Mansarovar J01 to Sindhi Camp J08) */}
+              <path
+                d="M 95 120 H 655"
+                fill="none"
+                stroke="#EC4899"
+                strokeWidth="8"
+                strokeLinecap="round"
+                className="drop-shadow-[0_2px_8px_rgba(236,72,153,0.3)]"
+              />
+              {/* Underground transition path (Sindhi Camp J08 to Badi Chaupar J11) */}
+              <path
+                d="M 655 120 C 695 120, 705 180, 745 180 C 785 180, 795 240, 835 240 H 925"
+                fill="none"
+                stroke="#EC4899"
+                strokeWidth="8"
+                strokeDasharray="10 8"
+                strokeLinecap="round"
+                className="drop-shadow-[0_2px_8px_rgba(236,72,153,0.3)]"
+              />
 
-          {/* Station Labels and Circles */}
-          {stations.map((st, idx) => {
-            const coords = stationCoordinates[st.id] || { x: 0, y: 0 };
-            const isSelected = selectedId === st.id;
-            const isHovered = hoveredId === st.id;
-            const isSearched = isHighlighted(st.id);
-            const isEven = idx % 2 === 0;
+              {/* Station Labels and Circles */}
+              {stations.map((st, idx) => {
+                const coords = stationCoordinates[st.id] || { x: 0, y: 0 };
+                const isSelected = selectedId === st.id;
+                const isHovered = hoveredId === st.id;
+                const isSearched = isHighlighted(st.id);
+                const isEven = idx % 2 === 0;
 
-            return (
-              <g
-                key={st.id}
-                className="cursor-pointer"
-                onClick={() => setSelectedId(st.id)}
-                onMouseEnter={() => setHoveredId(st.id)}
-                onMouseLeave={() => setHoveredId(null)}
-              >
-                {/* Search pulse glow */}
-                {isSearched && (
-                  <circle
-                    cx={coords.x}
-                    cy={coords.y}
-                    r="24"
-                    fill="none"
-                    stroke="#EC4899"
-                    strokeWidth="2"
-                    className="animate-ping"
-                  />
-                )}
+                return (
+                  <g
+                    key={st.id}
+                    className="cursor-pointer"
+                    onClick={() => setSelectedId(st.id)}
+                    onMouseEnter={() => setHoveredId(st.id)}
+                    onMouseLeave={() => setHoveredId(null)}
+                  >
+                    {/* Search pulse glow */}
+                    {isSearched && (
+                      <circle
+                        cx={coords.x}
+                        cy={coords.y}
+                        r="24"
+                        fill="none"
+                        stroke="#EC4899"
+                        strokeWidth="2"
+                        className="animate-ping"
+                      />
+                    )}
 
-                {/* Animated Outer Ring (selection / hover) */}
-                <circle
-                  cx={coords.x}
-                  cy={coords.y}
-                  r={isSelected ? "18" : isHovered ? "15" : "0"}
-                  fill="none"
-                  stroke="#EC4899"
-                  strokeWidth="2"
-                  className="transition-all duration-300 ease-out opacity-75"
-                />
+                    {/* Animated Outer Ring (selection / hover) */}
+                    <circle
+                      cx={coords.x}
+                      cy={coords.y}
+                      r={isSelected ? "18" : isHovered ? "15" : "0"}
+                      fill="none"
+                      stroke="#EC4899"
+                      strokeWidth="2"
+                      className="transition-all duration-300 ease-out opacity-75"
+                    />
 
-                {/* Inner Core Circle */}
-                <circle
-                  cx={coords.x}
-                  cy={coords.y}
-                  r={isSelected ? "9" : isHovered ? "8" : "6"}
-                  fill={isSelected ? "#EC4899" : "#FFFFFF"}
-                  stroke={isSelected ? "#FFFFFF" : "#EC4899"}
-                  strokeWidth={isSelected ? "2.5" : "3.5"}
-                  className="transition-all duration-300 shadow-md dark:shadow-none"
-                  style={isHovered || isSelected ? { filter: "url(#glow)" } : {}}
-                />
+                    {/* Inner Core Circle */}
+                    <circle
+                      cx={coords.x}
+                      cy={coords.y}
+                      r={isSelected ? "9" : isHovered ? "8" : "6"}
+                      fill={isSelected ? "#EC4899" : "#FFFFFF"}
+                      stroke={isSelected ? "#FFFFFF" : "#EC4899"}
+                      strokeWidth={isSelected ? "2.5" : "3.5"}
+                      className="transition-all duration-300 shadow-md dark:shadow-none"
+                      style={isHovered || isSelected ? { filter: "url(#glow)" } : {}}
+                    />
 
-                {/* Label text */}
-                <text
-                  x={coords.x}
-                  y={isEven ? coords.y - 20 : coords.y + 24}
-                  textAnchor="middle"
-                  className={`font-heading text-[11px] select-none font-bold transition-colors ${
-                    isSelected
-                      ? "fill-brand-pink font-extrabold text-[12px]"
-                      : isSearched
-                      ? "fill-amber-500 font-extrabold"
-                      : "fill-foreground/90 dark:fill-white/80"
-                  }`}
-                >
-                  {st.name}
-                </text>
+                    {/* Label text */}
+                    <text
+                      x={coords.x}
+                      y={isEven ? coords.y - 20 : coords.y + 24}
+                      textAnchor="middle"
+                      className={`font-heading text-[11px] select-none font-bold transition-colors ${
+                        isSelected
+                          ? "fill-brand-pink font-extrabold text-[12px]"
+                          : isSearched
+                          ? "fill-amber-500 font-extrabold"
+                          : "fill-foreground/90 dark:fill-white/80"
+                      }`}
+                    >
+                      {st.name}
+                    </text>
 
-                {/* Subtext type under */}
-                <text
-                  x={coords.x}
-                  y={isEven ? coords.y + 22 : coords.y - 18}
-                  textAnchor="middle"
-                  className="font-sans text-[8px] fill-foreground/45 dark:fill-white/35 font-bold"
-                >
-                  {st.id}
-                </text>
-              </g>
-            );
-          })}
-        </svg>
+                    {/* Subtext type under */}
+                    <text
+                      x={coords.x}
+                      y={isEven ? coords.y + 22 : coords.y - 18}
+                      textAnchor="middle"
+                      className="font-sans text-[8px] fill-foreground/45 dark:fill-white/35 font-bold"
+                    >
+                      {st.id}
+                    </text>
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   );
