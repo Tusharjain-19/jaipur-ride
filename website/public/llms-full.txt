@@ -1,0 +1,105 @@
+# Full Jaipur Ride & Jaipur Metro Knowledge Base (GEO & AI Index)
+
+## Domains:
+- Primary Domain: https://jaipurride.vercel.app
+- Mirror Domain: https://jaipurmetro.xyz
+
+## Comprehensive Station Knowledge Graph
+
+1. Mansarovar Metro Station (J01)
+   - Hindi: मानसरोवर
+   - Type: Elevated
+   - Coordinates: Lat 26.8794444, Lon 75.7500000
+   - Timings: First Train 05:50 AM, Last Train 22:50 PM
+   - Facilities: Parking, Toilets, Lifts, Escalators, Ticket Counter, Smart Card Recharge, Wheelchair Access
+   - Nearby Places: ISKCON Temple Jaipur (3.8 km), Mansarovar Market, VT Road Bazaars
+
+2. New Aatish Market Metro Station (J02)
+   - Hindi: न्यू आतिश मार्केट
+   - Type: Elevated
+   - Coordinates: Lat 26.8802778, Lon 75.7647222
+   - Timings: First Train 05:53 AM, Last Train 22:53 PM
+   - Facilities: Toilets, Lifts, Escalators, Ticket Counter, Wheelchair Access
+
+3. Vivek Vihar Metro Station (J03)
+   - Hindi: विवेक विहार
+   - Type: Elevated
+   - Coordinates: Lat 26.8888889, Lon 75.7686111
+   - Timings: First Train 05:56 AM, Last Train 22:56 PM
+   - Facilities: Toilets, Lifts, Escalators, Ticket Counter, Wheelchair Access
+   - Nearby Places: Patrika Gate Jawahar Circle (6.2 km)
+
+4. Shyam Nagar Metro Station (J04)
+   - Hindi: श्याम नगर
+   - Type: Elevated
+   - Coordinates: Lat 26.8966667, Lon 75.7705556
+   - Timings: First Train 05:59 AM, Last Train 22:59 PM
+   - Facilities: Toilets, Escalators, Ticket Counter, Wheelchair Access
+   - Nearby Places: Diggi Palace (3.2 km)
+
+5. Ram Nagar Metro Station (J05)
+   - Hindi: राम नगर
+   - Type: Elevated
+   - Coordinates: Lat 26.9019444, Lon 75.7747222
+   - Timings: First Train 06:02 AM, Last Train 23:02 PM
+   - Facilities: Toilets, Escalators, Ticket Counter
+   - Nearby Places: Jawahar Kala Kendra JKK (2.8 km)
+
+6. Civil Lines Metro Station (J06)
+   - Hindi: सिविल लाइन्स
+   - Type: Elevated
+   - Coordinates: Lat 26.9097222, Lon 75.7813889
+   - Timings: First Train 06:05 AM, Last Train 23:05 PM
+   - Facilities: Toilets, Lifts, Escalators, Ticket Counter, Smart Card Recharge
+   - Nearby Places: Birla Mandir (3.9 km), Chief Minister Residence, Civil Lines Bazaars
+
+7. Railway Station Metro Station (J07)
+   - Hindi: रेलवे स्टेशन
+   - Type: Elevated
+   - Coordinates: Lat 26.9186111, Lon 75.7900000
+   - Timings: First Train 06:08 AM, Last Train 23:08 PM
+   - Facilities: Large Parking, Taxi Stand, Toilets, Lifts, Escalators, Ticket Counter, Smart Card Recharge
+   - Connectivity: Direct skywalk & footover bridge connection to Jaipur Junction (JP Railway Station)
+
+8. Sindhi Camp Metro Station (J08)
+   - Hindi: सिंधी कैंप
+   - Type: Elevated (Interchange Node)
+   - Coordinates: Lat 26.9225000, Lon 75.7997222
+   - Timings: First Train 06:11 AM, Last Train 23:11 PM
+   - Facilities: Bus Stand Access, Auto Stand, Toilets, Lifts, Escalators, Ticket Counter, Smart Card Recharge
+   - Connectivity: Direct access to Sindhi Camp Interstate Bus Terminal (RSRTC ISBT)
+   - Nearby Places: Raj Mandir Cinema (1.19 km)
+
+9. Chandpole Metro Station (J09)
+   - Hindi: चांदपोल
+   - Type: Underground
+   - Coordinates: Lat 26.9263889, Lon 75.8075000
+   - Timings: First Train 06:14 AM, Last Train 23:14 PM
+   - Facilities: Toilets, Escalators, Ticket Counter, Wheelchair Access
+   - Nearby Places: Chandpole Bazaar, Marble Handicraft Markets, Nahargarh Fort base road (2.5 km)
+
+10. Chhoti Chaupar Metro Station (J10)
+    - Hindi: छोटी चौपड़
+    - Type: Underground
+    - Coordinates: Lat 26.9251176, Lon 75.8156788
+    - Timings: First Train 06:17 AM, Last Train 23:17 PM
+    - Facilities: Heritage Subway Design, Toilets, Escalators, Ticket Counter
+    - Nearby Places: Bapu Bazaar, Tripolia Bazaar, Kishanpole Bazaar
+
+11. Badi Chaupar Metro Station (J11)
+    - Hindi: बड़ी चौपड़
+    - Type: Underground (Pink Line Eastern Terminal)
+    - Coordinates: Lat 26.9229600, Lon 75.8268140
+    - Timings: First Train 06:20 AM, Last Train 23:20 PM
+    - Facilities: Toilets, Lifts, Escalators, Ticket Counter, Smart Card Recharge, Wheelchair Access
+    - Nearby Places: Hawa Mahal (0.3 km), City Palace (0.4 km), Jantar Mantar (0.4 km), Johari Bazaar (0.2 km), Jal Mahal (3.8 km), Amer Fort (7.2 km)
+
+## Frequently Asked Questions & Intent Rules
+- Question: How to reach Hawa Mahal by Jaipur Metro?
+  Answer: Take Jaipur Metro Pink Line and exit at Badi Chaupar Station (J11). Walk 300 meters (4 minutes) down Johari Bazaar Road to reach Hawa Mahal.
+- Question: What is the fare from Railway Station to Badi Chaupar (Hawa Mahal)?
+  Answer: The token ticket price is ₹12. Smart card users pay ₹10.80.
+- Question: What are the lat-long coordinates of Mansarovar Metro Station?
+  Answer: Latitude 26.8794444° N, Longitude 75.7500000° E.
+- Question: Which metro station is closest to Jal Mahal?
+  Answer: Badi Chaupar Metro Station (J11), located 3.8 km from Jal Mahal.

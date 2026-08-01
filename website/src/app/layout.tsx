@@ -4,14 +4,15 @@ import { Providers } from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SeoCrawlerIndex from "@/components/SeoCrawlerIndex";
+import AppDownloadBanner from "@/components/AppDownloadBanner";
 import seoDb from "@/data/seo-knowledge-base.json";
 
 export const metadata: Metadata = {
   title: {
-    default: "Jaipur Ride | Jaipur Metro Route Planner & Travel Guide",
-    template: "%s | Jaipur Ride Metro Guide",
+    default: "Jaipur Ride & Jaipur Metro | Route Planner, Timings & Fares",
+    template: "%s | Jaipur Metro Guide",
   },
-  description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips.",
+  description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips. Dual domain portal for jaipurride.vercel.app & jaipurmetro.xyz.",
   keywords: [
     "Jaipur Metro",
     "Metro Route Jaipur",
@@ -38,27 +39,37 @@ export const metadata: Metadata = {
     "Jaipur me metro se ghumne ki jagah",
     "Badi chaupar to hawa mahal distance",
     "Jaipur metro ticket price",
-    "Jaipur metro app download"
+    "Jaipur metro app download",
+    "jaipurmetro.xyz",
+    "jaipurride.vercel.app"
   ],
   metadataBase: new URL("https://jaipurride.vercel.app"),
+  alternates: {
+    canonical: "./",
+    languages: {
+      "en-IN": "https://jaipurride.vercel.app",
+      "hi-IN": "https://jaipurmetro.xyz",
+    },
+  },
   other: {
     "google-site-verification": "XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo",
     "geo.position": "26.9124;75.7873",
     "geo.placename": "Jaipur, Rajasthan, India",
     "geo.region": "IN-RJ",
-    "ICBM": "26.9124, 75.7873"
+    "ICBM": "26.9124, 75.7873",
+    "alias-domain": "https://jaipurmetro.xyz"
   },
   openGraph: {
-    title: "Jaipur Ride | Jaipur Metro Route Planner & Travel Guide",
+    title: "Jaipur Ride & Jaipur Metro | Route Planner & Travel Guide",
     description: "Navigate the historic Pink City with Jaipur Metro companion guide. Find stations, compute smart card ticket fares, check operational schedules, lat-long coordinates, and plan walking routes to local sightseeing spots.",
     url: "https://jaipurride.vercel.app",
-    siteName: "Jaipur Ride",
+    siteName: "Jaipur Ride & Jaipur Metro",
     images: [
       {
         url: "/splash.png",
         width: 1200,
         height: 630,
-        alt: "Jaipur Ride Cover",
+        alt: "Jaipur Ride & Jaipur Metro Cover",
       },
     ],
     locale: "en_US",
@@ -66,14 +77,14 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaipur Ride | Jaipur Metro Route Planner & Travel Guide",
+    title: "Jaipur Ride & Jaipur Metro | Route Planner & Travel Guide",
     description: "Calculate your best metro route in Jaipur. Fast, responsive, offline-first companion transit app for Android & Web.",
     images: ["/splash.png"],
   },
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
-    title: "Jaipur Ride",
+    title: "Jaipur Ride Metro",
     statusBarStyle: "black-translucent",
   },
 };
@@ -101,8 +112,10 @@ export default function RootLayout({
       },
       {
         "@type": "WebSite",
-        "name": "Jaipur Ride",
-        "url": "https://jaipurride.vercel.app"
+        "@id": "https://jaipurride.vercel.app/#website",
+        "name": "Jaipur Ride & Jaipur Metro Portal",
+        "url": "https://jaipurride.vercel.app",
+        "sameAs": ["https://jaipurmetro.xyz"]
       },
       {
         "@type": "Dataset",
@@ -143,6 +156,8 @@ export default function RootLayout({
     >
       <head>
         <meta name="google-site-verification" content="XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo" />
+        <link rel="alternate" href="https://jaipurmetro.xyz" hrefLang="hi-IN" />
+        <link rel="alternate" href="https://jaipurride.vercel.app" hrefLang="en-IN" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -164,6 +179,7 @@ export default function RootLayout({
           <main className="flex-1 w-full">{children}</main>
           <Footer />
           <SeoCrawlerIndex />
+          <AppDownloadBanner />
         </Providers>
         <script
           type="application/ld+json"
@@ -173,4 +189,5 @@ export default function RootLayout({
     </html>
   );
 }
+
 
