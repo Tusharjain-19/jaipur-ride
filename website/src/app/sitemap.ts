@@ -4,46 +4,48 @@ import tourismData from "@/data/tourism.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://jaipurride.vercel.app";
+  const currentDate = new Date();
 
   const staticPages = [
-    "",
-    "/journey-planner",
-    "/metro-map",
-    "/metro-stations",
-    "/fare-calculator",
-    "/timings",
-    "/explore-jaipur",
-    "/simulation",
-    "/download",
-    "/features",
-    "/about",
-    "/faq",
-    "/contact",
-    "/changelog",
-    "/privacy-policy",
-    "/terms",
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: route === "" ? 1.0 : 0.8,
+    { route: "", priority: 1.0, freq: "daily" as const },
+    { route: "/journey-planner", priority: 0.9, freq: "daily" as const },
+    { route: "/fare-calculator", priority: 0.9, freq: "daily" as const },
+    { route: "/timings", priority: 0.9, freq: "daily" as const },
+    { route: "/metro-map", priority: 0.8, freq: "weekly" as const },
+    { route: "/metro-stations", priority: 0.8, freq: "daily" as const },
+    { route: "/explore-jaipur", priority: 0.8, freq: "daily" as const },
+    { route: "/download", priority: 0.8, freq: "weekly" as const },
+    { route: "/simulation", priority: 0.7, freq: "weekly" as const },
+    { route: "/features", priority: 0.7, freq: "weekly" as const },
+    { route: "/faq", priority: 0.7, freq: "weekly" as const },
+    { route: "/about", priority: 0.6, freq: "monthly" as const },
+    { route: "/contact", priority: 0.6, freq: "monthly" as const },
+    { route: "/changelog", priority: 0.5, freq: "monthly" as const },
+    { route: "/privacy-policy", priority: 0.3, freq: "yearly" as const },
+    { route: "/terms", priority: 0.3, freq: "yearly" as const },
+  ].map((item) => ({
+    url: `${baseUrl}${item.route}`,
+    lastModified: currentDate,
+    changeFrequency: item.freq,
+    priority: item.priority,
   }));
 
-  // Dynamic station routes
+  // Dynamic station routes (11 stations)
   const stationPages = stationsData.map((st) => ({
     url: `${baseUrl}/metro-stations/${st.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    lastModified: currentDate,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
   }));
 
-  // Dynamic attraction routes
+  // Dynamic attraction routes (16 attractions)
   const attractionPages = tourismData.map((att) => ({
     url: `${baseUrl}/explore-jaipur/${att.id}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.6,
+    lastModified: currentDate,
+    changeFrequency: "daily" as const,
+    priority: 0.8,
   }));
 
   return [...staticPages, ...stationPages, ...attractionPages];
 }
+

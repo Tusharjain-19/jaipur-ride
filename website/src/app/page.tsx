@@ -141,12 +141,12 @@ export default function Home() {
               "text": isEn ? faq.answer : faq.answerHi
             }
           })),
-          ...seoDb.data.conversationalQueries.slice(0, 15).map((q, idx) => ({
+          ...seoDb.data.geoSearchPrompts.slice(0, 15).map((q, idx) => ({
             "@type": "Question",
             "name": q,
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": seoDb.data.naturalSentences[idx]
+              "text": seoDb.data.longTailQueries[idx]
             }
           }))
         ]

@@ -3,15 +3,15 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import SeoCrawlerIndex from "@/components/SeoCrawlerIndex";
 import seoDb from "@/data/seo-knowledge-base.json";
-
 
 export const metadata: Metadata = {
   title: {
     default: "Jaipur Ride | Jaipur Metro Route Planner & Travel Guide",
     template: "%s | Jaipur Ride Metro Guide",
   },
-  description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, nearby tourist monuments (Hawa Mahal, City Palace), local markets, and travel tips.",
+  description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips.",
   keywords: [
     "Jaipur Metro",
     "Metro Route Jaipur",
@@ -32,18 +32,25 @@ export const metadata: Metadata = {
     "City Palace metro connectivity",
     "Johari Bazaar shopping metro",
     "JMRC Pink Line guides",
-    "Sitapura to Ambabari Metro Phase 2"
+    "Mansarovar metro station coordinates",
+    "Jaipur railway station to raj mandir cinema distance",
+    "Jal mahal nearest metro station",
+    "Jaipur me metro se ghumne ki jagah",
+    "Badi chaupar to hawa mahal distance",
+    "Jaipur metro ticket price",
+    "Jaipur metro app download"
   ],
   metadataBase: new URL("https://jaipurride.vercel.app"),
-  alternates: {
-    canonical: "/",
-  },
   other: {
     "google-site-verification": "XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo",
+    "geo.position": "26.9124;75.7873",
+    "geo.placename": "Jaipur, Rajasthan, India",
+    "geo.region": "IN-RJ",
+    "ICBM": "26.9124, 75.7873"
   },
   openGraph: {
     title: "Jaipur Ride | Jaipur Metro Route Planner & Travel Guide",
-    description: "Navigate the historic Pink City with Jaipur Metro companion guide. Find stations, compute smart card ticket fares, check operational schedules, and plan walking routes to local sightseeing spots.",
+    description: "Navigate the historic Pink City with Jaipur Metro companion guide. Find stations, compute smart card ticket fares, check operational schedules, lat-long coordinates, and plan walking routes to local sightseeing spots.",
     url: "https://jaipurride.vercel.app",
     siteName: "Jaipur Ride",
     images: [
@@ -82,14 +89,14 @@ export default function RootLayout({
       {
         "@type": "SoftwareApplication",
         "name": "Jaipur Ride",
-        "operatingSystem": "Android",
+        "operatingSystem": "Android, Web, PWA",
         "applicationCategory": "TravelApplication",
         "offers": {
           "@type": "Offer",
           "price": "0",
           "priceCurrency": "INR"
         },
-        "description": "The official companion guide app for navigating the Jaipur Metro Pink Line. Supports offline routing, station listings, and tourist guides.",
+        "description": "The official companion guide app for navigating the Jaipur Metro Pink Line. Supports offline routing, station listings, coordinates, ticket pricing, and tourist guides.",
         "downloadUrl": "https://jaipurride.vercel.app/download"
       },
       {
@@ -111,17 +118,17 @@ export default function RootLayout({
           {
             "@type": "CreativeWork",
             "name": "Long-tail Travel Search Terms",
-            "description": seoDb.data.longTailKeywords.slice(0, 15).join(", ")
+            "description": seoDb.data.longTailQueries.slice(0, 15).join(", ")
           },
           {
             "@type": "CreativeWork",
-            "name": "Voice Assistant Prompts",
-            "description": seoDb.data.voiceSearch.slice(0, 15).join(", ")
+            "name": "Voice & GEO Search Prompts",
+            "description": seoDb.data.geoSearchPrompts.slice(0, 15).join(", ")
           },
           {
             "@type": "CreativeWork",
-            "name": "Alternate Transit Terms",
-            "description": seoDb.data.synonyms.slice(0, 15).join(", ")
+            "name": "Geo Coordinates Terms",
+            "description": seoDb.data.dataMatrixQueries.slice(0, 15).join(", ")
           }
         ]
       }
@@ -156,6 +163,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1 w-full">{children}</main>
           <Footer />
+          <SeoCrawlerIndex />
         </Providers>
         <script
           type="application/ld+json"
@@ -165,3 +173,4 @@ export default function RootLayout({
     </html>
   );
 }
+

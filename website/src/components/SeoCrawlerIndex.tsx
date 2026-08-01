@@ -1,0 +1,224 @@
+import React from "react";
+import stationsData from "@/data/stations.json";
+import tourismData from "@/data/tourism.json";
+import seoDb from "@/data/seo-knowledge-base.json";
+
+export default function SeoCrawlerIndex() {
+  // Comprehensive Schema graph for search engine crawlers
+  const schemaGraph = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://jaipurride.vercel.app/#website",
+        "url": "https://jaipurride.vercel.app",
+        "name": "Jaipur Ride | Jaipur Metro Route Planner & Tourist Guide",
+        "description": "Official companion transit guide for Jaipur Metro Pink Line. Live fare calculator, train timings, interactive map, station coordinates, tourist monument distance, and offline travel guide.",
+        "inLanguage": ["en", "hi"],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://jaipurride.vercel.app/explore-jaipur?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://jaipurride.vercel.app/#app",
+        "name": "Jaipur Ride - Jaipur Metro App",
+        "operatingSystem": "Android, Web, PWA",
+        "applicationCategory": "TravelApplication",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "INR"
+        },
+        "description": "Offline-first Jaipur Metro guide app with fare calculation, station lat-lon coordinates, walking distance to Hawa Mahal, Jal Mahal, City Palace, Raj Mandir, ISKCON Temple, and Jaipur Junction Railway Station."
+      },
+      {
+        "@type": "Place",
+        "@id": "https://jaipurride.vercel.app/#jaipur-city",
+        "name": "Jaipur, Rajasthan, India",
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 26.9124,
+          "longitude": 75.7873
+        },
+        "containedInPlace": {
+          "@type": "State",
+          "name": "Rajasthan"
+        }
+      },
+      // All Stations in Schema
+      ...stationsData.map((st) => ({
+        "@type": "SubwayStation",
+        "@id": `https://jaipurride.vercel.app/metro-stations/${st.id}`,
+        "name": `${st.name} Metro Station`,
+        "alternateName": [`${st.nameHi} मेट्रो स्टेशन`, `${st.name} Station`],
+        "identifier": st.code,
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": st.location.lat,
+          "longitude": st.location.lon
+        },
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "opens": st.timings.firstTrain,
+          "closes": st.timings.lastTrain,
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        },
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "addressCountry": "IN"
+        }
+      })),
+      // All Tourist Places in Schema
+      ...tourismData.map((att) => ({
+        "@type": "TouristAttraction",
+        "@id": `https://jaipurride.vercel.app/explore-jaipur/${att.id}`,
+        "name": att.name,
+        "alternateName": att.nameHi,
+        "description": att.summary,
+        "touristType": ["Cultural", "Historical", "Sightseeing"],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Jaipur",
+          "addressRegion": "Rajasthan",
+          "addressCountry": "IN"
+        },
+        "isAccessibleForFree": att.entry_fee.toLowerCase().includes("free"),
+        "containedInPlace": {
+          "@type": "Place",
+          "name": "Jaipur City"
+        }
+      })),
+      // Key Query FAQs
+      {
+        "@type": "FAQPage",
+        "@id": "https://jaipurride.vercel.app/#faq-index",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What are the coordinates of Mansarovar Metro Station Jaipur?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Mansarovar Metro Station Jaipur is located at Latitude 26.8794444° N and Longitude 75.7500000° E."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the distance from Jaipur Railway Station to Raj Mandir Cinema?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The distance from Jaipur Junction Railway Station (Metro Station J07) to Raj Mandir Cinema is approximately 1.19 km (about 15 minutes walking or 5 minutes auto ride)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which is the nearest metro station to Jal Mahal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Badi Chaupar Metro Station (J11) is the nearest metro station to Jal Mahal (located approx 3.8 km away)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Jaipur me metro se ghumne ki konsi jagah hai?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Jaipur Metro Pink Line se aap Hawa Mahal, City Palace, Jantar Mantar, Bapu Bazaar, Chandpole Bazaar, Albert Hall Museum, aur Amer Fort asani se ghum sakte hain. Badi Chaupar aur Chhoti Chaupar metro stations sabse pass hain."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the walking distance from Badi Chaupar Metro Station to Hawa Mahal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The distance from Badi Chaupar Metro Station exit gate to Hawa Mahal is 300 meters, taking approximately 4 minutes to walk."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the Jaipur Metro ticket price from Railway Station to Hawa Mahal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The ticket fare from Railway Station Metro Station (J07) to Badi Chaupar Metro Station (J11, nearest to Hawa Mahal) is ₹12 for a token ticket, and ₹10.80 using a Jaipur Metro Smart Card."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the distance from Mansarovar Metro Station to ISKCON Temple Jaipur?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The distance from Mansarovar Metro Station to ISKCON Temple Jaipur is 3.8 km (approx 14 minutes driving or auto rickshaw)."
+            }
+          }
+        ]
+      }
+    ]
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaGraph) }}
+      />
+      {/* Semantic, accessible SEO keyword knowledge repository for crawlers */}
+      <section className="sr-only" aria-label="Jaipur Metro Transit Knowledge Base Index">
+        <h2>Jaipur Metro Stations Coordinates & Details</h2>
+        <ul>
+          {stationsData.map((st) => (
+            <li key={st.id}>
+              <h3>{st.name} Metro Station ({st.nameHi})</h3>
+              <p>Station Code: {st.code} | Line: {st.lineId} | Type: {st.type}</p>
+              <p>Coordinates: {st.location.lat}, {st.location.lon} (Latitude {st.location.lat}, Longitude {st.location.lon})</p>
+              <p>Timings: First Train {st.timings.firstTrain} AM, Last Train {st.timings.lastTrain} PM</p>
+              <p>Facilities: {st.facilities.join(", ")}</p>
+              <p>Connectivity: {st.connectivity.join(", ")}</p>
+            </li>
+          ))}
+        </ul>
+
+        <h2>Jaipur Tourist Attractions Nearest Metro Station & Distances</h2>
+        <ul>
+          {tourismData.map((att) => (
+            <li key={att.id}>
+              <h3>{att.name} ({att.nameHi})</h3>
+              <p>Nearest Metro Station: {att.stationId}</p>
+              <p>Distance from metro: {att.distance_km} km</p>
+              <p>Entry Fee: {att.entry_fee} | Best Time: {att.best_time}</p>
+              <p>Description: {att.description}</p>
+            </li>
+          ))}
+        </ul>
+
+        <h2>Jaipur Metro High Volume Search Terms & GEO Transit Queries</h2>
+        <div>
+          {seoDb.data.coreKeywords?.map((term, i) => (
+            <span key={`core-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.longTailQueries?.map((term, i) => (
+            <span key={`lt-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.geoSearchPrompts?.map((term, i) => (
+            <span key={`geo-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.dataMatrixQueries?.map((term, i) => (
+            <span key={`matrix-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.hinglishPrompts?.map((term, i) => (
+            <span key={`hin-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.itineraryQueries?.map((term, i) => (
+            <span key={`itin-${i}`}>{term}. </span>
+          ))}
+          {seoDb.data.entityAssoc?.map((term, i) => (
+            <span key={`entity-${i}`}>{term}. </span>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}

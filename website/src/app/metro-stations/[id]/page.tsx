@@ -58,15 +58,25 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   return {
-    title: `${station.name} Metro Station Timings, Map & Connectivity`,
-    description: `Complete guide for ${station.name} Metro Station (JMRC Pink Line). Find first and last train timings (${station.timings.firstTrain} - ${station.timings.lastTrain}), station facilities (${station.facilities.join(", ")}), and nearby tourist places.`,
+    title: `${station.name} Metro Station Jaipur Coordinates, Timings & Map`,
+    description: `Complete guide for ${station.name} Metro Station (JMRC Pink Line). Lat-Long Coordinates: ${station.location.lat}, ${station.location.lon}. First train: ${station.timings.firstTrain}, Last train: ${station.timings.lastTrain}. Facilities: ${station.facilities.join(", ")}.`,
     keywords: [
+      `"${station.name.toLowerCase()} metro station" jaipur coordinates`,
       `${station.name} metro station timings`,
       `${station.name} metro route map`,
       `${station.name} station facilities`,
       `nearest metro to ${station.name} Jaipur`,
+      `${station.name} metro lat long ${station.location.lat} ${station.location.lon}`,
       `Jaipur metro line stations JMRC`
-    ]
+    ],
+    alternates: {
+      canonical: `https://jaipurride.vercel.app/metro-stations/${station.id}`,
+    },
+    openGraph: {
+      title: `${station.name} Metro Station Jaipur Coordinates, Timings & Map`,
+      description: `${station.name} Metro Station (Code: ${station.code}). Lat: ${station.location.lat}, Lon: ${station.location.lon}. Operational timings ${station.timings.firstTrain} to ${station.timings.lastTrain}.`,
+      url: `https://jaipurride.vercel.app/metro-stations/${station.id}`,
+    }
   };
 }
 
