@@ -15,6 +15,13 @@ export const metadata: Metadata = {
   description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips. Dual domain portal for jaipurride.vercel.app & jaipurmetro.xyz.",
   keywords: [
     "Jaipur Metro",
+    "jaipur ride jaipur",
+    "jaipur ride",
+    "best metro app jaipur",
+    "jaipur metro app",
+    "best matro app",
+    "metro app jaipur",
+    "jaipur metr o fare",
     "Metro Route Jaipur",
     "Jaipur Travel Guide",
     "Things to do in Jaipur",
