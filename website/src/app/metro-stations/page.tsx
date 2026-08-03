@@ -223,6 +223,41 @@ export default function StationsDirectory() {
           </p>
         </div>
       )}
+
+      {/* Station Coordinates Matrix Table for Local SEO */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-8 border border-light-border dark:border-navy-border/40 shadow-sm space-y-6 mt-12">
+        <h2 className="font-heading font-extrabold text-2xl text-foreground">
+          {isEn ? "Jaipur Metro Stations Geo Coordinates Matrix" : "जयपुर मेट्रो स्टेशन भौगोलिक निर्देशांक (Geo Coordinates)"}
+        </h2>
+        <p className="text-xs text-foreground/70 leading-relaxed font-sans">
+          Exact latitude and longitude coordinates for all 11 active Jaipur Metro Pink Line stations from Mansarovar (J01) to Badi Chaupar (J11).
+        </p>
+        <div className="overflow-x-auto rounded-2xl border border-light-border dark:border-navy-border/20">
+          <table className="w-full text-left text-xs font-sans border-collapse">
+            <thead>
+              <tr className="bg-light-accent/50 dark:bg-navy-card border-b border-light-border dark:border-navy-border/30 font-heading font-bold text-foreground">
+                <th className="p-3">Station Code</th>
+                <th className="p-3">Station Name</th>
+                <th className="p-3">Latitude (Lat)</th>
+                <th className="p-3">Longitude (Lon)</th>
+                <th className="p-3">Structure Type</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-light-border dark:divide-navy-border/20 text-foreground/80">
+              {stations.map((st) => (
+                <tr key={st.id}>
+                  <td className="p-3 font-bold text-brand-pink">{st.code}</td>
+                  <td className="p-3 font-semibold">{st.name} ({st.nameHi})</td>
+                  <td className="p-3 font-mono">{st.location.lat}</td>
+                  <td className="p-3 font-mono">{st.location.lon}</td>
+                  <td className="p-3">{st.type}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
     </div>
   );
 }

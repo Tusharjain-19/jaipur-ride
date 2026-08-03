@@ -177,6 +177,62 @@ export default function SeoCrawlerIndex() {
               "@type": "Answer",
               "text": "The distance from Mansarovar Metro Station to ISKCON Temple Jaipur is 3.8 km (approx 14 minutes driving or auto rickshaw)."
             }
+          },
+          {
+            "@type": "Question",
+            "name": "What are the transit distances from Sindhi Camp Metro Station?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "From Sindhi Camp Metro Station (J08): Distance to Jaipur Railway Station is 1.5 km (1 stop), to Hawa Mahal / Badi Chaupar is 3.2 km (3 stops), to Patrika Gate is 8.5 km, to Jhotwara is 4.5 km, and to Ajmeri Gate is 2.2 km."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How to make or buy Jaipur Metro Smart Card (jaipur metro card kaise banaye)?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Purchase a Smart Card at any JMRC ticket counter for ₹100 (₹50 refundable deposit + ₹50 balance). Offers 10% to 20% discount on every ride."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are Jaipur Metro parking charges?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Two-wheeler parking fee is ₹10 (up to 8 hours) and four-wheeler parking fee is ₹25 (up to 8 hours) at Mansarovar, Railway Station, and Sindhi Camp stations."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which is the nearest metro station to Jaipur International Airport?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Mansarovar Metro Station (J01) and Vivek Vihar Metro Station (J03) are the closest Pink Line stations to Jaipur Airport (~9.8 km)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Where to buy Jaipuri Mojaris near Jaipur Metro?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Visit Bapu Bazaar (near Badi Chaupar J11 / Chhoti Chaupar J10) or Chandpole Bazaar (near Chandpole J09) for authentic handcrafted Jaipuri Mojaris."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the distance from Hawa Mahal to Patrika Gate?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The distance from Hawa Mahal to Patrika Gate is approximately 11.5 km via JLN Marg (25-30 minutes drive)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the distance from Badi Chaupar to Jal Mahal?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The distance from Badi Chaupar Metro Station to Jal Mahal is 3.8 km via Amer Road (10-12 minutes by auto or bus)."
+            }
           }
         ]
       }

@@ -221,6 +221,31 @@ export default function FareCalculatorPage() {
 
       </div>
 
+      {/* Popular Search Console Route Fares Matrix */}
+      <div className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 p-8 rounded-3xl shadow-sm space-y-6">
+        <h2 className="font-heading font-bold text-xl text-foreground">Popular Route Ticket Prices & Fares</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+          <div className="p-4 rounded-2xl bg-light-accent dark:bg-navy-card/50 border border-light-border dark:border-navy-border/30 space-y-2">
+            <h3 className="font-bold text-brand-pink text-sm">Railway Station to Hawa Mahal</h3>
+            <p className="text-foreground/70">Station Route: J07 (Railway Station) to J11 (Badi Chaupar)</p>
+            <p className="text-foreground/70">4 Station Hops (10 min ride)</p>
+            <p className="font-extrabold text-emerald-600 dark:text-emerald-400">Cash Token: ₹12 | Smart Card: ₹10.80</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent dark:bg-navy-card/50 border border-light-border dark:border-navy-border/30 space-y-2">
+            <h3 className="font-bold text-brand-pink text-sm">Mansarovar to Badi Chaupar</h3>
+            <p className="text-foreground/70">Station Route: J01 (Mansarovar) to J11 (Badi Chaupar)</p>
+            <p className="text-foreground/70">10 Station Hops (Full Pink Line)</p>
+            <p className="font-extrabold text-emerald-600 dark:text-emerald-400">Cash Token: ₹18 | Smart Card: ₹16.20</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent dark:bg-navy-card/50 border border-light-border dark:border-navy-border/30 space-y-2">
+            <h3 className="font-bold text-brand-pink text-sm">Sindhi Camp to Chhoti Chaupar</h3>
+            <p className="text-foreground/70">Station Route: J08 (Sindhi Camp) to J10 (Chhoti Chaupar)</p>
+            <p className="text-foreground/70">2 Station Hops (5 min ride)</p>
+            <p className="font-extrabold text-emerald-600 dark:text-emerald-400">Cash Token: ₹10 | Smart Card: ₹9.00</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

@@ -138,5 +138,111 @@
     "questionHi": "जयपुर में खरीदारी की सबसे अच्छी जगहें कौन सी हैं?",
     "answer": "For traditional shopping (textiles, handicrafts, gemstones), visit Bapu Bazaar, Johari Bazaar, and Tripolia Bazaar near Badi Chaupar (J11) station. For modern shopping malls and dining, explore the World Trade Park (WTP) in Sanganer.",
     "answerHi": "पारंपरिक वस्त्रों और हस्तशिल्प की खरीदारी के लिए बापू बाजार व जोहरी बाजार (बड़ी चौपड़ स्टेशन) और आधुनिक ब्रांड्स के लिए वर्ल्ड Trade Park (WTP) मॉल सबसे उपयुक्त स्थान हैं।"
+  },
+  {
+    "id": "faq_21",
+    "question": "What are the exact coordinates of Mansarovar Metro Station Jaipur?",
+    "questionHi": "मानसरोवर मेट्रो स्टेशन जयपुर के सटीक निर्देशांक (Coordinates) क्या हैं?",
+    "answer": "Mansarovar Metro Station (J01) is located at Latitude 26.8794444° N and Longitude 75.7500000° E (26.8794444, 75.7500000).",
+    "answerHi": "मानसरोवर मेट्रो स्टेशन (J01) के सटीक निर्देशांक अक्षांश 26.8794444° N और देशांतर 75.7500000° E हैं।"
+  },
+  {
+    "id": "faq_22",
+    "question": "What is the distance from Jaipur Railway Station to Raj Mandir Cinema?",
+    "questionHi": "जयपुर रेलवे स्टेशन से राज मंदिर सिनेमा की दूरी कितनी है?",
+    "answer": "The distance from Jaipur Railway Station Metro Station (J07) to Raj Mandir Cinema is approximately 1.19 km (about 15 minutes walking or 5 minutes by auto-rickshaw).",
+    "answerHi": "जयपुर रेलवे स्टेशन मेट्रो स्टेशन से राज मंदिर सिनेमा की दूरी लगभग 1.19 किमी है (पैदल 15 मिनट या ऑटो से 5 मिनट)।"
+  },
+  {
+    "id": "faq_23",
+    "question": "What is the Jaipur Railway Station to Hawa Mahal metro ticket price and route?",
+    "questionHi": "जयपुर रेलवे स्टेशन से हवा महल मेट्रो का टिकट किराया और रूट क्या है?",
+    "answer": "The metro route from Jaipur Railway Station (J07) to Hawa Mahal runs to Badi Chaupar Metro Station (J11) over 4 stations. Ticket price is ₹12 (₹10.80 with Smart Card). Walk 300 meters from Exit 2 of Badi Chaupar station to reach Hawa Mahal in 4 minutes.",
+    "answerHi": "जयपुर रेलवे स्टेशन से बड़ी चौपड़ (हवा महल का निकटतम स्टेशन) तक 4 स्टेशनों की यात्रा है। टिकट किराया ₹12 है (स्मार्ट कार्ड पर ₹10.80)। बड़ी चौपड़ गेट 2 से निकलकर 300 मीटर (4 मिनट) में हवा महल पहुँचें।"
+  },
+  {
+    "id": "faq_24",
+    "question": "What is the distance from Badi Chaupar Metro Station to Hawa Mahal?",
+    "questionHi": "बड़ी चौपड़ मेट्रो स्टेशन से हवा महल की दूरी कितनी है?",
+    "answer": "The walking distance from Badi Chaupar Metro Station (Exit Gate 2) to Hawa Mahal is 300 meters (approx 4 minutes walk).",
+    "answerHi": "बड़ी चौपड़ मेट्रो स्टेशन (गेट 2) से हवा महल की पैदल दूरी मात्र 300 मीटर (लगभग 4 मिनट) है।"
+  },
+  {
+    "id": "faq_25",
+    "question": "What is the distance from Mansarovar Metro Station to ISKCON Temple Jaipur?",
+    "questionHi": "मानसरोवर मेट्रो स्टेशन से इस्कॉन मंदिर जयपुर की दूरी कितनी है?",
+    "answer": "The distance from Mansarovar Metro Station (J01) to ISKCON Temple in Mansarovar is 3.8 km (approx 10-12 minutes drive or auto-rickshaw).",
+    "answerHi": "मानसरोवर मेट्रो स्टेशन (J01) से इस्कॉन मंदिर जयपुर की दूरी 3.8 किमी है (लगभग 10-12 मिनट ऑटो या कार से)।"
+  },
+  {
+    "id": "faq_26",
+    "question": "What are the distance and transit connections from Sindhi Camp Metro Station?",
+    "questionHi": "सिंधी कैंप मेट्रो स्टेशन से प्रमुख स्थानों की दूरी कितनी है?",
+    "answer": "From Sindhi Camp Metro Station (J08): Distance to Jaipur Railway Station is 1.5 km (1 stop), to Hawa Mahal / Badi Chaupar is 3.2 km (3 stops), to Patrika Gate is 8.5 km, to Jhotwara is 4.5 km, and to Ajmeri Gate is 2.2 km.",
+    "answerHi": "सिंधी कैंप मेट्रो स्टेशन से: रेलवे स्टेशन 1.5 किमी (1 स्टॉप), हवा महल / बड़ी चौपड़ 3.2 किमी (3 स्टॉप), पत्रिका गेट 8.5 किमी, झोटवाड़ा 4.5 किमी, और अजमेरी गेट 2.2 किमी है।"
+  },
+  {
+    "id": "faq_27",
+    "question": "Jaipur me metro se ghumne ki konsi jagah hai?",
+    "questionHi": "जयपुर में मेट्रो से घूमने की कौन-कौन सी जगहें हैं?",
+    "answer": "Jaipur Metro Pink Line se aap asani se Hawa Mahal, City Palace, Jantar Mantar, Bapu Bazaar, Johari Bazaar, Chandpole Marble Market, Albert Hall Museum, Raj Mandir Cinema, ISKCON Temple, aur Amer Fort / Jal Mahal ghum sakte hain. Badi Chaupar (J11), Chhoti Chaupar (J10), aur Chandpole (J09) main tourism stations hain.",
+    "answerHi": "जयपुर मेट्रो से आप हवा महल, सिटी पैलेस, जंतर मंतर, बापू बाजार, जोहरी बाजार, चांदपोल बाजार, अल्बर्ट हॉल, राज मंदिर सिनेमा, और आमेर किला आसानी से घूम सकते हैं। बड़ी चौपड़, छोटी चौपड़ और चांदपोल मुख्य पर्यटन स्टेशन हैं।"
+  },
+  {
+    "id": "faq_28",
+    "question": "How to make/buy Jaipur Metro Smart Card (Jaipur metro card kaise banaye) & what are charges?",
+    "questionHi": "जयपुर मेट्रो कार्ड कैसे बनाएं और कितना चार्ज लगता है?",
+    "answer": "You can purchase a Jaipur Metro Smart Card at any JMRC ticket window for ₹100 (which includes ₹50 refundable security deposit + ₹50 initial travel balance). Smart Cards give a 10% to 20% discount on every metro ride and can be recharged online or at station counters.",
+    "answerHi": "आप किसी भी JMRC स्टेशन टिकट काउंटर से ₹100 में जयपुर मेट्रो स्मार्ट कार्ड खरीद सकते हैं (₹50 रिफंडेबल सिक्योरिटी + ₹50 बैलेंस)। कार्ड से हर यात्रा पर 10% से 20% की छूट मिलती है।"
+  },
+  {
+    "id": "faq_29",
+    "question": "What are Jaipur Metro parking charges?",
+    "questionHi": "जयपुर मेट्रो में पार्किंग चार्ज कितना है?",
+    "answer": "Jaipur Metro parking is available at major stations like Mansarovar (J01), Railway Station (J07), and Sindhi Camp (J08). Parking fees are ₹10 for 2-wheelers (up to 8 hrs) and ₹25 for 4-wheelers (up to 8 hrs).",
+    "answerHi": "जयपुर मेट्रो पार्किंग शुल्क: दुपहिया वाहन के लिए ₹10 (8 घंटे तक) और चार पहिया वाहन के लिए ₹25 (8 घंटे तक)।"
+  },
+  {
+    "id": "faq_30",
+    "question": "Which metro station is nearest to Jal Mahal and Amer Fort?",
+    "questionHi": "जल महल और आमेर किले का निकटतम मेट्रो स्टेशन कौन सा है?",
+    "answer": "Badi Chaupar Metro Station (J11) is the nearest metro station to both Jal Mahal (3.8 km) and Amer Fort (7.2 km). Direct AC city buses and autos run frequently from Badi Chaupar station.",
+    "answerHi": "बड़ी चौपड़ मेट्रो स्टेशन (J11) जल महल (3.8 किमी) और आमेर किले (7.2 किमी) दोनों का निकटतम मेट्रो स्टेशन है।"
+  },
+  {
+    "id": "faq_31",
+    "question": "What is the nearest metro station to Jaipur International Airport?",
+    "questionHi": "जयपुर एयरपोर्ट का निकटतम मेट्रो स्टेशन कौन सा है?",
+    "answer": "Mansarovar Metro Station (J01) and Vivek Vihar Metro Station (J03) are the nearest Pink Line stations to Jaipur Airport (~9.8 km away).",
+    "answerHi": "जयपुर एयरपोर्ट का निकटतम मेट्रो स्टेशन मानसरोवर (J01) और विवेक विहार (J03) हैं (~9.8 किमी)।"
+  },
+  {
+    "id": "faq_32",
+    "question": "Where to buy Jaipuri Mojaris near Jaipur Metro?",
+    "questionHi": "जयपुर मेट्रो के पास जयपुरी मोजड़ी (Mojari) कहाँ से खरीदें?",
+    "answer": "Authentic handcrafted Jaipuri Mojaris and leather juttis are sold in Bapu Bazaar (near Badi Chaupar J11 / Chhoti Chaupar J10) and Chandpole Bazaar (near Chandpole Metro J09).",
+    "answerHi": "प्रसिद्ध हस्तनिर्मित जयपुरी मोजड़ी बापू बाजार (बड़ी चौपड़/छोटी चौपड़) और चांदपोल बाजार (चांदपोल मेट्रो) में उपलब्ध हैं।"
+  },
+  {
+    "id": "faq_33",
+    "question": "What is the nearest metro station to SMS Hospital, MNIT, and RIC Jaipur?",
+    "questionHi": "एसएमएस अस्पताल, एमएनआईटी और आरआईसी जयपुर का निकटतम मेट्रो स्टेशन कौन सा है?",
+    "answer": "SMS Hospital nearest metro: Chandpole J09 or Badi Chaupar J11 (~2.8 km). MNIT Jaipur nearest metro: Civil Lines J06 (~4.5 km). Rajasthan International Centre (RIC) nearest metro: Civil Lines J06 (~5.5 km).",
+    "answerHi": "एसएमएस अस्पताल: चांदपोल/बड़ी चौपड़। एमएनआईटी जयपुर: सिविल लाइन्स। आरआईसी जयपुर: सिविल लाइन्स/रेलवे स्टेशन।"
+  },
+  {
+    "id": "faq_34",
+    "question": "What is the distance from Hawa Mahal to Patrika Gate?",
+    "questionHi": "हवा महल से पत्रिका गेट की दूरी कितनी है?",
+    "answer": "The distance from Hawa Mahal to Patrika Gate (Jawahar Circle) is approximately 11.5 km (approx 25-30 minutes drive via JLN Marg).",
+    "answerHi": "हवा महल से पत्रिका गेट (जवाहर सर्किल) की दूरी लगभग 11.5 किमी है (जेएलएन मार्ग से 25-30 मिनट)।"
+  },
+  {
+    "id": "faq_35",
+    "question": "What is the distance from Badi Chaupar to Jal Mahal?",
+    "questionHi": "बड़ी चौपड़ से जल महल की दूरी कितनी है?",
+    "answer": "The distance from Badi Chaupar Metro Station (J11) to Jal Mahal is 3.8 km via Amer Road (approx 10-12 minutes by auto or bus).",
+    "answerHi": "बड़ी चौपड़ मेट्रो स्टेशन से जल महल की दूरी आमेर रोड होकर 3.8 किमी है (ऑटो या बस से 10-12 मिनट)।"
   }
 ]
+

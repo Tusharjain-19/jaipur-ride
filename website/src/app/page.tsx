@@ -881,6 +881,97 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 8.5. SEARCH CONSOLE GEO & TRANSIT MATRIX SECTION */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 p-8 lg:p-12 shadow-xl space-y-10">
+          
+          <div className="text-center space-y-3 max-w-3xl mx-auto">
+            <span className="px-3.5 py-1 rounded-full bg-brand-pink/10 text-brand-pink text-xs font-extrabold uppercase tracking-wider">
+              {isEn ? "SEO & Local GEO Transit Directory" : "जयपुर मेट्रो स्थानिक सूचना मार्गदर्शिका"}
+            </span>
+            <h2 className="font-heading font-extrabold text-3xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
+              {isEn ? "Jaipur Metro Station Coordinates & Landmark Distances" : "जयपुर मेट्रो स्टेशन निर्देशांक एवं प्रमुख स्थल दूरियां"}
+            </h2>
+            <p className="text-sm text-slate-600 dark:text-text-secondary leading-relaxed font-sans">
+              {isEn
+                ? "Exact GPS Lat-Long coordinates, fare calculations, walking distances, and landmark transit guides for Jaipur Metro Pink Line."
+                : "जयपुर मेट्रो पिंक लाइन के लिए सटीक जीपीएस अक्षांश-देशांतर निर्देशांक, किराया गणना, पैदल मार्ग और प्रमुख स्थल गाइड।"}
+            </p>
+          </div>
+
+          {/* Coordinates Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-sans">
+            <div className="p-4 rounded-2xl bg-light-bg dark:bg-navy-deep border border-light-border dark:border-navy-border/30 space-y-1.5">
+              <span className="font-bold text-brand-pink block font-heading text-sm">Mansarovar Metro Station</span>
+              <p className="text-slate-500 dark:text-text-secondary">Coordinates: <strong className="text-slate-900 dark:text-white font-mono">26.8794444, 75.7500000</strong></p>
+              <p className="text-slate-500 dark:text-text-secondary">Nearest to: ISKCON Temple (3.8 km), Sitapura (12 km), Jaipur Airport (9.8 km)</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-light-bg dark:bg-navy-deep border border-light-border dark:border-navy-border/30 space-y-1.5">
+              <span className="font-bold text-brand-pink block font-heading text-sm">Badi Chaupar Metro Station</span>
+              <p className="text-slate-500 dark:text-text-secondary">Coordinates: <strong className="text-slate-900 dark:text-white font-mono">26.9229600, 75.8268140</strong></p>
+              <p className="text-slate-500 dark:text-text-secondary">Nearest to: Hawa Mahal (300m walk), Jal Mahal (3.8 km), Amer Fort (7.2 km)</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-light-bg dark:bg-navy-deep border border-light-border dark:border-navy-border/30 space-y-1.5">
+              <span className="font-bold text-brand-pink block font-heading text-sm">Jaipur Railway Station Metro</span>
+              <p className="text-slate-500 dark:text-text-secondary">Coordinates: <strong className="text-slate-900 dark:text-white font-mono">26.9186111, 75.7900000</strong></p>
+              <p className="text-slate-500 dark:text-text-secondary">Nearest to: Raj Mandir Cinema (1.19 km), Hawa Mahal (4 stops, ₹12 ticket)</p>
+            </div>
+            <div className="p-4 rounded-2xl bg-light-bg dark:bg-navy-deep border border-light-border dark:border-navy-border/30 space-y-1.5">
+              <span className="font-bold text-brand-pink block font-heading text-sm">Sindhi Camp Metro Station</span>
+              <p className="text-slate-500 dark:text-text-secondary">Coordinates: <strong className="text-slate-900 dark:text-white font-mono">26.9225000, 75.7997222</strong></p>
+              <p className="text-slate-500 dark:text-text-secondary">Nearest to: ISBT Bus Stand, Patrika Gate (8.5 km), Jhotwara (4.5 km)</p>
+            </div>
+          </div>
+
+          {/* Quick Route Lookup Matrix Table */}
+          <div className="overflow-x-auto rounded-2xl border border-light-border dark:border-navy-border/20">
+            <table className="w-full text-left text-xs font-sans border-collapse">
+              <thead>
+                <tr className="bg-light-accent/50 dark:bg-navy-accent/20 border-b border-light-border dark:border-navy-border/30 font-heading font-bold text-slate-700 dark:text-text-primary">
+                  <th className="p-4">Origin & Destination Route</th>
+                  <th className="p-4">Nearest Metro Station</th>
+                  <th className="p-4">Distance & Transit Time</th>
+                  <th className="p-4">Token & Smart Card Fare</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-light-border dark:divide-navy-border/20 text-slate-600 dark:text-text-secondary">
+                <tr>
+                  <td className="p-4 font-semibold text-slate-900 dark:text-white">Railway Station to Hawa Mahal</td>
+                  <td className="p-4">Badi Chaupar (J11)</td>
+                  <td className="p-4">4 Stops (10 min train + 300m / 4 min walk)</td>
+                  <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">₹12 Token / ₹10.80 Smart Card</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-slate-900 dark:text-white">Railway Station to Raj Mandir Cinema</td>
+                  <td className="p-4">Railway Station (J07) / Sindhi Camp (J08)</td>
+                  <td className="p-4">1.19 km (15 min walk or 5 min auto)</td>
+                  <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">₹10 Token / ₹9.00 Smart Card</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-slate-900 dark:text-white">Badi Chaupar to Jal Mahal</td>
+                  <td className="p-4">Badi Chaupar (J11)</td>
+                  <td className="p-4">3.8 km (10-12 min via Amer Road bus/auto)</td>
+                  <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">₹18 Full Line / Feeder ₹10-15</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-slate-900 dark:text-white">Mansarovar to ISKCON Temple</td>
+                  <td className="p-4">Mansarovar (J01)</td>
+                  <td className="p-4">3.8 km (10-12 min auto/cab)</td>
+                  <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">₹18 Full Line / Feeder ₹15</td>
+                </tr>
+                <tr>
+                  <td className="p-4 font-semibold text-slate-900 dark:text-white">Sindhi Camp to Patrika Gate</td>
+                  <td className="p-4">Vivek Vihar (J03) / Sindhi Camp (J08)</td>
+                  <td className="p-4">8.5 km (20 min drive via JLN Marg)</td>
+                  <td className="p-4 text-emerald-600 dark:text-emerald-400 font-bold">₹18 Metro + Cab Feeder</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
       {/* 9. FAQ ACCORDION */}
       <section className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="text-center space-y-4 mb-16">
