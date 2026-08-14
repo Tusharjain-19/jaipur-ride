@@ -4,7 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { ArrowLeft, Ticket, Clock, MapPin, Compass, ExternalLink, Train } from "lucide-react";
+import { ArrowLeft, Ticket, Clock, MapPin, Compass, ExternalLink, Train, ChevronRight, HelpCircle, Route } from "lucide-react";
 
 interface Station {
   id: string;
@@ -61,6 +61,128 @@ export default function AttractionDetailsClient({ attraction, station, related }
     };
     return stationTranslations[name] || name;
   };
+
+  // Compute stops between two station indices
+  const stopIndex: Record<string, number> = {
+    "J01": 0, "J02": 1, "J03": 2, "J04": 3, "J05": 4, "J06": 5, "J07": 6, "J08": 7, "J09": 8, "J10": 9, "J11": 10
+  };
+
+  const stationNames: Record<string, { en: string; hi: string }> = {
+    "J01": { en: "Mansarovar", hi: "मानसरोवर" },
+    "J02": { en: "New Aatish Market", hi: "न्यू आतिश मार्केट" },
+    "J03": { en: "Vivek Vihar", hi: "विवेक विहार" },
+    "J04": { en: "Shyam Nagar", hi: "श्याम नगर" },
+    "J05": { en: "Ram Nagar", hi: "राम नगर" },
+    "J06": { en: "Civil Lines", hi: "सिविल लाइन्स" },
+    "J07": { en: "Railway Station", hi: "रेलवे स्टेशन" },
+    "J08": { en: "Sindhi Camp", hi: "सिंधी कैंप" },
+    "J09": { en: "Chandpole", hi: "चांदपोल" },
+    "J10": { en: "Chhoti Chaupar", hi: "छोटी चौपड़" },
+    "J11": { en: "Badi Chaupar", hi: "बड़ी चौपड़" }
+  };
+
+  const nearestStationId = attraction.stationId;
+  const nearestStationName = stationNames[nearestStationId];
+  const nearestIdx = stopIndex[nearestStationId] ?? 0;
+
+  const getStopCount = (fromId: string) => {
+    const fromIdx = stopIndex[fromId] ?? 0;
+    return Math.abs(nearestIdx - fromIdx);
+  };
+
+  const getDirection = (fromId: string) => {
+    const fromIdx = stopIndex[fromId] ?? 0;
+    if (fromIdx < nearestIdx) return isEn ? "eastbound towards Badi Chaupar" : "बड़ी चौपड़ की ओर पूर्व दिशा में";
+    if (fromIdx > nearestIdx) return isEn ? "westbound towards Mansarovar" : "मानसरोवर की ओर पश्चिम दिशा में";
+    return "";
+  };
+
+  const lastMileText = () => {
+    if (attraction.walk_time_min) {
+      return isEn
+        ? `Walk ${attraction.distance_km} km (~${attraction.walk_time_min} minutes) from the metro station exit to ${attraction.name}.`
+        : `मेट्रो स्टेशन के बाहर से ${attraction.nameHi} तक ${attraction.distance_km} किमी (~${attraction.walk_time_min} मिनट) पैदल चलें।`;
+    }
+    return isEn
+      ? `Take an auto-rickshaw or cab from the metro station exit (~${attraction.approx_drive_distance_km} km, ${attraction.approx_drive_time_min} minutes) to ${attraction.name}.`
+      : `मेट्रो स्टेशन के बाहर से ऑटो-रिक्शा या कैब लें (~${attraction.approx_drive_distance_km} किमी, ${attraction.approx_drive_time_min} मिनट) ${attraction.nameHi} तक।`;
+  };
+
+  const buildRouteSteps = (fromId: string, fromLabel: { en: string; hi: string }) => {
+    const stops = getStopCount(fromId);
+    const direction = getDirection(fromId);
+
+    const steps: { en: string; hi: string }[] = [];
+
+    // Step 1: Get to the starting metro station
+    if (fromId === "J07") {
+      steps.push({
+        en: `Head to Jaipur Junction Railway Station Metro Station (${fromId}). The metro entrance is connected to the railway station building.`,
+        hi: `जयपुर जंक्शन रेलवे स्टेशन मेट्रो स्टेशन (${fromId}) पर जाएं। मेट्रो का प्रवेश रेलवे स्टेशन से जुड़ा है।`
+      });
+    } else if (fromId === "J08") {
+      steps.push({
+        en: `Head to Sindhi Camp Metro Station (${fromId}). The station is adjacent to the RSRTC Central Bus Stand.`,
+        hi: `सिंधी कैंप मेट्रो स्टेशन (${fromId}) पर जाएं। स्टेशन RSRTC सेंट्रल बस स्टैंड के पास है।`
+      });
+    }
+
+    // Step 2: Buy ticket
+    steps.push({
+      en: `Purchase a token ticket or tap your Jaipur Metro Smart Card at the counter/gate for ${isEn ? nearestStationName.en : nearestStationName.hi} Metro Station (${nearestStationId}).`,
+      hi: `काउंटर/गेट पर ${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) के लिए टोकन टिकट खरीदें या अपना जयपुर मेट्रो स्मार्ट कार्ड टैप करें।`
+    });
+
+    // Step 3: Board the train
+    if (stops === 0) {
+      steps.push({
+        en: `You are already at the nearest metro station! Exit and proceed to ${attraction.name}.`,
+        hi: `आप पहले से निकटतम मेट्रो स्टेशन पर हैं! बाहर निकलें और ${attraction.nameHi} की ओर बढ़ें।`
+      });
+    } else {
+      steps.push({
+        en: `Board the Pink Line metro train ${direction}. Travel ${stops} stop${stops > 1 ? "s" : ""} and alight at ${nearestStationName.en} Metro Station (${nearestStationId}).`,
+        hi: `पिंक लाइन मेट्रो ट्रेन ${direction} बोर्ड करें। ${stops} स्टॉप यात्रा करें और ${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) पर उतरें।`
+      });
+    }
+
+    // Step 4: Last mile
+    steps.push({
+      en: lastMileText(),
+      hi: lastMileText()
+    });
+
+    return steps;
+  };
+
+  const routeFromRailway = buildRouteSteps("J07", { en: "Jaipur Railway Station", hi: "जयपुर रेलवे स्टेशन" });
+  const routeFromSindhiCamp = buildRouteSteps("J08", { en: "Sindhi Camp Bus Stand", hi: "सिंधी कैंप बस स्टैंड" });
+
+  const airportRoute = (() => {
+    const steps: { en: string; hi: string }[] = [];
+    steps.push({
+      en: "From Jaipur International Airport (JAI), take a prepaid taxi or cab to Mansarovar Metro Station (J01) — the closest metro station to the airport (~9.8 km, 20 minutes drive).",
+      hi: "जयपुर इंटरनेशनल एयरपोर्ट (JAI) से प्रीपेड टैक्सी या कैब लेकर मानसरोवर मेट्रो स्टेशन (J01) जाएं — एयरपोर्ट से निकटतम मेट्रो स्टेशन (~9.8 किमी, 20 मिनट ड्राइव)।"
+    });
+    const stopsFromJ01 = getStopCount("J01");
+    if (stopsFromJ01 === 0) {
+      steps.push({
+        en: `Mansarovar is the nearest metro station. Exit and proceed to ${attraction.name}.`,
+        hi: `मानसरोवर निकटतम मेट्रो स्टेशन है। बाहर निकलें और ${attraction.nameHi} की ओर बढ़ें।`
+      });
+    } else {
+      const direction = getDirection("J01");
+      steps.push({
+        en: `Board the Pink Line metro ${direction}. Travel ${stopsFromJ01} stop${stopsFromJ01 > 1 ? "s" : ""} to ${nearestStationName.en} Metro Station (${nearestStationId}).`,
+        hi: `पिंक लाइन मेट्रो ${direction} बोर्ड करें। ${stopsFromJ01} स्टॉप ${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) तक यात्रा करें।`
+      });
+    }
+    steps.push({
+      en: lastMileText(),
+      hi: lastMileText()
+    });
+    return steps;
+  })();
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 space-y-8">
@@ -170,6 +292,161 @@ export default function AttractionDetailsClient({ attraction, station, related }
 
         </div>
 
+      </div>
+
+      {/* How to Reach by Metro Section */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 sm:p-8 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none space-y-6">
+        <h2 className="font-heading font-extrabold text-2xl text-foreground flex items-center space-x-2">
+          <Route className="w-6 h-6 text-brand-pink" />
+          <span>{isEn ? `How to Reach ${attraction.name} by Jaipur Metro` : `जयपुर मेट्रो से ${attraction.nameHi} कैसे पहुंचें`}</span>
+        </h2>
+        <p className="text-sm text-foreground/60">
+          {isEn
+            ? `Step-by-step directions to reach ${attraction.name} using the Jaipur Metro Pink Line from major transit hubs.`
+            : `प्रमुख ट्रांजिट केंद्रों से जयपुर मेट्रो पिंक लाइन से ${attraction.nameHi} पहुँचने के लिए चरण-दर-चरण निर्देश।`}
+        </p>
+
+        {/* Route from Railway Station */}
+        <div className="space-y-3">
+          <h3 className="font-heading font-bold text-base text-foreground flex items-center space-x-2">
+            <Train className="w-4 h-4 text-brand-pink" />
+            <span>{isEn ? "From Jaipur Junction Railway Station" : "जयपुर जंक्शन रेलवे स्टेशन से"}</span>
+          </h3>
+          <ol className="space-y-2.5 list-none">
+            {routeFromRailway.map((step, idx) => (
+              <li key={idx} className="flex items-start space-x-3 text-xs sm:text-sm text-foreground/80 leading-relaxed">
+                <span className="shrink-0 w-6 h-6 flex items-center justify-center bg-brand-pink/15 text-brand-pink font-bold text-xs rounded-full mt-0.5">{idx + 1}</span>
+                <span>{isEn ? step.en : step.hi}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <hr className="border-light-border dark:border-navy-border/20" />
+
+        {/* Route from Sindhi Camp */}
+        <div className="space-y-3">
+          <h3 className="font-heading font-bold text-base text-foreground flex items-center space-x-2">
+            <MapPin className="w-4 h-4 text-brand-pink" />
+            <span>{isEn ? "From Sindhi Camp Bus Stand (RSRTC)" : "सिंधी कैंप बस स्टैंड (RSRTC) से"}</span>
+          </h3>
+          <ol className="space-y-2.5 list-none">
+            {routeFromSindhiCamp.map((step, idx) => (
+              <li key={idx} className="flex items-start space-x-3 text-xs sm:text-sm text-foreground/80 leading-relaxed">
+                <span className="shrink-0 w-6 h-6 flex items-center justify-center bg-brand-pink/15 text-brand-pink font-bold text-xs rounded-full mt-0.5">{idx + 1}</span>
+                <span>{isEn ? step.en : step.hi}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <hr className="border-light-border dark:border-navy-border/20" />
+
+        {/* Route from Airport */}
+        <div className="space-y-3">
+          <h3 className="font-heading font-bold text-base text-foreground flex items-center space-x-2">
+            <Compass className="w-4 h-4 text-brand-pink" />
+            <span>{isEn ? "From Jaipur International Airport (JAI)" : "जयपुर इंटरनेशनल एयरपोर्ट (JAI) से"}</span>
+          </h3>
+          <ol className="space-y-2.5 list-none">
+            {airportRoute.map((step, idx) => (
+              <li key={idx} className="flex items-start space-x-3 text-xs sm:text-sm text-foreground/80 leading-relaxed">
+                <span className="shrink-0 w-6 h-6 flex items-center justify-center bg-brand-pink/15 text-brand-pink font-bold text-xs rounded-full mt-0.5">{idx + 1}</span>
+                <span>{isEn ? step.en : step.hi}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+
+      {/* Landmark FAQs Section */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 sm:p-8 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none space-y-6">
+        <h2 className="font-heading font-bold text-2xl text-foreground flex items-center space-x-2">
+          <HelpCircle className="w-6 h-6 text-brand-pink" />
+          <span>{isEn ? `FAQs About ${attraction.name}` : `${attraction.nameHi} के बारे में अक्सर पूछे जाने वाले प्रश्न`}</span>
+        </h2>
+
+        <div className="space-y-4">
+          {/* FAQ 1: Nearest Metro Station */}
+          <details className="group border border-light-border/60 dark:border-navy-border/20 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex items-center justify-between px-5 py-4 cursor-pointer focus:outline-none select-none bg-light-accent/30 dark:bg-navy-card/10">
+              <h3 className="font-heading font-bold text-sm text-foreground group-hover:text-brand-pink transition-colors">
+                {isEn ? `Which is the nearest metro station to ${attraction.name}?` : `${attraction.nameHi} का निकटतम मेट्रो स्टेशन कौन सा है?`}
+              </h3>
+              <span className="transition-transform duration-200 group-open:-rotate-180 shrink-0 text-brand-pink">
+                <ChevronRight className="w-4 h-4" />
+              </span>
+            </summary>
+            <div className="px-5 py-4 text-xs sm:text-sm text-foreground/75 leading-relaxed border-t border-light-border/40 dark:border-navy-border/10">
+              <p>
+                {isEn
+                  ? `The nearest Jaipur Metro station to ${attraction.name} is ${nearestStationName.en} Metro Station (${nearestStationId}) on the Pink Line. It is located approximately ${attraction.distance_km} km from ${attraction.name}.`
+                  : `${attraction.nameHi} का निकटतम जयपुर मेट्रो स्टेशन पिंक लाइन पर ${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) है। यह ${attraction.nameHi} से लगभग ${attraction.distance_km} किमी दूर स्थित है।`}
+              </p>
+            </div>
+          </details>
+
+          {/* FAQ 2: Distance from Metro */}
+          <details className="group border border-light-border/60 dark:border-navy-border/20 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex items-center justify-between px-5 py-4 cursor-pointer focus:outline-none select-none bg-light-accent/30 dark:bg-navy-card/10">
+              <h3 className="font-heading font-bold text-sm text-foreground group-hover:text-brand-pink transition-colors">
+                {isEn ? `What is the distance from ${nearestStationName.en} Metro Station to ${attraction.name}?` : `${nearestStationName.hi} मेट्रो स्टेशन से ${attraction.nameHi} की दूरी कितनी है?`}
+              </h3>
+              <span className="transition-transform duration-200 group-open:-rotate-180 shrink-0 text-brand-pink">
+                <ChevronRight className="w-4 h-4" />
+              </span>
+            </summary>
+            <div className="px-5 py-4 text-xs sm:text-sm text-foreground/75 leading-relaxed border-t border-light-border/40 dark:border-navy-border/10">
+              <p>
+                {attraction.walk_time_min
+                  ? (isEn
+                    ? `The distance from ${nearestStationName.en} Metro Station (${nearestStationId}) to ${attraction.name} is ${attraction.distance_km} km, which is approximately ${attraction.walk_time_min} minutes walking distance. No auto-rickshaw or cab is needed.`
+                    : `${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) से ${attraction.nameHi} की दूरी ${attraction.distance_km} किमी है, जो लगभग ${attraction.walk_time_min} मिनट की पैदल दूरी है। ऑटो-रिक्शा या कैब की आवश्यकता नहीं है।`)
+                  : (isEn
+                    ? `The distance from ${nearestStationName.en} Metro Station (${nearestStationId}) to ${attraction.name} is approximately ${attraction.approx_drive_distance_km} km by road, which takes about ${attraction.approx_drive_time_min} minutes by auto-rickshaw or cab.`
+                    : `${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) से ${attraction.nameHi} की दूरी सड़क मार्ग से लगभग ${attraction.approx_drive_distance_km} किमी है, जो ऑटो-रिक्शा या कैब से लगभग ${attraction.approx_drive_time_min} मिनट लगते हैं।`)}
+              </p>
+            </div>
+          </details>
+
+          {/* FAQ 3: How to reach from Railway Station */}
+          <details className="group border border-light-border/60 dark:border-navy-border/20 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex items-center justify-between px-5 py-4 cursor-pointer focus:outline-none select-none bg-light-accent/30 dark:bg-navy-card/10">
+              <h3 className="font-heading font-bold text-sm text-foreground group-hover:text-brand-pink transition-colors">
+                {isEn ? `How to reach ${attraction.name} from Jaipur Railway Station by metro?` : `जयपुर रेलवे स्टेशन से मेट्रो द्वारा ${attraction.nameHi} कैसे पहुँचें?`}
+              </h3>
+              <span className="transition-transform duration-200 group-open:-rotate-180 shrink-0 text-brand-pink">
+                <ChevronRight className="w-4 h-4" />
+              </span>
+            </summary>
+            <div className="px-5 py-4 text-xs sm:text-sm text-foreground/75 leading-relaxed border-t border-light-border/40 dark:border-navy-border/10">
+              <p>
+                {isEn
+                  ? `From Jaipur Junction Railway Station Metro Station (J07), board the Pink Line metro ${getDirection("J07")}. Travel ${getStopCount("J07")} stop${getStopCount("J07") > 1 ? "s" : ""} and exit at ${nearestStationName.en} Metro Station (${nearestStationId}). ${attraction.walk_time_min ? `Walk ${attraction.distance_km} km (~${attraction.walk_time_min} min) to reach ${attraction.name}.` : `Take an auto/cab (~${attraction.approx_drive_distance_km} km, ${attraction.approx_drive_time_min} min) to reach ${attraction.name}.`}`
+                  : `जयपुर जंक्शन रेलवे स्टेशन मेट्रो स्टेशन (J07) से पिंक लाइन मेट्रो ${getDirection("J07")} बोर्ड करें। ${getStopCount("J07")} स्टॉप यात्रा करें और ${nearestStationName.hi} मेट्रो स्टेशन (${nearestStationId}) पर उतरें। ${attraction.walk_time_min ? `${attraction.distance_km} किमी (~${attraction.walk_time_min} मिनट) पैदल चलकर ${attraction.nameHi} पहुँचें।` : `ऑटो/कैब (~${attraction.approx_drive_distance_km} किमी, ${attraction.approx_drive_time_min} मिनट) लेकर ${attraction.nameHi} पहुँचें।`}`}
+              </p>
+            </div>
+          </details>
+
+          {/* FAQ 4: Entry Fee & Timings */}
+          <details className="group border border-light-border/60 dark:border-navy-border/20 rounded-2xl overflow-hidden [&_summary::-webkit-details-marker]:hidden">
+            <summary className="flex items-center justify-between px-5 py-4 cursor-pointer focus:outline-none select-none bg-light-accent/30 dark:bg-navy-card/10">
+              <h3 className="font-heading font-bold text-sm text-foreground group-hover:text-brand-pink transition-colors">
+                {isEn ? `What are the entry ticket prices and visiting hours for ${attraction.name}?` : `${attraction.nameHi} के प्रवेश टिकट की कीमतें और यात्रा का समय क्या है?`}
+              </h3>
+              <span className="transition-transform duration-200 group-open:-rotate-180 shrink-0 text-brand-pink">
+                <ChevronRight className="w-4 h-4" />
+              </span>
+            </summary>
+            <div className="px-5 py-4 text-xs sm:text-sm text-foreground/75 leading-relaxed border-t border-light-border/40 dark:border-navy-border/10">
+              <p>
+                {isEn
+                  ? `The entry fee for ${attraction.name} is ${attraction.entry_fee}. The best time to visit is ${attraction.best_time}. We recommend visiting during early morning or late afternoon for the best experience and to avoid crowds.`
+                  : `${attraction.nameHi} का प्रवेश शुल्क ${attraction.entry_fee} है। यात्रा का सबसे अच्छा समय ${attraction.best_time} है। हम सबसे अच्छे अनुभव और भीड़ से बचने के लिए सुबह जल्दी या देर दोपहर में जाने की सलाह देते हैं।`}
+              </p>
+            </div>
+          </details>
+        </div>
       </div>
 
       {/* Related Attractions Section */}
