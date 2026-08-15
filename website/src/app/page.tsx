@@ -406,8 +406,8 @@ export default function Home() {
       <section className="relative overflow-hidden pt-12 pb-8 lg:pt-14 lg:pb-8 bg-light-bg dark:bg-navy-deep">
         
         {/* Decorative elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute top-0 right-0 w-125 h-125 bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 w-75 h-75 bg-pink-city/5 rounded-full blur-3xl pointer-events-none"></div>
 
         {/* Jali pattern background grid */}
         <div className="absolute inset-0 jali-screen pointer-events-none opacity-20"></div>
@@ -441,7 +441,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
                 <Link
                   href="/simulation"
-                  className="w-[214px] h-[52px] bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center space-x-2 border-none cursor-pointer shrink-0"
+                  className="w-53.5 h-13 bg-brand-pink hover:bg-brand-pink-dark text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-pink/20 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center space-x-2 border-none cursor-pointer shrink-0"
                 >
                   <TrainIcon className="w-4.5 h-4.5" />
                   <span>{isEn ? "Try Web Simulator" : "वेब सिम्युलेटर आज़माएं"}</span>
@@ -451,14 +451,14 @@ export default function Home() {
                   href="https://play.google.com/store/apps/details?id=co.median.android.nmdabkl"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-[214px] h-[52px] hover:scale-[1.05] active:scale-[0.95] transition-all shrink-0 inline-flex items-center justify-center"
+                  className="w-53.5 h-13 hover:scale-[1.05] active:scale-[0.95] transition-all shrink-0 inline-flex items-center justify-center"
                 >
                   <Image
                     src="/assets/icons/google-play.svg"
                     alt="Get it on Google Play"
                     width={214}
                     height={52}
-                    className="h-[52px] w-auto shrink-0 select-none object-contain"
+                    className="h-13 w-auto shrink-0 select-none object-contain"
                   />
                 </a>
               </div>
@@ -555,7 +555,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="bg-linear-to-br from-brand-pink to-brand-pink-dark text-white p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-[220px] shadow-lg shadow-brand-pink/20"
+                  className="bg-linear-to-br from-brand-pink to-brand-pink-dark text-white p-8 rounded-3xl relative overflow-hidden flex flex-col justify-between min-h-55 shadow-lg shadow-brand-pink/20"
                 >
                   <div>
                     <span className="text-xs font-bold text-white/80 tracking-widest uppercase mb-2 block font-heading">{item.num} / {item.title}</span>
@@ -579,7 +579,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="bg-white dark:bg-navy-card p-8 rounded-3xl border border-light-border dark:border-navy-border/40 relative overflow-hidden flex flex-col justify-between min-h-[220px] shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="bg-white dark:bg-navy-card p-8 rounded-3xl border border-light-border dark:border-navy-border/40 relative overflow-hidden flex flex-col justify-between min-h-55 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
                 <div>
                   <span className="text-xs font-bold text-brand-pink tracking-widest uppercase mb-2 block font-heading">{item.num} / {item.title}</span>
@@ -644,7 +644,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 p-8 flex flex-col justify-between shadow-xl relative overflow-hidden group min-h-[300px]">
+          <div className="lg:col-span-7 bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 p-8 flex flex-col justify-between shadow-xl relative overflow-hidden group min-h-75">
             {/* Background Map teaser graphic */}
             <div className="absolute right-0 bottom-0 opacity-15 dark:opacity-10 group-hover:scale-105 transition-transform duration-500 pointer-events-none">
               <Image src="/images/metro_map.jpg" alt="Map Grid" width={400} height={250} className="object-cover" />
@@ -801,7 +801,7 @@ export default function Home() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="rounded-[36px] overflow-hidden relative min-h-[400px] flex items-center p-8 lg:p-16 text-white shadow-xl shadow-brand-pink/15"
+          className="rounded-[36px] overflow-hidden relative min-h-100 flex items-center p-8 lg:p-16 text-white shadow-xl shadow-brand-pink/15"
         >
           {/* Background image & gradient overlay */}
           <div 
@@ -894,7 +894,7 @@ export default function Home() {
             {testimonials.map((test, idx) => (
               <div
                 key={`m1-${idx}`}
-                className="w-[280px] sm:w-[350px] shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+                className="w-70 sm:w-87.5 shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
@@ -920,7 +920,7 @@ export default function Home() {
             {testimonials.map((test, idx) => (
               <div
                 key={`m2-${idx}`}
-                className="w-[280px] sm:w-[350px] shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
+                className="w-70 sm:w-87.5 shrink-0 bg-white dark:bg-navy-card rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between space-y-4"
               >
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">

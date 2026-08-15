@@ -97,7 +97,7 @@ export default function FareCalculatorPage() {
               </div>
 
               {/* Swap Button */}
-              <div className="flex justify-center my-[-8px] relative z-10">
+              <div className="flex justify-center -my-2 relative z-10">
                 <button
                   onClick={handleSwap}
                   className="p-2.5 rounded-full bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/50 text-brand-pink shadow-md hover:scale-105 active:scale-95 transition-all"

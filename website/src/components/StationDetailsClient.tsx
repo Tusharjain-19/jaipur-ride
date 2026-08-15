@@ -75,7 +75,7 @@ export default function StationDetailsClient({ station, attractions }: StationDe
       'Parking': 'पार्किंग'
     };
     let res = f;
-    for (let key in map) {
+    for (const key in map) {
       if (res.includes(key)) res = res.replace(key, map[key]);
     }
     return res;
@@ -94,27 +94,10 @@ export default function StationDetailsClient({ station, attractions }: StationDe
       'Local buses': 'स्थानीय बसें'
     };
     let res = c;
-    for (let key in map) {
+    for (const key in map) {
       if (res.includes(key)) res = res.replace(key, map[key]);
     }
     return res;
-  };
-
-  const T_STATION = (name: string): string => {
-    const stationTranslations: Record<string, string> = {
-      "Mansarovar": "मानसरोवर",
-      "New Aatish Market": "न्यू आतिश मार्केट",
-      "Vivek Vihar": "विवेक विहार",
-      "Shyam Nagar": "श्याम नगर",
-      "Ram Nagar": "राम नगर",
-      "Civil Lines": "सिविल लाइन्स",
-      "Railway Station": "रेलवे स्टेशन",
-      "Sindhi Camp": "सिंधी कैंप",
-      "Chandpole": "चांदपोल",
-      "Chhoti Chaupar": "छोटी चौपड़",
-      "Badi Chaupar": "बड़ी चौपड़"
-    };
-    return stationTranslations[name] || name;
   };
 
   const convertToDMS = (lat: number, lon: number) => {
@@ -436,7 +419,7 @@ export default function StationDetailsClient({ station, attractions }: StationDe
           </div>
 
           {/* Quick Marketing CTA */}
-          <div className="bg-gradient-to-br from-navy-dark to-navy-accent text-white rounded-3xl p-6 border border-navy-border shadow-xl space-y-6">
+          <div className="bg-linear-to-br from-navy-dark to-navy-accent text-white rounded-3xl p-6 border border-navy-border shadow-xl space-y-6">
             <div className="space-y-2">
               <span className="px-2 py-0.5 rounded bg-brand-pink text-white font-bold text-[9px] uppercase tracking-wider">
                 {isEn ? "Android Feature Only" : "केवल एंड्रॉइड ऐप सुविधा"}
