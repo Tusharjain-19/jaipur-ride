@@ -13,12 +13,10 @@ import PhoneMockup from "@/components/PhoneMockup";
 import {
   Train as TrainIcon,
   MapPin,
-  Download,
   CheckCircle,
   Star,
   ArrowRight,
   Shield,
-  Smartphone,
   Check
 } from "lucide-react";
 

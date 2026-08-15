@@ -1,26 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import stationsData from "@/data/stations.json";
 import faresData from "@/data/fares.json";
-import { Train, Info, Calculator, CreditCard, Award, ArrowUpDown } from "lucide-react";
+import { Calculator, CreditCard, Award, ArrowUpDown } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function FareCalculatorPage() {
-  const { t, language } = useLanguage();
+  const { language } = useLanguage();
 
   const [origin, setOrigin] = useState("J01");
   const [destination, setDestination] = useState("J02");
-  const [calculatedFares, setCalculatedFares] = useState({
-    stationsCount: 0,
-    cash: 0,
-    smartCard: 0,
-    student: 0,
-    senior: 0,
-  });
-
-  useEffect(() => {
-    // Find index of stations to calculate distance in hops
+  const calculatedFares = useMemo(() => {
     const originIdx = stationsData.findIndex((s) => s.id === origin);
     const destIdx = stationsData.findIndex((s) => s.id === destination);
 
@@ -36,14 +27,21 @@ export default function FareCalculatorPage() {
       const student = Math.round((cash * (1 - faresData.discounts.student)) * 100) / 100;
       const senior = Math.round((cash * (1 - faresData.discounts.seniorCitizen)) * 100) / 100;
 
-      setCalculatedFares({
+      return {
         stationsCount: hops,
         cash,
         smartCard,
         student,
         senior,
-      });
+      };
     }
+    return {
+      stationsCount: 0,
+      cash: 0,
+      smartCard: 0,
+      student: 0,
+      senior: 0,
+    };
   }, [origin, destination]);
 
   const handleSwap = () => {
