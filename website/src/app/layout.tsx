@@ -10,16 +10,17 @@ import seoDb from "@/data/seo-knowledge-base.json";
 
 export const metadata: Metadata = {
   title: {
-    default: "Jaipur Ride & Jaipur Metro | Route Planner, Timings & Fares",
-    template: "%s | Jaipur Metro Guide",
+    default: "Jaipur Ride | Best Metro App Jaipur & Route Planner",
+    template: "%s | Jaipur Metro Guide & Best Metro App",
   },
-  description: "Calculate the best metro route in Jaipur. Get live ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips. Dual domain portal for jaipurride.vercel.app & jaipurmetro.xyz.",
+  description: "Calculate the best metro route in Jaipur. Jaipur Ride is the best metro app for Jaipur Metro ticket fares, timings, schedules, interactive Pink Line station maps, coordinates, nearby tourist monuments (Hawa Mahal, City Palace, Jal Mahal), local markets, and travel tips.",
   keywords: [
-    "Jaipur Metro",
-    "jaipur ride jaipur",
-    "jaipur ride",
     "best metro app jaipur",
     "jaipur metro app",
+    "jaipur metro best app",
+    "jaipur ride",
+    "jaipur ride jaipur",
+    "Jaipur Metro",
     "best matro app",
     "metro app jaipur",
     "jaipur metr o fare",
@@ -80,6 +81,8 @@ export const metadata: Metadata = {
     "mansarovar metro station to iskcon temple distance",
     "sindhi camp metro station",
     "sindhi camp to patrika gate distance",
+    "patrika gate distance from my location",
+    "nearest metro station near airport",
     "sindhi camp to hawa mahal metro",
     "sindhi camp to hawa mahal distance",
     "hawa mahal to sindhi camp",
@@ -136,26 +139,32 @@ export const metadata: Metadata = {
     "jaipurride.vercel.app"
   ],
   metadataBase: new URL("https://jaipurride.vercel.app"),
-  alternates: {
-    canonical: "./",
-    languages: {
-      "en-IN": "https://jaipurride.vercel.app",
-      "hi-IN": "https://jaipurmetro.xyz",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
+  },
+  alternates: {
+    canonical: "https://jaipurride.vercel.app",
   },
   other: {
     "google-site-verification": "XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo",
     "geo.position": "26.9124;75.7873",
     "geo.placename": "Jaipur, Rajasthan, India",
     "geo.region": "IN-RJ",
-    "ICBM": "26.9124, 75.7873",
-    "alias-domain": "https://jaipurmetro.xyz"
+    "ICBM": "26.9124, 75.7873"
   },
   openGraph: {
-    title: "Jaipur Ride & Jaipur Metro | Route Planner & Travel Guide",
-    description: "Navigate the historic Pink City with Jaipur Metro companion guide. Find stations, compute smart card ticket fares, check operational schedules, lat-long coordinates, and plan walking routes to local sightseeing spots.",
+    title: "Jaipur Ride | Best Metro App Jaipur & Travel Guide",
+    description: "Navigate the historic Pink City with Jaipur Ride - the best metro app in Jaipur. Find stations, compute smart card ticket fares, check operational schedules, lat-long coordinates, and plan walking routes to local sightseeing spots.",
     url: "https://jaipurride.vercel.app",
-    siteName: "Jaipur Ride & Jaipur Metro",
+    siteName: "Jaipur Ride - Best Metro App Jaipur",
     images: [
       {
         url: "/splash.png",
@@ -169,7 +178,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jaipur Ride & Jaipur Metro | Route Planner & Travel Guide",
+    title: "Jaipur Ride | Best Metro App Jaipur & Travel Guide",
     description: "Calculate your best metro route in Jaipur. Fast, responsive, offline-first companion transit app for Android & Web.",
     images: ["/splash.png"],
   },

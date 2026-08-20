@@ -58,17 +58,30 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   return {
-    title: `${station.name} Metro Station Jaipur Coordinates, Timings & Map`,
-    description: `Complete guide for ${station.name} Metro Station (JMRC Pink Line). Lat-Long Coordinates: ${station.location.lat}, ${station.location.lon}. First train: ${station.timings.firstTrain}, Last train: ${station.timings.lastTrain}. Facilities: ${station.facilities.join(", ")}.`,
+    title: `${station.name} Metro Station Jaipur Coordinates, Timings & Route Guide`,
+    description: `Complete guide for ${station.name} Metro Station (JMRC Pink Line). GPS Coordinates: ${station.location.lat}, ${station.location.lon}. Timings: ${station.timings.firstTrain} AM to ${station.timings.lastTrain} PM. Check platform directions & facilities.`,
     keywords: [
       `"${station.name.toLowerCase()} metro station" jaipur coordinates`,
+      `${station.name.toLowerCase()} metro station coordinates jaipur`,
       `${station.name} metro station timings`,
       `${station.name} metro route map`,
       `${station.name} station facilities`,
       `nearest metro to ${station.name} Jaipur`,
       `${station.name} metro lat long ${station.location.lat} ${station.location.lon}`,
+      `best metro app jaipur`,
+      `jaipur metro app`,
+      `jaipur metro best app`,
       `Jaipur metro line stations JMRC`
     ],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+      },
+    },
     alternates: {
       canonical: `https://jaipurride.vercel.app/metro-stations/${station.id}`,
     },

@@ -45,17 +45,31 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const station = stationsData.find((s) => s.id === attraction.stationId);
 
   return {
-    title: `${attraction.name} Nearest Metro Station (${station?.name}) & Travel Guide`,
-    description: `How to reach ${attraction.name} via Jaipur Metro. Nearest station is ${station?.name} (${attraction.distance_km} km away). Entry fee: ${attraction.entry_fee}, best visit time: ${attraction.best_time}.`,
+    title: `${attraction.name} Nearest Metro Station (${station?.name}) & Route Guide`,
+    description: `How to reach ${attraction.name} via Jaipur Metro Pink Line. Nearest metro station is ${station?.name} (${attraction.distance_km} km away). Entry fee: ${attraction.entry_fee}, best visit time: ${attraction.best_time}.`,
     keywords: [
       `${attraction.name.toLowerCase()} nearest metro station`,
+      `nearest metro station to ${attraction.name.toLowerCase()}`,
+      `${attraction.name.toLowerCase()} distance from my location`,
       `${attraction.name} jaipur ticket price`,
       `distance to ${attraction.name.toLowerCase()} from metro station`,
       `jaipur me metro se ${attraction.name.toLowerCase()} kaise jaye`,
       `how to reach ${attraction.name} by train`,
+      `best metro app jaipur`,
+      `jaipur metro app`,
+      `jaipur metro best app`,
       `Jaipur sightseeing nearest station`,
       `Jaipur metro tourism guide`
     ],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+      },
+    },
     alternates: {
       canonical: `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
     },

@@ -8,24 +8,9 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: ["/api/private/", "/admin/"],
       },
-      {
-        userAgent: [
-          "GPTBot",
-          "ChatGPT-User",
-          "Google-Extended",
-          "PerplexityBot",
-          "ClaudeBot",
-          "Applebot-Extended",
-          "CCBot",
-          "Bytespider"
-        ],
-        allow: "/",
-      },
     ],
-    sitemap: [
-      "https://jaipurride.vercel.app/sitemap.xml",
-      "https://jaipurmetro.xyz/sitemap.xml"
-    ],
+    sitemap: "https://jaipurride.vercel.app/sitemap.xml",
     host: "https://jaipurride.vercel.app",
   };
 }
+

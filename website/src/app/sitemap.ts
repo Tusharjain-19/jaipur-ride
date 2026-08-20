@@ -4,7 +4,6 @@ import tourismData from "@/data/tourism.json";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const primaryDomain = "https://jaipurride.vercel.app";
-  const mirrorDomain = "https://jaipurmetro.xyz";
   const currentDate = new Date();
 
   const routes = [
@@ -34,24 +33,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: item.priority,
   }));
 
-  // Mirror domain static pages (for jaipurmetro.xyz)
-  const mirrorStaticPages = routes.map((item) => ({
-    url: `${mirrorDomain}${item.route}`,
-    lastModified: currentDate,
-    changeFrequency: item.freq,
-    priority: item.priority,
-  }));
-
   // Dynamic station routes (11 stations)
   const stationPagesPrimary = stationsData.map((st) => ({
     url: `${primaryDomain}/metro-stations/${st.id}`,
-    lastModified: currentDate,
-    changeFrequency: "daily" as const,
-    priority: 0.8,
-  }));
-
-  const stationPagesMirror = stationsData.map((st) => ({
-    url: `${mirrorDomain}/metro-stations/${st.id}`,
     lastModified: currentDate,
     changeFrequency: "daily" as const,
     priority: 0.8,
@@ -65,20 +49,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  const attractionPagesMirror = tourismData.map((att) => ({
-    url: `${mirrorDomain}/explore-jaipur/${att.id}`,
-    lastModified: currentDate,
-    changeFrequency: "daily" as const,
-    priority: 0.8,
-  }));
-
   return [
     ...primaryStaticPages,
-    ...mirrorStaticPages,
     ...stationPagesPrimary,
-    ...stationPagesMirror,
     ...attractionPagesPrimary,
-    ...attractionPagesMirror,
   ];
 }
+
 
