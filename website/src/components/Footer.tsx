@@ -167,7 +167,7 @@ export default function Footer() {
                 <Download className="w-4 h-4 text-brand-pink shrink-0" />
                 <div>
                   <p className="text-[10px] text-slate-500 uppercase font-bold leading-none">{isEn ? "Downloads" : "डाउनलोड"}</p>
-                  <p className="text-xs font-semibold text-slate-200">1,000+</p>
+                  <p className="text-xs font-semibold text-slate-200">1.25k+</p>
                 </div>
               </div>
               <div className="p-3 bg-navy-card/40 rounded-xl border border-navy-border/40 flex items-center space-x-2">
