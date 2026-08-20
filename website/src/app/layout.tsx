@@ -257,6 +257,11 @@ export default function RootLayout({
     >
       <head>
         <meta name="google-site-verification" content="XZVEE03vf-otD9SoWv7imPWO1N1UxZYtBlnYekxD6fo" />
+        <meta name="geo.region" content="IN-RJ" />
+        <meta name="geo.placename" content="Jaipur, Rajasthan, India" />
+        <meta name="geo.position" content="26.9124;75.7873" />
+        <meta name="ICBM" content="26.9124, 75.7873" />
+        <meta name="keywords" content="Jaipur Ride, best metro app jaipur, best metro app, jaipur metro best app, jaipur metro app, geo map jaipur metro, route planner" />
         <link rel="alternate" href="https://jaipurmetro.xyz" hrefLang="hi-IN" />
         <link rel="alternate" href="https://jaipurride.vercel.app" hrefLang="en-IN" />
         <script
