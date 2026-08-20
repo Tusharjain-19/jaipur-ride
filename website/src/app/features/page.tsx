@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
@@ -14,11 +16,6 @@ import {
   ArrowRight,
   Download
 } from "lucide-react";
-
-export const metadata = {
-  title: "App Features & Specifications",
-  description: "Explore the core features of Jaipur Ride. Compare our fast online simulator features with our full-featured offline Android companion app.",
-};
 
 export default function FeaturesPage() {
   const { language } = useLanguage();
