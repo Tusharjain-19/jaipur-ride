@@ -141,7 +141,7 @@ export default function JourneyPlannerClient() {
                 alt="Get it on Google Play"
                 width={214}
                 height={64}
-                className="h-[64px] w-auto shrink-0 select-none object-contain"
+                className="h-16 w-auto shrink-0 select-none object-contain"
               />
             </a>
           </div>
@@ -152,7 +152,7 @@ export default function JourneyPlannerClient() {
         <div className="lg:col-span-8 space-y-4">
           
           {/* Mock Browser Container */}
-          <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col h-[520px] sm:h-[650px] lg:h-[750px]">
+          <div className="glass-panel rounded-3xl overflow-hidden shadow-2xl flex flex-col h-130 sm:h-162.5 lg:h-187.5">
             
             {/* Browser Header Bar */}
             <div className="bg-slate-100 dark:bg-navy-deep px-4 py-3 border-b border-light-border dark:border-white/5 flex items-center justify-between shrink-0">

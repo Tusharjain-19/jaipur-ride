@@ -85,7 +85,7 @@ export default function FaqClient({ initialFaqs, language }: FaqClientProps) {
       </div>
 
       {/* Footer Support CTA */}
-      <div className="bg-light-accent dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-[32px] p-8 text-center space-y-4 max-w-2xl mx-auto shadow-sm">
+      <div className="bg-light-accent dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-4xl p-8 text-center space-y-4 max-w-2xl mx-auto shadow-sm">
         <div className="w-12 h-12 rounded-2xl bg-brand-pink/10 flex items-center justify-center text-brand-pink mx-auto">
           <MessageSquare className="w-6 h-6" />
         </div>

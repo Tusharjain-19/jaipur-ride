@@ -222,7 +222,7 @@ export default function PhoneMockup() {
 
   return (
     <motion.div
-      className={`relative mx-auto w-[285px] h-[580px] sm:w-[315px] sm:h-[630px] rounded-[48px] border-10 border-slate-900 dark:border-slate-800 bg-slate-950 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.55)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.9)] overflow-hidden transition-colors duration-300`}
+      className={`relative mx-auto w-71.25 h-145 sm:w-78.75 sm:h-157.5 rounded-[48px] border-10 border-slate-900 dark:border-slate-800 bg-slate-950 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.55)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.9)] overflow-hidden transition-colors duration-300`}
       initial={{ y: 0, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
     >

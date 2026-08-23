@@ -248,7 +248,7 @@ export default function SimulationPage() {
                     alt="Get it on Google Play"
                     width={214}
                     height={64}
-                    className="h-[64px] w-auto shrink-0 select-none object-contain"
+                    className="h-16 w-auto shrink-0 select-none object-contain"
                   />
                 </a>
                 <Link
@@ -266,7 +266,7 @@ export default function SimulationPage() {
           {/* Right Side: Smartphone Device Mockup containing simulator iframe */}
           <div className="lg:col-span-6 flex justify-center py-8">
             <div
-              className="relative mx-auto w-[290px] h-[580px] min-[360px]:w-[325px] min-[360px]:h-[650px] sm:w-[380px] sm:h-[760px] rounded-[40px] sm:rounded-[48px] border-8 sm:border-10 border-slate-900 dark:border-slate-800 bg-slate-950 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.6)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.95)] overflow-hidden"
+              className="relative mx-auto w-72.5 h-145 min-[360px]:w-81.25 min-[360px]:h-162.5 sm:w-95 sm:h-190 rounded-[40px] sm:rounded-[48px] border-8 sm:border-10 border-slate-900 dark:border-slate-800 bg-slate-950 shadow-[0_30px_80px_-15px_rgba(0,0,0,0.6)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.95)] overflow-hidden"
             >
               {/* Phone Speaker and Notch */}
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-slate-900 rounded-b-2xl z-30 flex items-center justify-center">
