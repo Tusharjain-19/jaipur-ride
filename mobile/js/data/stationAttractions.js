@@ -591,7 +591,7 @@ export const stationAttractions = {
   ],
   "Civil Lines": [
     {
-      "id": "p027",
+      "id": "birla_mandir",
       "name": "Birla Mandir",
       "nameHi": "Birla Mandir",
       "type": "Temple",
@@ -611,7 +611,7 @@ export const stationAttractions = {
       "image": "assets/images/birla_mandir.jpg"
     },
     {
-      "id": "p024",
+      "id": "sms_hospital",
       "name": "SMS Hospital",
       "nameHi": "SMS Hospital",
       "type": "Hospital",
@@ -671,7 +671,7 @@ export const stationAttractions = {
       "image": "assets/images/statue_circle.jpg"
     },
     {
-      "id": "p029",
+      "id": "gaurav_tower",
       "name": "Gaurav Tower",
       "nameHi": "Gaurav Tower",
       "type": "Shopping Mall",
@@ -791,7 +791,7 @@ export const stationAttractions = {
       "image": "assets/images/jaipur_hospital_theme.png"
     },
     {
-      "id": "patrika_gate_hub",
+      "id": "patrika_gate",
       "name": "Patrika Gate (Jawahar Circle)",
       "nameHi": "Patrika Gate (Jawahar Circle)",
       "type": "Monument",
@@ -893,7 +893,7 @@ export const stationAttractions = {
       "image": "assets/images/jaipur_junction.jpg"
     },
     {
-      "id": "p030",
+      "id": "jaipur_junction_heritage",
       "name": "Jaipur Junction Railway Station",
       "nameHi": "Jaipur Junction Railway Station",
       "type": "Railway Station",
@@ -913,7 +913,7 @@ export const stationAttractions = {
       "image": "assets/images/jaipur_junction.jpg"
     },
     {
-      "id": "p031",
+      "id": "sindhi_camp_bus",
       "name": "Sindhi Camp Bus Stand",
       "nameHi": "Sindhi Camp Bus Stand",
       "type": "Bus Terminal",
@@ -1055,7 +1055,7 @@ export const stationAttractions = {
       "image": "assets/images/rambagh_palace.jpg"
     },
     {
-      "id": "p038",
+      "id": "albert_hall_museum",
       "name": "Albert Hall Museum",
       "nameHi": "Albert Hall Museum",
       "type": "Museum",
@@ -1075,7 +1075,7 @@ export const stationAttractions = {
       "image": "assets/images/albert_hall.jpg"
     },
     {
-      "id": "p035",
+      "id": "sindhi_camp_bus",
       "name": "Sindhi Camp Bus Terminal",
       "nameHi": "Sindhi Camp Bus Terminal",
       "type": "Bus Terminal",
@@ -1257,7 +1257,7 @@ export const stationAttractions = {
       "image": "assets/images/isarlat_tower.jpg"
     },
     {
-      "id": "p045",
+      "id": "ajmeri_gate",
       "name": "Ajmeri Gate",
       "nameHi": "Ajmeri Gate",
       "type": "Monument",
@@ -1277,7 +1277,7 @@ export const stationAttractions = {
       "image": "assets/images/jaipur_gate_theme.png"
     },
     {
-      "id": "jhotwara_hub",
+      "id": "jhotwara",
       "name": "Jhotwara",
       "nameHi": "Jhotwara",
       "type": "Market",
@@ -1319,7 +1319,7 @@ export const stationAttractions = {
       "image": "assets/images/govind_dev_ji.jpg"
     },
     {
-      "id": "p048",
+      "id": "bapu_bazaar",
       "name": "Bapu Bazaar",
       "nameHi": "Bapu Bazaar",
       "type": "Market",
@@ -1401,7 +1401,7 @@ export const stationAttractions = {
   ],
   "Badi Chaupar": [
     {
-      "id": "p057",
+      "id": "tripolia_bazaar",
       "name": "Tripolia Bazaar",
       "nameHi": "Tripolia Bazaar",
       "type": "Market",
@@ -1421,7 +1421,7 @@ export const stationAttractions = {
       "image": "assets/images/tripolia_bazaar.jpg"
     },
     {
-      "id": "p054",
+      "id": "hawa_mahal",
       "name": "Hawa Mahal",
       "nameHi": "Hawa Mahal",
       "type": "Palace",
@@ -1461,7 +1461,7 @@ export const stationAttractions = {
       "image": "assets/images/city_palace.jpg"
     },
     {
-      "id": "p055",
+      "id": "jantar_mantar",
       "name": "Jantar Mantar",
       "nameHi": "Jantar Mantar",
       "type": "Museum",
