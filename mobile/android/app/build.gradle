@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def getLatestVersionCode() {
     def apkFile = file("../../mobile/app-release.apk")
-    def baseCode = 32
+    def baseCode = 33
     if (apkFile.exists()) {
         try {
             def localProps = new Properties()

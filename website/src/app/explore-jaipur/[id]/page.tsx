@@ -45,13 +45,15 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const station = stationsData.find((s) => s.id === attraction.stationId);
 
   return {
-    title: `${attraction.name} Nearest Metro Station (${station?.name}) & Route Guide`,
-    description: `How to reach ${attraction.name} via Jaipur Metro Pink Line. Nearest metro station is ${station?.name} (${attraction.distance_km} km away). Entry fee: ${attraction.entry_fee}, best visit time: ${attraction.best_time}.`,
+    title: `Nearest Metro Station to ${attraction.name} (Distance & Route)`,
+    description: `Find the nearest metro station to ${attraction.name} in Jaipur. Closest JMRC station is ${station?.name} (${attraction.distance_km} km away). Get routes, directions, entry fees, and travel timings.`,
     keywords: [
-      `${attraction.name.toLowerCase()} nearest metro station`,
       `nearest metro station to ${attraction.name.toLowerCase()}`,
+      `${attraction.name.toLowerCase()} nearest metro station`,
       `${attraction.name.toLowerCase()} distance from my location`,
-      `${attraction.name} jaipur ticket price`,
+      `how to reach ${attraction.name.toLowerCase()} by metro`,
+      `${attraction.name} jaipur metro route`,
+      `nearest metro to ${attraction.name.toLowerCase()}`,
       `distance to ${attraction.name.toLowerCase()} from metro station`,
       `jaipur me metro se ${attraction.name.toLowerCase()} kaise jaye`,
       `how to reach ${attraction.name} by train`,
@@ -74,7 +76,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       canonical: `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
     },
     openGraph: {
-      title: `${attraction.name} Nearest Metro Station & Travel Guide`,
+      title: `Nearest Metro Station to ${attraction.name} & Travel Guide`,
       description: `Complete travel guide for visiting ${attraction.name} using Jaipur Metro Pink Line. Nearest station: ${station?.name}.`,
       url: `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
     }
@@ -102,8 +104,17 @@ export default async function AttractionDetailPage({ params }: { params: Promise
     .filter((a) => a.id !== attraction.id && (a.stationId === attraction.stationId || a.type === attraction.type))
     .slice(0, 3);
 
-  // JSON-LD Schema Markup
-  const schemaMarkup = {
+  // Stop calculations for directions
+  const stopIndex: Record<string, number> = {
+    "J01": 0, "J02": 1, "J03": 2, "J04": 3, "J05": 4, "J06": 5, "J07": 6, "J08": 7, "J09": 8, "J10": 9, "J11": 10
+  };
+  const startIdx = 6; // J07 is index 6
+  const targetIdx = stopIndex[attraction.stationId] ?? 0;
+  const stops = Math.abs(targetIdx - startIdx);
+  const directionText = targetIdx > startIdx ? "eastbound towards Badi Chaupar" : "westbound towards Mansarovar";
+
+  // JSON-LD TouristAttraction Schema
+  const attractionSchema = {
     "@context": "https://schema.org",
     "@type": "TouristAttraction",
     "@id": `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
@@ -130,11 +141,47 @@ export default async function AttractionDetailPage({ params }: { params: Promise
     }
   };
 
+  // JSON-LD FAQPage Schema for rich snippet listings
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `Which is the nearest metro station to ${attraction.name} in Jaipur?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `The nearest metro station to ${attraction.name} is ${station?.name} Metro Station (${attraction.stationId}) on the Pink Line. It is located approximately ${attraction.distance_km} km away, which takes about ${attraction.walk_time_min ? `${attraction.walk_time_min} minutes to walk` : `${attraction.approx_drive_time_min} minutes by auto/cab`} from the exit gate.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `How do I reach ${attraction.name} from Jaipur Railway Station using the metro?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `You can board the Pink Line metro at Jaipur Junction Metro Station (J07) ${directionText}. Travel ${stops} stops and get off at ${station?.name} Metro Station (${attraction.stationId}). From the station, ${attraction.walk_time_min ? `walk ${attraction.distance_km} km` : `take a quick auto/cab`} directly to ${attraction.name}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What is the entry ticket price and best time to visit ${attraction.name}?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `The entry ticket details for ${attraction.name} are: ${attraction.entry_fee}. The best visiting hours are ${attraction.best_time}.`
+        }
+      }
+    ]
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(attractionSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <AttractionDetailsClient attraction={attraction} station={station} related={related} />
     </>
