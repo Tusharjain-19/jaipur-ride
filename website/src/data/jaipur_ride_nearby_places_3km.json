@@ -1,0 +1,861 @@
+{
+  "dataset": "Jaipur Ride - Nearby Places",
+  "version": "2026-08-23",
+  "scope": {
+    "stations": [
+      "J01",
+      "J02",
+      "J03",
+      "J04",
+      "J05",
+      "J06",
+      "J07",
+      "J08",
+      "J09",
+      "J10",
+      "J11"
+    ],
+    "radiusKm": 3,
+    "assignmentRule": "Each place is assigned only to its nearest Jaipur Metro station. Duplicates across station radii are removed.",
+    "categories": [
+      "hospital",
+      "museum",
+      "stadium",
+      "government_building",
+      "shopping_area",
+      "shopping_mall",
+      "railway_station",
+      "bus_terminal",
+      "palace_museum",
+      "palace_landmark",
+      "heritage_landmark",
+      "museum_heritage",
+      "temple",
+      "park",
+      "landmark",
+      "education_landmark",
+      "cinema_landmark"
+    ]
+  },
+  "stationsCovered": 11,
+  "placesCount": 54,
+  "places": [
+    {
+      "id": "P001",
+      "name": "Mansarovar Garden",
+      "category": "park",
+      "nearestStation": "J01",
+      "distanceKm": 0.3,
+      "address": "Mansarovar, Jaipur, Rajasthan 302020, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Mansarovar%20Garden%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Mansarovar%20Garden%20Jaipur"
+      }
+    },
+    {
+      "id": "P002",
+      "name": "Mansarovar Market",
+      "category": "shopping_area",
+      "nearestStation": "J01",
+      "distanceKm": 0.5,
+      "address": "Mansarovar, Jaipur, Rajasthan 302020, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Mansarovar%20Market%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Mansarovar%20Market%20Jaipur"
+      }
+    },
+    {
+      "id": "P003",
+      "name": "Sector 4 Market, Mansarovar",
+      "category": "shopping_area",
+      "nearestStation": "J01",
+      "distanceKm": 0.8,
+      "address": "Sector 4, Mansarovar, Jaipur, Rajasthan 302020, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sector%204%20Market%2C%20Mansarovar%2C%20Sector%204%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sector%204%20Market%2C%20Mansarovar%20Jaipur"
+      }
+    },
+    {
+      "id": "P004",
+      "name": "Monilek Hospital",
+      "category": "hospital",
+      "nearestStation": "J01",
+      "distanceKm": 1.5,
+      "address": "Sector 4, Mansarovar, Jaipur, Rajasthan 302020, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Monilek%20Hospital%2C%20Sector%204%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Monilek%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P005",
+      "name": "Tagore Hospital and Heart Care Centre",
+      "category": "hospital",
+      "nearestStation": "J01",
+      "distanceKm": 1.8,
+      "address": "Sector 7, Mansarovar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Tagore%20Hospital%20and%20Heart%20Care%20Centre%2C%20Sector%207%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Tagore%20Hospital%20and%20Heart%20Care%20Centre%20Jaipur"
+      }
+    },
+    {
+      "id": "P006",
+      "name": "Asopa Hospital",
+      "category": "hospital",
+      "nearestStation": "J01",
+      "distanceKm": 1.9,
+      "address": "Mansarovar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Asopa%20Hospital%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Asopa%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P007",
+      "name": "New Aatish Market",
+      "category": "shopping_area",
+      "nearestStation": "J02",
+      "distanceKm": 0.2,
+      "address": "New Aatish Market, Mansarovar, Jaipur, Rajasthan 302020, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=New%20Aatish%20Market%2C%20New%20Aatish%20Market%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%20302020%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=New%20Aatish%20Market%20Jaipur"
+      }
+    },
+    {
+      "id": "P008",
+      "name": "Swasthya Mangalam Family Health Centre",
+      "category": "hospital",
+      "nearestStation": "J02",
+      "distanceKm": 0.3,
+      "address": "Near New Aatish Market, Mansarovar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Swasthya%20Mangalam%20Family%20Health%20Centre%2C%20Near%20New%20Aatish%20Market%2C%20Mansarovar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Swasthya%20Mangalam%20Family%20Health%20Centre%20Jaipur"
+      }
+    },
+    {
+      "id": "P009",
+      "name": "Jaipur Doorbeen Hospital",
+      "category": "hospital",
+      "nearestStation": "J02",
+      "distanceKm": 0.6,
+      "address": "New Aatish Market area, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Jaipur%20Doorbeen%20Hospital%2C%20New%20Aatish%20Market%20area%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Jaipur%20Doorbeen%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P010",
+      "name": "Chanda Devi Memorial Hospital",
+      "category": "hospital",
+      "nearestStation": "J02",
+      "distanceKm": 0.7,
+      "address": "New Aatish Market area, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Chanda%20Devi%20Memorial%20Hospital%2C%20New%20Aatish%20Market%20area%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Chanda%20Devi%20Memorial%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P011",
+      "name": "Dharam Park",
+      "category": "park",
+      "nearestStation": "J02",
+      "distanceKm": 0.3,
+      "address": "Sushilpura, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Dharam%20Park%2C%20Sushilpura%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Dharam%20Park%20Jaipur"
+      }
+    },
+    {
+      "id": "P012",
+      "name": "Akshardham Temple Jaipur",
+      "category": "temple",
+      "nearestStation": "J02",
+      "distanceKm": 1.5,
+      "address": "Vaishali Nagar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Akshardham%20Temple%20Jaipur%2C%20Vaishali%20Nagar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Akshardham%20Temple%20Jaipur%20Jaipur"
+      }
+    },
+    {
+      "id": "P013",
+      "name": "Vivek Vihar Park",
+      "category": "park",
+      "nearestStation": "J03",
+      "distanceKm": 0.4,
+      "address": "Vivek Vihar, Jaipur, Rajasthan 302019, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Vivek%20Vihar%20Park%2C%20Vivek%20Vihar%2C%20Jaipur%2C%20Rajasthan%20302019%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Vivek%20Vihar%20Park%20Jaipur"
+      }
+    },
+    {
+      "id": "P014",
+      "name": "Sanjeevani Hospital and Medical Research Institute",
+      "category": "hospital",
+      "nearestStation": "J03",
+      "distanceKm": 1.0,
+      "address": "Shyam Nagar / Sodala area, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sanjeevani%20Hospital%20and%20Medical%20Research%20Institute%2C%20Shyam%20Nagar%20/%20Sodala%20area%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sanjeevani%20Hospital%20and%20Medical%20Research%20Institute%20Jaipur"
+      }
+    },
+    {
+      "id": "P015",
+      "name": "Manu Hospital",
+      "category": "hospital",
+      "nearestStation": "J03",
+      "distanceKm": 1.3,
+      "address": "Sodala, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Manu%20Hospital%2C%20Sodala%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Manu%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P016",
+      "name": "Jawahar Circle Garden",
+      "category": "park",
+      "nearestStation": "J03",
+      "distanceKm": 2.5,
+      "address": "Jawahar Circle, JLN Marg, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Jawahar%20Circle%20Garden%2C%20Jawahar%20Circle%2C%20JLN%20Marg%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Jawahar%20Circle%20Garden%20Jaipur"
+      }
+    },
+    {
+      "id": "P017",
+      "name": "Shyam Nagar Market",
+      "category": "shopping_area",
+      "nearestStation": "J04",
+      "distanceKm": 0.3,
+      "address": "New Sanganer Road, Shyam Nagar, Jaipur, Rajasthan 302019, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Shyam%20Nagar%20Market%2C%20New%20Sanganer%20Road%2C%20Shyam%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302019%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Shyam%20Nagar%20Market%20Jaipur"
+      }
+    },
+    {
+      "id": "P018",
+      "name": "Sanjeevani Hospital",
+      "category": "hospital",
+      "nearestStation": "J04",
+      "distanceKm": 0.4,
+      "address": "Shyam Nagar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sanjeevani%20Hospital%2C%20Shyam%20Nagar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sanjeevani%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P019",
+      "name": "Ahinsa Circle",
+      "category": "landmark",
+      "nearestStation": "J04",
+      "distanceKm": 0.7,
+      "address": "Shyam Nagar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Ahinsa%20Circle%2C%20Shyam%20Nagar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Ahinsa%20Circle%20Jaipur"
+      }
+    },
+    {
+      "id": "P020",
+      "name": "Elements Mall",
+      "category": "shopping_mall",
+      "nearestStation": "J04",
+      "distanceKm": 1.5,
+      "address": "Ajmer Road / Sodala area, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Elements%20Mall%2C%20Ajmer%20Road%20/%20Sodala%20area%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Elements%20Mall%20Jaipur"
+      }
+    },
+    {
+      "id": "P021",
+      "name": "Ram Nagar Extension Park",
+      "category": "park",
+      "nearestStation": "J05",
+      "distanceKm": 0.4,
+      "address": "Ram Nagar, Jaipur, Rajasthan 302016, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Ram%20Nagar%20Extension%20Park%2C%20Ram%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302016%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Ram%20Nagar%20Extension%20Park%20Jaipur"
+      }
+    },
+    {
+      "id": "P022",
+      "name": "Maharani College",
+      "category": "education_landmark",
+      "nearestStation": "J05",
+      "distanceKm": 1.5,
+      "address": "Ram Singh Road, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Maharani%20College%2C%20Ram%20Singh%20Road%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Maharani%20College%20Jaipur"
+      }
+    },
+    {
+      "id": "P039",
+      "name": "Ram Niwas Garden",
+      "category": "park",
+      "nearestStation": "J08",
+      "distanceKm": 2.0,
+      "address": "Adarsh Nagar, Jaipur, Rajasthan 302004, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Ram%20Niwas%20Garden%2C%20Adarsh%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302004%2C%20India",
+      "image": {
+        "url": "https://cdn.guidetour.in/wp-content/uploads/2021/05/Ram-Niwas-Garden-in-Jaipur.jpg.webp",
+        "source": "GuideTour",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Ram%20Niwas%20Garden%20Jaipur"
+      }
+    },
+    {
+      "id": "P024",
+      "name": "SMS Hospital",
+      "category": "hospital",
+      "nearestStation": "J06",
+      "distanceKm": 1.2,
+      "address": "JLN Marg, Jawaharlal Nehru Medical College Campus, Jaipur, Rajasthan 302004, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=SMS%20Hospital%2C%20JLN%20Marg%2C%20Jawaharlal%20Nehru%20Medical%20College%20Campus%2C%20Jaipur%2C%20Rajasthan%20302004%2C%20India",
+      "image": {
+        "url": "https://media.assettype.com/knocksense/import/27060896/origin.jpg?ar=40%3A21&auto=format%2Ccompress&enlarge=true&mode=crop&ogImage=true&overlay=false&overlay_position=bottom&overlay_width=100&w=1200",
+        "source": "KnockSense",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=SMS%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P025",
+      "name": "Sawai Mansingh Stadium",
+      "category": "stadium",
+      "nearestStation": "J06",
+      "distanceKm": 1.2,
+      "address": "Jan Path, Ashok Nagar, Jaipur, Rajasthan 302005, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sawai%20Mansingh%20Stadium%2C%20Jan%20Path%2C%20Ashok%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302005%2C%20India",
+      "image": {
+        "url": "https://staticimg.amarujala.com/assets/images/2025/04/05/rajasthan_ae9b61e0c11a0aa85446379baa13a5d1.jpeg?q=80",
+        "source": "Amar Ujala",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sawai%20Mansingh%20Stadium%20Jaipur"
+      }
+    },
+    {
+      "id": "P026",
+      "name": "Statue Circle",
+      "category": "landmark",
+      "nearestStation": "J06",
+      "distanceKm": 1.5,
+      "address": "C-Scheme, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Statue%20Circle%2C%20C-Scheme%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Statue%20Circle%20Jaipur"
+      }
+    },
+    {
+      "id": "P027",
+      "name": "Birla Mandir",
+      "category": "temple",
+      "nearestStation": "J06",
+      "distanceKm": 2.0,
+      "address": "Moti Dungari Road, Tilak Nagar, Jaipur, Rajasthan 302004, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Birla%20Mandir%2C%20Moti%20Dungari%20Road%2C%20Tilak%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302004%2C%20India",
+      "image": {
+        "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Birla_Temple_in_Jaipur.jpg",
+        "source": "Wikimedia Commons",
+        "license": "Public domain",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Birla%20Mandir%20Jaipur"
+      }
+    },
+    {
+      "id": "P028",
+      "name": "MI Road",
+      "category": "shopping_area",
+      "nearestStation": "J06",
+      "distanceKm": 1.5,
+      "address": "Mirza Ismail Road, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=MI%20Road%2C%20Mirza%20Ismail%20Road%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=MI%20Road%20Jaipur"
+      }
+    },
+    {
+      "id": "P029",
+      "name": "Gaurav Tower",
+      "category": "shopping_mall",
+      "nearestStation": "J06",
+      "distanceKm": 2.8,
+      "address": "Malviya Nagar, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Gaurav%20Tower%2C%20Malviya%20Nagar%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Gaurav%20Tower%20Jaipur"
+      }
+    },
+    {
+      "id": "P030",
+      "name": "Jaipur Junction Railway Station",
+      "category": "railway_station",
+      "nearestStation": "J07",
+      "distanceKm": 0.1,
+      "address": "Station Road, Gopalbari, Jaipur, Rajasthan 302006, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Jaipur%20Junction%20Railway%20Station%2C%20Station%20Road%2C%20Gopalbari%2C%20Jaipur%2C%20Rajasthan%20302006%2C%20India",
+      "image": {
+        "url": "https://st.indiarailinfo.com/kjfdsuiemjvcya24/0/8/6/9/3568869/0/img201806241445544466462.jpg",
+        "source": "IndiaRailInfo",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Jaipur%20Junction%20Railway%20Station%20Jaipur"
+      }
+    },
+    {
+      "id": "P031",
+      "name": "Sindhi Camp Bus Stand",
+      "category": "bus_terminal",
+      "nearestStation": "J07",
+      "distanceKm": 0.8,
+      "address": "Station Road, Sindhi Camp, Jaipur, Rajasthan 302006, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sindhi%20Camp%20Bus%20Stand%2C%20Station%20Road%2C%20Sindhi%20Camp%2C%20Jaipur%2C%20Rajasthan%20302006%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sindhi%20Camp%20Bus%20Stand%20Jaipur"
+      }
+    },
+    {
+      "id": "P032",
+      "name": "Bais Godam Railway Station",
+      "category": "railway_station",
+      "nearestStation": "J07",
+      "distanceKm": 1.5,
+      "address": "Raj Bhavan Road, Keshav Nagar, Civil Lines, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Bais%20Godam%20Railway%20Station%2C%20Raj%20Bhavan%20Road%2C%20Keshav%20Nagar%2C%20Civil%20Lines%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Bais%20Godam%20Railway%20Station%20Jaipur"
+      }
+    },
+    {
+      "id": "P033",
+      "name": "Raj Mandir Cinema",
+      "category": "cinema_landmark",
+      "nearestStation": "J07",
+      "distanceKm": 1.8,
+      "address": "C-16, Bhagwan Das Road, C-Scheme, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Raj%20Mandir%20Cinema%2C%20C-16%2C%20Bhagwan%20Das%20Road%2C%20C-Scheme%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Raj%20Mandir%20Cinema%20Jaipur"
+      }
+    },
+    {
+      "id": "P034",
+      "name": "Amrapali Museum",
+      "category": "museum",
+      "nearestStation": "J07",
+      "distanceKm": 2.3,
+      "address": "Kishanpole Bazar, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Amrapali%20Museum%2C%20Kishanpole%20Bazar%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Amrapali%20Museum%20Jaipur"
+      }
+    },
+    {
+      "id": "P035",
+      "name": "Sindhi Camp Bus Terminal",
+      "category": "bus_terminal",
+      "nearestStation": "J08",
+      "distanceKm": 0.2,
+      "address": "Station Road, Sindhi Camp, Jaipur, Rajasthan 302006, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sindhi%20Camp%20Bus%20Terminal%2C%20Station%20Road%2C%20Sindhi%20Camp%2C%20Jaipur%2C%20Rajasthan%20302006%2C%20India",
+      "image": {
+        "url": "https://www.hectindia.com/guide/sindhi-camp-bus-station-jaipur",
+        "source": "HECT India page image",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sindhi%20Camp%20Bus%20Terminal%20Jaipur"
+      }
+    },
+    {
+      "id": "P036",
+      "name": "Sindhi Camp Market",
+      "category": "shopping_area",
+      "nearestStation": "J08",
+      "distanceKm": 0.3,
+      "address": "Sindhi Camp, Jaipur, Rajasthan 302006, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Sindhi%20Camp%20Market%2C%20Sindhi%20Camp%2C%20Jaipur%2C%20Rajasthan%20302006%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Sindhi%20Camp%20Market%20Jaipur"
+      }
+    },
+    {
+      "id": "P042",
+      "name": "Chandpole Bazaar",
+      "category": "shopping_area",
+      "nearestStation": "J09",
+      "distanceKm": 0.2,
+      "address": "Chandpole Bazar Road, Pink City, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Chandpole%20Bazaar%2C%20Chandpole%20Bazar%20Road%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Chandpole%20Bazaar%20Jaipur"
+      }
+    },
+    {
+      "id": "P038",
+      "name": "Albert Hall Museum",
+      "category": "museum",
+      "nearestStation": "J08",
+      "distanceKm": 2.0,
+      "address": "Ram Niwas Garden, Ashok Nagar, Jaipur, Rajasthan 302004, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Albert%20Hall%20Museum%2C%20Ram%20Niwas%20Garden%2C%20Ashok%20Nagar%2C%20Jaipur%2C%20Rajasthan%20302004%2C%20India",
+      "image": {
+        "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Albert_Hall%2C_Jaipur_001.jpg",
+        "source": "Wikimedia Commons",
+        "license": "See Wikimedia Commons file page",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Albert%20Hall%20Museum%20Jaipur"
+      }
+    },
+    {
+      "id": "P040",
+      "name": "Zanana Hospital",
+      "category": "hospital",
+      "nearestStation": "J08",
+      "distanceKm": 1.7,
+      "address": "Jorawar Singh Gate, Jaipur, Rajasthan, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Zanana%20Hospital%2C%20Jorawar%20Singh%20Gate%2C%20Jaipur%2C%20Rajasthan%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Zanana%20Hospital%20Jaipur"
+      }
+    },
+    {
+      "id": "P041",
+      "name": "Chandpole Gate",
+      "category": "heritage_landmark",
+      "nearestStation": "J09",
+      "distanceKm": 0.1,
+      "address": "Chandpole Bazar Road, Pink City, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Chandpole%20Gate%2C%20Chandpole%20Bazar%20Road%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Chandpole%20Gate%20Jaipur"
+      }
+    },
+    {
+      "id": "P043",
+      "name": "Isar Lat (Swargasuli Tower)",
+      "category": "heritage_landmark",
+      "nearestStation": "J09",
+      "distanceKm": 0.8,
+      "address": "Kishanpole Bazar Road, Jaipur, Rajasthan 302001, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Isar%20Lat%20%28Swargasuli%20Tower%29%2C%20Kishanpole%20Bazar%20Road%2C%20Jaipur%2C%20Rajasthan%20302001%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Isar%20Lat%20%28Swargasuli%20Tower%29%20Jaipur"
+      }
+    },
+    {
+      "id": "P057",
+      "name": "Tripolia Bazaar",
+      "category": "shopping_area",
+      "nearestStation": "J11",
+      "distanceKm": 0.1,
+      "address": "Tripolia Bazar, Pink City, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Tripolia%20Bazaar%2C%20Tripolia%20Bazar%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Tripolia%20Bazaar%20Jaipur"
+      }
+    },
+    {
+      "id": "P045",
+      "name": "Ajmeri Gate",
+      "category": "heritage_landmark",
+      "nearestStation": "J09",
+      "distanceKm": 1.1,
+      "address": "Nehru Bazar Road, Jaipur, Rajasthan 302003, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Ajmeri%20Gate%2C%20Nehru%20Bazar%20Road%2C%20Jaipur%2C%20Rajasthan%20302003%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Ajmeri%20Gate%20Jaipur"
+      }
+    },
+    {
+      "id": "P046",
+      "name": "Nehru Bazaar",
+      "category": "shopping_area",
+      "nearestStation": "J09",
+      "distanceKm": 1.2,
+      "address": "Nehru Bazar, Jaipur, Rajasthan 302003, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Nehru%20Bazaar%2C%20Nehru%20Bazar%2C%20Jaipur%2C%20Rajasthan%20302003%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Nehru%20Bazaar%20Jaipur"
+      }
+    },
+    {
+      "id": "P047",
+      "name": "Johari Bazaar",
+      "category": "shopping_area",
+      "nearestStation": "J10",
+      "distanceKm": 0.3,
+      "address": "Johari Bazaar Road, Pink City, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Johari%20Bazaar%2C%20Johari%20Bazaar%20Road%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": "https://www.rajasthantourdriver.com/wp-content/uploads/2023/12/joharibazar.jpg",
+        "source": "Rajasthan Tour Driver",
+        "license": "Verify reuse rights before commercial use",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Johari%20Bazaar%20Jaipur"
+      }
+    },
+    {
+      "id": "P048",
+      "name": "Bapu Bazaar",
+      "category": "shopping_area",
+      "nearestStation": "J10",
+      "distanceKm": 0.5,
+      "address": "Biseswarji, Jaipur, Rajasthan 302007, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Bapu%20Bazaar%2C%20Biseswarji%2C%20Jaipur%2C%20Rajasthan%20302007%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Bapu%20Bazaar%20Jaipur"
+      }
+    },
+    {
+      "id": "P056",
+      "name": "City Palace",
+      "category": "palace_museum",
+      "nearestStation": "J11",
+      "distanceKm": 0.5,
+      "address": "Gangori Bazaar, J.D.A. Market, Pink City, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=City%20Palace%2C%20Gangori%20Bazaar%2C%20J.D.A.%20Market%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/City_Palace_in_Jaipur.jpg",
+        "source": "Wikimedia Commons",
+        "license": "CC BY-SA 4.0",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=City%20Palace%20Jaipur"
+      }
+    },
+    {
+      "id": "P055",
+      "name": "Jantar Mantar",
+      "category": "museum_heritage",
+      "nearestStation": "J11",
+      "distanceKm": 0.2,
+      "address": "Gangori Bazaar, J.D.A. Market, Pink City, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Jantar%20Mantar%2C%20Gangori%20Bazaar%2C%20J.D.A.%20Market%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jantar_Mantar_at_Jaipur%2C_another_view.jpg",
+        "source": "Wikimedia Commons",
+        "license": "See Wikimedia Commons file page",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Jantar%20Mantar%20Jaipur"
+      }
+    },
+    {
+      "id": "P054",
+      "name": "Hawa Mahal",
+      "category": "palace_landmark",
+      "nearestStation": "J11",
+      "distanceKm": 0.2,
+      "address": "Hawa Mahal Road, Badi Choupad, Pink City, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Hawa%20Mahal%2C%20Hawa%20Mahal%20Road%2C%20Badi%20Choupad%2C%20Pink%20City%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jaipur-Hawa-Mahal.jpg",
+        "source": "Wikimedia Commons",
+        "license": "CC BY-SA 4.0",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Hawa%20Mahal%20Jaipur"
+      }
+    },
+    {
+      "id": "P060",
+      "name": "Govind Dev Ji Temple",
+      "category": "temple",
+      "nearestStation": "J11",
+      "distanceKm": 1.0,
+      "address": "City Palace Complex, Jalebi Chowk, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Govind%20Dev%20Ji%20Temple%2C%20City%20Palace%20Complex%2C%20Jalebi%20Chowk%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Govind%20Dev%20Ji%20Temple%20Jaipur"
+      }
+    },
+    {
+      "id": "P053",
+      "name": "Maharaja Sawai Man Singh II Museum",
+      "category": "museum",
+      "nearestStation": "J10",
+      "distanceKm": 0.9,
+      "address": "City Palace Complex, Gangori Bazaar, Jaipur, Rajasthan 302002, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Maharaja%20Sawai%20Man%20Singh%20II%20Museum%2C%20City%20Palace%20Complex%2C%20Gangori%20Bazaar%2C%20Jaipur%2C%20Rajasthan%20302002%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Maharaja%20Sawai%20Man%20Singh%20II%20Museum%20Jaipur"
+      }
+    },
+    {
+      "id": "P062",
+      "name": "Rajasthan Legislative Assembly (Vidhan Bhavan)",
+      "category": "government_building",
+      "nearestStation": "J06",
+      "distanceKm": 2.5,
+      "address": "Pankaj Singhvi Marg, Jyoti Nagar, Lalkothi, Jaipur, Rajasthan 302005, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Rajasthan%20Legislative%20Assembly%20%28Vidhan%20Bhavan%29%2C%20Pankaj%20Singhvi%20Marg%2C%20Jyoti%20Nagar%2C%20Lalkothi%2C%20Jaipur%2C%20Rajasthan%20302005%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Rajasthan%20Legislative%20Assembly%20%28Vidhan%20Bhavan%29%20Jaipur"
+      }
+    },
+    {
+      "id": "P063",
+      "name": "Government Secretariat, Rajasthan",
+      "category": "government_building",
+      "nearestStation": "J06",
+      "distanceKm": 2.5,
+      "address": "Government Secretariat, Jaipur, Rajasthan 302005, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Government%20Secretariat%2C%20Rajasthan%2C%20Government%20Secretariat%2C%20Jaipur%2C%20Rajasthan%20302005%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Government%20Secretariat%2C%20Rajasthan%20Jaipur"
+      }
+    },
+    {
+      "id": "P064",
+      "name": "Rajasthan High Court Bench, Jaipur",
+      "category": "government_building",
+      "nearestStation": "J06",
+      "distanceKm": 2.7,
+      "address": "High Court Campus, Jaipur, Rajasthan 302005, India",
+      "mapsLink": "https://www.google.com/maps/search/?api=1&query=Rajasthan%20High%20Court%20Bench%2C%20Jaipur%2C%20High%20Court%20Campus%2C%20Jaipur%2C%20Rajasthan%20302005%2C%20India",
+      "image": {
+        "url": null,
+        "source": "Wikimedia Commons search",
+        "license": "Verify license on selected file",
+        "searchUrl": "https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search=Rajasthan%20High%20Court%20Bench%2C%20Jaipur%20Jaipur"
+      }
+    }
+  ],
+  "dataQualityNote": [
+    "Distances are approximate walking/straight-line style locality distances gathered from web sources, not live road-routing distances.",
+    "Google Maps links are generated as place-search links using the verified place name and address.",
+    "Wikimedia Commons is preferred for image fallback because individual files expose their licensing information.",
+    "For several local businesses and hospitals, a direct clean image URL was not reliably surfaced by web search, so an image-search fallback is provided instead of inventing an image URL.",
+    "Commercial reuse of third-party images should be checked against the image's actual license before publishing."
+  ]
+}

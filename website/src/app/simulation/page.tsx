@@ -103,8 +103,8 @@ export default function SimulationPage() {
       titleHi: "जयपुर घूमें",
       icon: <Compass className="w-5 h-5" />,
       working: {
-        en: "Links all tourist landmarks like Hawa Mahal, City Palace, and local heritage markets with their corresponding metro station exits. In the native Android app, we use distance thresholds to estimate walking times and notify you of walking shortcuts.",
-        hi: "हवा महल, सिटी पैलेस और स्थानीय विरासत बाजारों को उनके मेट्रो स्टेशनों से जोड़ता है। मूल एंड्रॉइड ऐप में, हम चलने के समय का अनुमान लगाने के लिए दूरी थ्रेशोल्ड का उपयोग करते हैं।"
+        en: "Links 54 tourist landmarks, gardens, hospitals, shopping areas, and heritage sights (including Mansarovar Garden, Monilek Hospital, Hawa Mahal, and City Palace) with their corresponding metro station exits. In the native Android app, distance calculations estimate walking times and guide last-mile transit.",
+        hi: "मानसरोवर गार्डन, मोनिलेक अस्पताल, हवा महल और सिटी पैलेस सहित 54 पर्यटन स्थलों, बगीचों, अस्पतालों और बाजारों को उनके निकटतम मेट्रो स्टेशनों से जोड़ता है।"
       },
       nativeFeature: {
         en: "Proximity Walking Guide Computations",

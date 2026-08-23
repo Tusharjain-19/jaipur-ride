@@ -4,7 +4,7 @@
  * Enables offline operation.
  */
 
-const CACHE_NAME = 'jaipurride-v2.0.0';
+const CACHE_NAME = 'jaipurride-v3.0.0-v1';
 
 const PRECACHE_URLS = [
   '/',

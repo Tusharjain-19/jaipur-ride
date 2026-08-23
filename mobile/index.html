@@ -15,6 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/app.css"/>
+    <link rel="stylesheet" href="css/layout.css"/>
     <link rel="stylesheet" href="css/hero.css"/>
     <script src="js/lucide.min.js"></script>
     <script type="module" src="js/main.js" defer></script>
@@ -82,24 +83,17 @@
                     <i data-lucide="chevron-right" class="w-16 h-16 muted"></i>
                 </button>
 
-                <!-- Quick Actions -->
-                <div class="quick-grid">
-                    <button class="quick-item" id="ql-timings">
-                        <div class="quick-icon"><i data-lucide="clock" class="w-20 h-20"></i></div>
-                        <span data-lang-key="timings">Timings</span>
-                    </button>
-                    <button class="quick-item" id="ql-map">
-                        <div class="quick-icon"><i data-lucide="train-front" class="w-20 h-20"></i></div>
-                        <span data-lang-key="stations">Stations</span>
-                    </button>
-                    <button class="quick-item" id="ql-safety">
-                        <div class="quick-icon"><i data-lucide="shield-check" class="w-20 h-20"></i></div>
-                        <span data-lang-key="safety">Safety</span>
-                    </button>
-                    <button class="quick-item" id="ql-explore">
-                        <div class="quick-icon"><i data-lucide="sparkles" class="w-20 h-20"></i></div>
-                        <span data-lang-key="navExplore">Explore</span>
-                    </button>
+                <!-- Disclaimer & Developer Credit (Unboxed) -->
+                <div class="app-disclaimer-unboxed">
+                    <p class="app-disclaimer-text">
+                        Disclaimer: Timings and fare are estimates, please confirm at stations.<br>
+                        This is not an official JMRC app.
+                    </p>
+                    <div class="dev-credit-wrapper">
+                        <a href="https://tusharjain.in" target="_blank" rel="noopener noreferrer" class="dev-credit-link">
+                            <i data-lucide="code" class="w-14 h-14"></i> Developed by Tushar Jain
+                        </a>
+                    </div>
                 </div>
             </section>
 
@@ -301,7 +295,7 @@
         <!-- ═══ BOTTOM NAV ═══ -->
         <nav class="bottom-nav">
             <button id="nav-plan" class="nav-item active" data-view="plan-view">
-                <i data-lucide="compass" class="w-20 h-20"></i>
+                <i data-lucide="route" class="w-20 h-20"></i>
                 <span data-lang-key="navPlan">Plan</span>
             </button>
             <button id="nav-stations" class="nav-item" data-view="stations-view">
@@ -313,7 +307,7 @@
                 <span data-lang-key="timings">Timings</span>
             </button>
             <button id="nav-explore" class="nav-item" data-view="explore-view">
-                <i data-lucide="sparkles" class="w-20 h-20"></i>
+                <i data-lucide="compass" class="w-20 h-20"></i>
                 <span data-lang-key="navExplore">Explore</span>
             </button>
             <button id="nav-safety" class="nav-item" data-view="safety-view">
@@ -344,7 +338,10 @@
       // Register Service Worker (browser only, Capacitor handles caching natively)
       if ('serviceWorker' in navigator && !(window.Capacitor && window.Capacitor.isNativePlatform && window.Capacitor.isNativePlatform())) {
         window.addEventListener('load', () => {
-          navigator.serviceWorker.register('sw.js').catch(() => {});
+          navigator.serviceWorker.register('sw.js').then(reg => {
+            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+            reg.update();
+          }).catch(() => {});
         });
       }
     </script>

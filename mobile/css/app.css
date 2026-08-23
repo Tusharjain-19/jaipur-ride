@@ -169,15 +169,16 @@ body {
 
 /* ── HEADER ── */
 .app-header {
-  min-height: 60px;
-  height: calc(60px + env(safe-area-inset-top, 0px));
-  padding-top: env(safe-area-inset-top, 0px);
+  min-height: 80px;
+  height: auto;
+  padding-top: calc(max(env(safe-area-inset-top, 0px), 40px) + 10px);
+  padding-bottom: 12px;
   padding-left: calc(16px + env(safe-area-inset-left, 0px));
   padding-right: calc(16px + env(safe-area-inset-right, 0px));
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-header);
+  background: var(--bg-solid);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border);
@@ -2510,6 +2511,202 @@ body {
   align-items: center;
   z-index: 10;
   flex-shrink: 0;
+}
+
+/* ═══════════════════════════════════════════════════
+   FLOATING GLASSMORPHISM BOTTOM NAVBAR & FUTURISTIC APP STYLING
+   ═══════════════════════════════════════════════════ */
+
+.bottom-nav {
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 50% !important;
+  transform: translateX(-50%) translateY(0) !important;
+  width: calc(100% - 32px) !important;
+  max-width: 398px !important;
+  height: 64px !important;
+  border-radius: 32px !important;
+  background: rgba(255, 255, 255, 0.76) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-around !important;
+  padding: 0 8px !important;
+  z-index: 1000 !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.14), 0 0 16px rgba(236, 72, 153, 0.12) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] .bottom-nav {
+  background: rgba(13, 19, 36, 0.8) !important;
+  border: 1px solid rgba(255, 176, 205, 0.18) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), 0 0 20px rgba(236, 72, 153, 0.2) !important;
+}
+
+.bottom-nav.nav-hidden {
+  transform: translateX(-50%) translateY(160%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.bottom-nav button,
+.bottom-nav .nav-item {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 3px !important;
+  height: 52px !important;
+  min-width: 44px !important;
+  border-radius: 20px !important;
+  background: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  color: var(--text-muted) !important;
+  transition: color 0.25s ease, background 0.25s ease, transform 0.15s ease !important;
+  cursor: pointer !important;
+}
+
+.bottom-nav button:active,
+.bottom-nav .nav-item:active {
+  transform: scale(0.92) !important;
+}
+
+.bottom-nav button.active,
+.bottom-nav .nav-item.active {
+  color: var(--accent) !important;
+  background: var(--accent-soft) !important;
+}
+
+.bottom-nav button.active span,
+.bottom-nav .nav-item.active span {
+  font-weight: 800 !important;
+  color: var(--accent) !important;
+}
+
+.bottom-nav button.active i,
+.bottom-nav .nav-item.active i {
+  color: var(--accent) !important;
+  transform: scale(1.1) !important;
+  transition: transform 0.2s ease !important;
+}
+
+.bottom-nav button span,
+.bottom-nav .nav-item span {
+  font-size: 9px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+}
+
+.bottom-nav button i,
+.bottom-nav .nav-item i {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Glassmorphism Futuristic Cards */
+.card,
+.contact-card,
+.stn-card,
+.attr-card,
+.station-explore-card,
+.nearby-modal-content,
+.modal-content {
+  backdrop-filter: blur(20px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+}
+
+/* ── UNBOXED DISCLAIMER & DEVELOPER CREDIT ── */
+.app-disclaimer-unboxed {
+  margin-top: 24px;
+  margin-bottom: 24px;
+  padding: 0 16px;
+  text-align: center;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.app-disclaimer-text {
+  font-size: 11px !important;
+  font-weight: 400 !important; /* Normal, non-bold text */
+  color: var(--text-muted) !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.2px;
+  opacity: 0.85;
+}
+
+.dev-credit-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.dev-credit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  transition: all 0.2s ease;
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border);
+}
+
+.dev-credit-link:hover {
+  transform: translateY(-1px);
+  background: var(--accent);
+  color: #ffffff !important;
+}
+
+/* ── ENHANCED FUTURISTIC GLASSMORPHISM & STACKING ── */
+.card-picker {
+  position: relative !important;
+  z-index: 50;
+  background: rgba(255, 255, 255, 0.68) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08), 0 0 20px rgba(236, 72, 153, 0.08) !important;
+}
+
+[data-theme="dark"] .card-picker {
+  background: rgba(25, 31, 49, 0.6) !important;
+  border: 1px solid rgba(255, 176, 205, 0.18) !important;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(236, 72, 153, 0.15) !important;
+}
+
+.card-locate {
+  position: relative !important;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.68) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.7) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06) !important;
+  transition: all 0.25s ease !important;
+}
+
+[data-theme="dark"] .card-locate {
+  background: rgba(25, 31, 49, 0.6) !important;
+  border: 1px solid rgba(255, 176, 205, 0.18) !important;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35) !important;
+}
+
+.card-locate:hover {
+  transform: translateY(-2px) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 16px 40px rgba(236, 72, 153, 0.2) !important;
 }
 
 /* btn-finish-journey styles are inherited from unified btn-primary class */

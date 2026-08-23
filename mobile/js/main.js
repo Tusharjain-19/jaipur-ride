@@ -24,6 +24,7 @@ import {
   onNetworkChange,
   getNetworkStatus,
   openAppSettings,
+  openExternalUrl,
 } from "./native-bridge.js";
 
 // ═══════════════════════════════════════
@@ -59,6 +60,7 @@ export function formatTime(d) {
 }
 window.T_STATION = T_STATION;
 window.T = T;
+window.openExternalUrl = openExternalUrl;
 
 function getDistance(lat1, lon1, lat2, lon2) {
   const R = 6371; // Radius of the earth in km
@@ -612,7 +614,7 @@ function showExploreDetail(stationName) {
                         <div class="meta-item"><i data-lucide="clock"></i> ${Math.round(a.walk_time_min || (a.distance_km * 12))} ${T('walkTime')}</div>
                     </div>
                     <div class="attr-card-actions">
-                        <button class="btn-navigate-small" onclick="event.stopPropagation(); window.open('${a.maps_link}', '_blank')">
+                        <button class="btn-navigate-small" onclick="event.stopPropagation(); openExternalUrl('${a.maps_link}')">
                             <i data-lucide="map-pin"></i> Navigate
                         </button>
                     </div>
@@ -698,7 +700,7 @@ function showAttractionDetail(stationName, attrId) {
             ` : ''}
 
             <div class="full-attr-actions">
-                <button class="btn-navigate" onclick="window.open('${a.maps_link}', '_blank')">
+                <button class="btn-navigate" onclick="openExternalUrl('${a.maps_link}')">
                     <i data-lucide="map-pin"></i> ${T('navigate')}
                 </button>
             </div>
@@ -745,7 +747,7 @@ function showNearbyPopup(stationName) {
                 </div>
                 <p class="popup-attr-desc">${desc}</p>
                 <div class="popup-attr-actions">
-                    <button class="btn-navigate-small" onclick="window.open('${a.maps_link}', '_blank')">
+                    <button class="btn-navigate-small" onclick="openExternalUrl('${a.maps_link}')">
                         <i data-lucide="map-pin"></i> ${T('navigate')}
                     </button>
                     <button class="btn-navigate-small" style="background:var(--accent-soft); color:var(--accent) !important; box-shadow:none;" onclick="showAttractionFullDetail('${stationName}', '${a.id}')">
@@ -1399,11 +1401,18 @@ async function checkAndRequestLocationPermission() {
 
 function locateMe() {
   console.log("Find Nearest Station clicked");
-  checkAndRequestLocationPermission().then((status) => {
-    if (status === 'granted') {
-      triggerRealLocationAccess();
-    }
-  });
+  checkAndRequestLocationPermission()
+    .then((status) => {
+      if (status === 'granted') {
+        triggerRealLocationAccess();
+      } else {
+        toast(T("locAccessDenied"));
+      }
+    })
+    .catch((err) => {
+      console.warn("Location permission check error:", err);
+      toast(T("locAccessDenied"));
+    });
 }
 
 async function triggerRealLocationAccess() {
@@ -1434,7 +1443,7 @@ async function triggerRealLocationAccess() {
     });
 
     if (nearest) {
-      console.log("Nearest station calculated");
+      console.log("Nearest station calculated:", nearest.name);
       const distLabel =
         minDist < 1
           ? `~${Math.round(minDist * 1000)} m`
@@ -1468,7 +1477,7 @@ async function triggerRealLocationAccess() {
             cancelText: T("cancel"),
             onConfirm: () => {
               try {
-                window.open(url, "_blank");
+                openExternalUrl(url);
               } catch (openErr) {
                 console.error("Failed to open maps url:", openErr);
               }
@@ -1526,6 +1535,64 @@ function showFareCalc() {
 }
 
 // ═══════════════════════════════════════
+//  FLOATING NAVBAR SCROLL & IDLE TIMER
+// ═══════════════════════════════════════
+function initNavbarScrollBehavior() {
+  const scrollContainer = document.getElementById("app-content");
+  const navBar = document.querySelector(".bottom-nav");
+  if (!scrollContainer || !navBar) return;
+
+  let lastScrollTop = 0;
+  let idleTimer = null;
+  const IDLE_TIMEOUT_MS = 10000; // 10 seconds
+
+  const showNavbar = () => {
+    navBar.classList.remove("nav-hidden");
+    resetIdleTimer();
+  };
+
+  const hideNavbar = () => {
+    navBar.classList.add("nav-hidden");
+  };
+
+  const resetIdleTimer = () => {
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      hideNavbar();
+    }, IDLE_TIMEOUT_MS);
+  };
+
+  scrollContainer.addEventListener(
+    "scroll",
+    () => {
+      const st = scrollContainer.scrollTop;
+      if (Math.abs(st - lastScrollTop) > 6) {
+        if (st > lastScrollTop && st > 30) {
+          hideNavbar();
+        } else {
+          showNavbar();
+        }
+        lastScrollTop = st <= 0 ? 0 : st;
+      }
+      resetIdleTimer();
+    },
+    { passive: true }
+  );
+
+  ["touchstart", "mousedown", "pointerdown", "mousemove", "keydown"].forEach((evtName) => {
+    document.addEventListener(
+      evtName,
+      () => {
+        showNavbar();
+      },
+      { passive: true }
+    );
+  });
+
+  resetIdleTimer();
+}
+
+// ═══════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════
 function init() {
@@ -1535,6 +1602,9 @@ function init() {
   // Theme
   setTheme(currentTheme);
 
+  // Floating navbar scroll & idle timer
+  initNavbarScrollBehavior();
+
   // Dropdowns
   startDropdown = new CustomDropdown(
     "start-station-container",
@@ -1543,6 +1613,7 @@ function init() {
     (val) => {
       const el = document.getElementById("start-station");
       if (el) el.value = val;
+      if (endDropdown) endDropdown.setDisallowedValue(val);
     },
   );
   endDropdown = new CustomDropdown(
@@ -1552,6 +1623,7 @@ function init() {
     (val) => {
       const el = document.getElementById("end-station");
       if (el) el.value = val;
+      if (startDropdown) startDropdown.setDisallowedValue(val);
     },
   );
 
@@ -1654,11 +1726,23 @@ function wire() {
       if (!startDropdown || !endDropdown) return;
       const s = startDropdown.selectedValue,
         e = endDropdown.selectedValue;
-      if (s && e) {
-        startDropdown.select(e);
-        endDropdown.select(s);
-        document.getElementById("start-station").value = e;
-        document.getElementById("end-station").value = s;
+      if (s || e) {
+        startDropdown.setDisallowedValue(null);
+        endDropdown.setDisallowedValue(null);
+        if (s && e) {
+          startDropdown.select(e);
+          endDropdown.select(s);
+          startDropdown.setDisallowedValue(s);
+          endDropdown.setDisallowedValue(e);
+        } else if (s) {
+          endDropdown.select(s);
+          startDropdown.clear();
+          startDropdown.setDisallowedValue(s);
+        } else if (e) {
+          startDropdown.select(e);
+          endDropdown.clear();
+          endDropdown.setDisallowedValue(e);
+        }
       }
     });
 

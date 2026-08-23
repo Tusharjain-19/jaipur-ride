@@ -44,10 +44,15 @@ export async function setStatusBarStyle(isDark) {
   const StatusBar = getPlugin('StatusBar');
   if (StatusBar) {
     try {
-      await StatusBar.setStyle({ style: isDark ? 'DARK' : 'LIGHT' });
+      // In light mode, status bar icons should be dark text/icons ('DARK') against light background (#F8FAFC)
+      // In dark mode, status bar icons should be light text/icons ('LIGHT') against dark background (#0d1324)
+      await StatusBar.setStyle({ style: isDark ? 'LIGHT' : 'DARK' });
       await StatusBar.setBackgroundColor({ 
-        color: isDark ? '#0f172a' : '#1A1A2E' 
+        color: isDark ? '#0d1324' : '#F8FAFC' 
       });
+      if (typeof StatusBar.setOverlaysWebView === 'function') {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+      }
     } catch (e) {
       console.warn('[NativeBridge] StatusBar update failed:', e);
     }
@@ -232,6 +237,27 @@ export async function exitApp() {
     } catch (e) {
       console.warn('[NativeBridge] exitApp failed:', e);
     }
+  }
+}
+
+// ═══════════════════════════════════════
+//  BROWSER / OPEN URL
+// ═══════════════════════════════════════
+export async function openExternalUrl(url) {
+  if (!url) return;
+  const Browser = getPlugin('Browser');
+  if (Browser) {
+    try {
+      await Browser.open({ url });
+      return;
+    } catch (e) {
+      console.warn('[NativeBridge] Browser.open failed:', e);
+    }
+  }
+  try {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  } catch (err) {
+    console.error('[NativeBridge] Fallback window.open failed:', err);
   }
 }
 

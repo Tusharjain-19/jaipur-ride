@@ -1,6 +1,6 @@
 {
   "name": "jaipur-ride",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "JaipurRide — The unofficial Jaipur Metro companion app",
   "main": "index.html",
   "scripts": {

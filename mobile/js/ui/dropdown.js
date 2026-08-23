@@ -11,6 +11,7 @@ export class CustomDropdown {
         this.stations = [];
         this.filteredStations = [];
         this.selectedValue = null;
+        this.disallowedValue = null;
         this.isOpen = false;
 
         this.initData();
@@ -67,6 +68,31 @@ export class CustomDropdown {
         if (window.lucide) window.lucide.createIcons();
     }
 
+    setDisallowedValue(val) {
+        this.disallowedValue = val;
+        if (this.selectedValue && this.selectedValue === val) {
+            this.clear();
+        }
+        this.renderOptions();
+    }
+
+    clear() {
+        this.selectedValue = null;
+        const getT = (k) => typeof window.T === 'function' ? window.T(k) : k;
+        const sel = document.getElementById(`selected-${this.container.id}`);
+        if (sel) { 
+            sel.textContent = getT(this.placeholderKey); 
+            sel.style.color = '#4B5563'; 
+            sel.style.fontWeight = 'normal'; 
+        }
+        const dotColor = this.type === 'start' ? '#22C55E' : '#EC4899';
+        const dotsC = document.getElementById(`dots-${this.container.id}`);
+        if (dotsC) { 
+            dotsC.innerHTML = `<span style="width:10px;height:10px;border-radius:50%;display:inline-block;background:${dotColor}"></span>`; 
+        }
+        if (this.onChange) this.onChange('');
+    }
+
     renderOptions() {
         const list = document.getElementById(`list-${this.container.id}`);
         if (!list) return;
@@ -80,11 +106,25 @@ export class CustomDropdown {
         const getHi = (name) => stationTranslations[name] ? stationTranslations[name].hi : '';
         const getDisplay = (name) => typeof window.T_STATION === 'function' ? window.T_STATION(name) : name;
 
-        list.innerHTML = this.filteredStations.map(station => {
+        const visibleStations = this.filteredStations.filter(
+            station => !this.disallowedValue || station.id !== this.disallowedValue
+        );
+
+        if (visibleStations.length === 0) {
+            const getT = (k) => typeof window.T === 'function' ? window.T(k) : k;
+            list.innerHTML = `<div class="no-results text-stone" style="padding:20px;text-align:center;">${getT('noStationsFound') || 'No stations found'}</div>`;
+            return;
+        }
+
+        list.innerHTML = visibleStations.map(station => {
             const dots = station.lines.map(c => `<span style="width:10px;height:10px;border-radius:50%;display:inline-block;background:${c}"></span>`).join('');
-            const sel = this.selectedValue === station.id ? 'selected bg-pink-50' : '';
+            const isSel = this.selectedValue === station.id;
+
+            let classes = 'station-option';
+            if (isSel) classes += ' selected bg-pink-50';
+
             return `
-                <div class="station-option ${sel}" data-value="${station.id}">
+                <div class="${classes}" data-value="${station.id}">
                     <div class="station-dots">${dots}</div>
                     <div style="display:flex;flex-direction:column;flex:1;overflow:hidden;">
                         <span class="option-name-en font-bold text-ink">${getDisplay(station.name)}</span>
@@ -97,12 +137,21 @@ export class CustomDropdown {
         list.querySelectorAll('.station-option').forEach(option => {
             option.addEventListener('click', (e) => {
                 e.stopPropagation();
+                if (option.getAttribute('aria-disabled') === 'true') return;
                 this.select(option.dataset.value);
             });
         });
     }
 
     select(value) {
+        if (value && this.disallowedValue && value === this.disallowedValue) {
+            const getT = (k) => typeof window.T === 'function' ? window.T(k) : k;
+            if (typeof toast === 'function') {
+                toast(getT('startAndEndDifferent') || 'Start and destination must be different');
+            }
+            return;
+        }
+
         let station = this.stations.find(s => s.id === value);
         if (!station) {
             for (const lineKey in metroData) {
@@ -135,7 +184,9 @@ export class CustomDropdown {
             menu.style.display = 'block';
             setTimeout(() => menu.classList.add('open'), 10);
         }
-        this.container.style.zIndex = '10000';
+        this.container.style.zIndex = '100000';
+        const cardPicker = this.container.closest('.card-picker');
+        if (cardPicker) cardPicker.style.zIndex = '99999';
         const search = document.getElementById(`search-${this.container.id}`);
         if (search) { search.value = ''; search.focus(); }
         this.filter('');
@@ -148,7 +199,9 @@ export class CustomDropdown {
             menu.classList.remove('open');
             setTimeout(() => { if (!this.isOpen) menu.style.display = 'none'; }, 250);
         }
-        setTimeout(() => { if (!this.isOpen) this.container.style.zIndex = '50'; }, 250);
+        this.container.style.zIndex = '';
+        const cardPicker = this.container.closest('.card-picker');
+        if (cardPicker) cardPicker.style.zIndex = '';
     }
 
     filter(query) {

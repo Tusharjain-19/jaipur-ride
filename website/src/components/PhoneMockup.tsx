@@ -16,6 +16,7 @@ import {
   Signal,
   ChevronRight,
   Compass,
+  Route,
   Vibrate,
   ArrowRight,
   ArrowUpDown,
@@ -463,10 +464,10 @@ function AppBottomTabBar({
   isDark: boolean;
 }) {
   const tabsConfig = [
-    { id: "plan", icon: Compass, label: "Plan" },
+    { id: "plan", icon: Route, label: "Plan" },
     { id: "stations", icon: Train, label: "Stations" },
     { id: "timings", icon: Clock, label: "Timings" },
-    { id: "explore", icon: Sparkles, label: "Explore" },
+    { id: "explore", icon: Compass, label: "Explore" },
     { id: "safety", icon: Shield, label: "Safety" },
   ];
 
@@ -1218,20 +1219,44 @@ function ExploreViewTab({ simStep, isDark }: { simStep: SimStep; isDark: boolean
                   name: "Hawa Mahal",
                   img: "/images/hawa_mahal.jpg",
                   st: "Badi Chaupar",
-                  dist: "5 min walk",
+                  dist: "300m • 4 min walk",
                   active: simStep === "explore-click-card",
                 },
                 {
                   name: "City Palace",
                   img: "/images/city_palace.jpg",
                   st: "Badi Chaupar",
-                  dist: "8 min walk",
+                  dist: "400m • 6 min walk",
+                },
+                {
+                  name: "Mansarovar Garden",
+                  img: "/images/jaipur_park_theme.png",
+                  st: "Mansarovar",
+                  dist: "300m • Park",
+                },
+                {
+                  name: "Monilek Hospital",
+                  img: "/images/jaipur_hospital_theme.png",
+                  st: "Mansarovar",
+                  dist: "1.5 km • Hospital",
+                },
+                {
+                  name: "Swasthya Mangalam",
+                  img: "/images/jaipur_hospital_theme.png",
+                  st: "New Aatish Market",
+                  dist: "300m • Health Centre",
+                },
+                {
+                  name: "Sector 4 Market",
+                  img: "/images/jaipur_market_theme.png",
+                  st: "Mansarovar",
+                  dist: "800m • Shopping",
                 },
                 {
                   name: "Jantar Mantar",
                   img: "/images/jantar_mantar.jpg",
                   st: "Badi Chaupar",
-                  dist: "6 min walk",
+                  dist: "400m • 6 min walk",
                 },
               ].map((att) => (
                 <div
