@@ -286,7 +286,9 @@ export default function PhoneMockup() {
               </div>
 
               {/* SIMULATED BOTTOM TAB BAR */}
-              <AppBottomTabBar activeTab={activeTab} isDark={isDark} />
+              {!simStep.startsWith("live-journey-") && (
+                <AppBottomTabBar activeTab={activeTab} isDark={isDark} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

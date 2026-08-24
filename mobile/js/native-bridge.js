@@ -291,6 +291,19 @@ export async function hapticImpact(style = 'Medium') {
   }
 }
 
+export async function vibrateDevice(duration = 2000) {
+  try {
+    const Haptics = getPlugin('Haptics');
+    if (Haptics) {
+      await Haptics.vibrate({ duration });
+    } else if (navigator.vibrate) {
+      navigator.vibrate(duration);
+    }
+  } catch (e) {
+    console.warn('[NativeBridge] vibrateDevice failed:', e);
+  }
+}
+
 // ═══════════════════════════════════════
 //  DEVICE
 // ═══════════════════════════════════════

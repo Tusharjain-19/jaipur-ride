@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import stationsData from "@/data/stations.json";
 import { useLanguage } from "@/context/LanguageContext";
 import { Search, Train, Clock, MapPin, Eye, Filter } from "lucide-react";
@@ -19,6 +20,9 @@ interface Station {
   connectivity: string[];
   timings: { firstTrain: string; lastTrain: string };
   location: { lat: number; lon: number; mapsLink: string };
+  imageUrl?: string;
+  imageSource?: string;
+  license?: string;
 }
 
 export default function StationsDirectory() {
@@ -137,6 +141,17 @@ export default function StationsDirectory() {
               key={st.id}
               className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
             >
+              {st.imageUrl && (
+                <div className="relative h-48 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <Image
+                    src={st.imageUrl}
+                    alt={st.name}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                  />
+                </div>
+              )}
               <div className="p-6 space-y-6 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex justify-between items-start">

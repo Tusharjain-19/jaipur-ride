@@ -7,6 +7,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Mansarovar_metro_station_(Jaipur).jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -40,6 +43,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/New_Aatish_Market_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -70,6 +76,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Vivek_Vihar_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -100,6 +109,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Shyam_Nagar_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -128,6 +140,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ram_Nagar_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -155,6 +170,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Civil_Lines_metro_station_(Jaipur).jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -187,6 +205,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Jaipur_03-2016_36_Jaipur_Metro.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "Free Art License",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -219,6 +240,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Utkarsh_Sindhi_Camp_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "Verify license before commercial redistribution",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -251,6 +275,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Elevated",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chandpole_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "Verify license before commercial redistribution",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -280,6 +307,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Underground",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Chhoti_Chaupar_metro_station_(Jaipur).jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2015"
@@ -309,6 +339,9 @@ export const stationsMeta = [
     "line": "Pink Line",
     "type": "Underground",
     "platforms": "2",
+    "imageUrl": "https://commons.wikimedia.org/wiki/Special:Redirect/file/Badi_Chaupar_metro_station.jpg",
+    "imageSource": "Wikimedia Commons",
+    "license": "CC BY-SA 4.0",
     "metroInfo": {
       "operator": "JMRC",
       "opened": "2019"

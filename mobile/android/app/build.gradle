@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 def getLatestVersionCode() {
     def apkFile = file("../../mobile/app-release.apk")
-    def baseCode = 33
+    def baseCode = 35
     if (apkFile.exists()) {
         try {
             def localProps = new Properties()
@@ -47,7 +47,7 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode getLatestVersionCode()
-        versionName "3.0.0"
+        versionName "3.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

@@ -31,6 +31,9 @@ interface Station {
   connectivity: string[];
   timings: { firstTrain: string; lastTrain: string };
   location: { lat: number; lon: number; mapsLink: string };
+  imageUrl?: string;
+  imageSource?: string;
+  license?: string;
 }
 
 interface Attraction {
@@ -233,13 +236,18 @@ export default function StationDetailsClient({ station, attractions }: StationDe
       </div>
 
       {/* Header Info Banner */}
-      <div className="bg-white dark:bg-navy-dark rounded-3xl border border-light-border dark:border-navy-border/40 p-8 lg:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-        <div className="lg:col-span-8 space-y-4">
+      <div 
+        className="relative rounded-3xl border border-light-border dark:border-navy-border/40 p-8 lg:p-12 shadow-xl shadow-slate-200/50 dark:shadow-none grid grid-cols-1 lg:grid-cols-12 gap-8 items-center overflow-hidden bg-cover bg-center"
+        style={station.imageUrl ? {
+          backgroundImage: `linear-gradient(to right, rgba(13, 19, 36, 0.92), rgba(13, 19, 36, 0.7)), url(${station.imageUrl})`
+        } : undefined}
+      >
+        <div className="lg:col-span-8 space-y-4 relative z-10">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-bold bg-brand-pink/15 text-brand-pink">
+            <span className={`inline-flex items-center px-3 py-1 rounded-md text-xs font-bold ${station.imageUrl ? 'bg-white/20 text-white' : 'bg-brand-pink/15 text-brand-pink'}`}>
               {isEn ? "STATION CODE:" : "स्टेशन कोड:"} {station.code}
             </span>
-            <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold bg-foreground/10 text-foreground">
+            <span className={`inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold ${station.imageUrl ? 'bg-white/10 text-white' : 'bg-foreground/10 text-foreground'}`}>
               {isEn ? station.type : (station.type === "Elevated" ? "एलिवेटेड" : "भूमिगत")}
             </span>
             <span className="inline-flex items-center px-3 py-1 rounded-md text-xs font-semibold bg-emerald-500/10 text-emerald-500">
@@ -247,13 +255,13 @@ export default function StationDetailsClient({ station, attractions }: StationDe
             </span>
           </div>
 
-          <h1 className="font-heading font-extrabold text-4xl sm:text-5xl text-foreground tracking-tight leading-tight">
+          <h1 className={`font-heading font-extrabold text-4xl sm:text-5xl tracking-tight leading-tight ${station.imageUrl ? 'text-white' : 'text-foreground'}`}>
             {isEn ? `${station.name} Metro Station` : `${station.nameHi} मेट्रो स्टेशन`}
           </h1>
-          <p className="text-xl text-foreground/60 font-semibold">{isEn ? station.nameHi : station.name}</p>
+          <p className={`text-xl font-semibold ${station.imageUrl ? 'text-white/80' : 'text-foreground/60'}`}>{isEn ? station.nameHi : station.name}</p>
         </div>
 
-        <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end w-full">
+        <div className="lg:col-span-4 flex flex-col sm:flex-row lg:flex-col gap-3 justify-end w-full relative z-10">
           <a
             href={station.location.mapsLink}
             target="_blank"
@@ -264,6 +272,11 @@ export default function StationDetailsClient({ station, attractions }: StationDe
             <span>{isEn ? "Open in Google Maps" : "गूगल मैप्स में खोलें"}</span>
           </a>
         </div>
+        {station.imageUrl && station.imageSource && (
+          <div className="absolute bottom-2 right-4 text-[9px] text-white/40 z-10 select-none">
+            Photo: {station.imageSource}
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

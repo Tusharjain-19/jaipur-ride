@@ -499,7 +499,6 @@ body {
 
 /* ── BUTTONS ── */
 .btn-primary,
-.btn-finish-journey,
 .btn-navigate,
 .modal-btn.primary,
 .location-card-btn {
@@ -523,7 +522,6 @@ body {
 }
 
 .btn-primary,
-.btn-finish-journey,
 .modal-btn.primary {
   width: 100%;
 }
@@ -536,7 +534,6 @@ body {
 }
 
 .btn-primary:hover,
-.btn-finish-journey:hover,
 .btn-navigate:hover,
 .modal-btn.primary:hover,
 .location-card-btn:hover {
@@ -546,10 +543,50 @@ body {
 }
 
 .btn-primary:active,
-.btn-finish-journey:active,
 .btn-navigate:active,
 .modal-btn.primary:active,
 .location-card-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── FINISH JOURNEY BUTTON (Premium Green Style) ── */
+.btn-finish-journey {
+  min-height: 52px;
+  height: auto;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #1e700a, var(--green)) !important;
+  color: #ffffff !important;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 8px 24px rgba(45, 167, 16, 0.25) !important;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+[data-theme="dark"] .btn-finish-journey {
+  background: linear-gradient(135deg, #2da710, var(--green)) !important;
+  box-shadow: 0 8px 24px rgba(104, 224, 75, 0.3) !important;
+}
+
+.btn-finish-journey:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 32px rgba(45, 167, 16, 0.45) !important;
+  opacity: 1 !important;
+}
+
+[data-theme="dark"] .btn-finish-journey:hover {
+  box-shadow: 0 12px 32px rgba(104, 224, 75, 0.5) !important;
+}
+
+.btn-finish-journey:active {
   transform: scale(0.97);
 }
 

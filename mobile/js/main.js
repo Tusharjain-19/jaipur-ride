@@ -25,6 +25,7 @@ import {
   getNetworkStatus,
   openAppSettings,
   openExternalUrl,
+  vibrateDevice,
 } from "./native-bridge.js";
 
 // ═══════════════════════════════════════
@@ -426,6 +427,8 @@ function goBack() {
     const overlay = document.getElementById("journey-overlay");
     if (overlay) {
       overlay.classList.remove("hidden");
+      const navBar = document.querySelector(".bottom-nav");
+      if (navBar) navBar.classList.add("nav-hidden");
       journeyManager.syncActiveJourneyBar();
       showView("plan-view", false);
       return;
@@ -454,13 +457,28 @@ function showStationInfo(stationName) {
     // Clean header
     header.style.background = '';
     header.style.backgroundImage = 'none';
+    header.style.backgroundSize = '';
+    header.style.backgroundPosition = '';
     
-    header.innerHTML = `
-        <div class="hero-line-badge" style="background:var(--accent-soft); color:var(--accent)">${meta.line || 'Pink Line'} • ${meta.code || ''}</div>
-        <h2 style="color:var(--text)">${T_STATION(stationName)}</h2>
-        ${currentLang === 'en' ? `<div class="stn-hi-title" style="color:var(--text-muted)">${meta.name_hi || ''}</div>` : ''}
-        <p style="color:var(--text-sub)">${T(meta.type?.toLowerCase() || 'elevated')} ${T('metroStation')}</p>
-    `;
+    if (meta.imageUrl) {
+        header.style.backgroundImage = `linear-gradient(to bottom, rgba(13, 19, 36, 0.45), rgba(13, 19, 36, 0.88)), url(${meta.imageUrl})`;
+        header.style.backgroundSize = 'cover';
+        header.style.backgroundPosition = 'center';
+        header.innerHTML = `
+            <div class="hero-line-badge" style="background:var(--accent); color:#ffffff">${meta.line || 'Pink Line'} • ${meta.code || ''}</div>
+            <h2 style="color:#ffffff !important; text-shadow: 0 2px 4px rgba(0,0,0,0.5)">${T_STATION(stationName)}</h2>
+            ${currentLang === 'en' ? `<div class="stn-hi-title" style="color:rgba(255,255,255,0.7) !important; text-shadow: 0 1px 2px rgba(0,0,0,0.5)">${meta.name_hi || ''}</div>` : ''}
+            <p style="color:rgba(255,255,255,0.85) !important; text-shadow: 0 1px 2px rgba(0,0,0,0.5); font-weight:500">${T(meta.type?.toLowerCase() || 'elevated')} ${T('metroStation')}</p>
+            ${meta.imageSource ? `<div style="position:absolute; bottom:6px; right:10px; font-size:8px; color:rgba(255,255,255,0.5); font-weight:400; text-shadow: 0 1px 2px rgba(0,0,0,0.8); z-index: 5">Photo: ${meta.imageSource}</div>` : ''}
+        `;
+    } else {
+        header.innerHTML = `
+            <div class="hero-line-badge" style="background:var(--accent-soft); color:var(--accent)">${meta.line || 'Pink Line'} • ${meta.code || ''}</div>
+            <h2 style="color:var(--text)">${T_STATION(stationName)}</h2>
+            ${currentLang === 'en' ? `<div class="stn-hi-title" style="color:var(--text-muted)">${meta.name_hi || ''}</div>` : ''}
+            <p style="color:var(--text-sub)">${T(meta.type?.toLowerCase() || 'elevated')} ${T('metroStation')}</p>
+        `;
+    }
 
     // Facilities Helper
     const tFac = (f) => {
@@ -772,6 +790,9 @@ function showAttractionFullDetail(stationName, attrId) {
   const overlay = document.getElementById("journey-overlay");
   if (overlay) overlay.classList.add("hidden");
 
+  const navBar = document.querySelector(".bottom-nav");
+  if (navBar) navBar.classList.remove("nav-hidden");
+
   showAttractionDetail(stationName, attrId);
 }
 window.showAttractionFullDetail = showAttractionFullDetail;
@@ -929,6 +950,10 @@ class JourneyManager {
     this.state = newState;
     this.saveSession();
     this.updateUI();
+
+    if (newState === JourneyState.ARRIVED) {
+      vibrateDevice(2000);
+    }
   }
 
   saveSession() {
@@ -1047,6 +1072,8 @@ class JourneyManager {
     const overlay = document.getElementById("journey-overlay");
     if (overlay) {
       overlay.classList.remove("hidden");
+      const navBar = document.querySelector(".bottom-nav");
+      if (navBar) navBar.classList.add("nav-hidden");
       console.log("[DEBUG] Live journey overlay display enabled immediately.");
     }
 
@@ -1275,6 +1302,9 @@ class JourneyManager {
 
     const overlay = document.getElementById("journey-overlay");
     if (overlay) overlay.classList.add("hidden");
+
+    const navBar = document.querySelector(".bottom-nav");
+    if (navBar) navBar.classList.remove("nav-hidden");
 
     const nearbyModal = document.getElementById("nearby-popup-modal");
     if (nearbyModal) nearbyModal.classList.add("hidden");
@@ -1547,6 +1577,10 @@ function initNavbarScrollBehavior() {
   const IDLE_TIMEOUT_MS = 10000; // 10 seconds
 
   const showNavbar = () => {
+    const overlay = document.getElementById("journey-overlay");
+    if (overlay && !overlay.classList.contains("hidden")) {
+      return;
+    }
     navBar.classList.remove("nav-hidden");
     resetIdleTimer();
   };
@@ -1849,7 +1883,11 @@ function wire() {
   const activeJourneyBtn = document.getElementById("active-journey-resume-btn");
   const resumeAction = () => {
     const overlay = document.getElementById("journey-overlay");
-    if (overlay) overlay.classList.remove("hidden");
+    if (overlay) {
+      overlay.classList.remove("hidden");
+      const navBar = document.querySelector(".bottom-nav");
+      if (navBar) navBar.classList.add("nav-hidden");
+    }
     const activeBar = document.getElementById("active-journey-bar");
     if (activeBar) activeBar.classList.add("hidden");
   };
