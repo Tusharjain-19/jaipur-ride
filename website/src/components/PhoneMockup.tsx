@@ -257,7 +257,7 @@ export default function PhoneMockup() {
       >
         <AnimatePresence mode="wait">
           {simStep === "splash" ? (
-            <SplashScreen key="splash" />
+            <SplashScreen key="splash" isDark={isDark} />
           ) : (
             <motion.div
               key="app-contents"
@@ -342,10 +342,12 @@ export default function PhoneMockup() {
    ========================================== */
 
 // 1. SPLASH SCREEN
-function SplashScreen() {
+function SplashScreen({ isDark }: { isDark: boolean }) {
   return (
     <motion.div
-      className="absolute inset-0 flex flex-col items-center justify-center bg-linear-to-b from-slate-950 via-slate-900 to-slate-950 z-50"
+      className={`absolute inset-0 flex flex-col items-center justify-center z-50 transition-colors duration-300 ${
+        isDark ? "bg-slate-950 text-white" : "bg-white text-slate-900"
+      }`}
       exit={{ opacity: 0, scale: 0.96 }}
       transition={{ duration: 0.5 }}
     >
@@ -372,7 +374,7 @@ function SplashScreen() {
         />
       </motion.div>
       <motion.p
-        className="mt-3 font-extrabold text-white text-base tracking-tight"
+        className={`mt-3 font-extrabold text-base tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.4 }}
@@ -380,7 +382,7 @@ function SplashScreen() {
         Jaipur<span className="text-brand-pink">Ride</span>
       </motion.p>
       <motion.p
-        className="text-white/40 text-[9px] font-medium tracking-wider uppercase mt-0.5"
+        className={`text-[9px] font-medium tracking-wider uppercase mt-0.5 ${isDark ? "text-white/40" : "text-slate-400"}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5, duration: 0.4 }}
@@ -388,7 +390,7 @@ function SplashScreen() {
         Pink City Metro Guide
       </motion.p>
 
-      <div className="mt-8 w-24 h-0.5 bg-white/10 rounded-full overflow-hidden">
+      <div className={`mt-8 w-24 h-0.5 rounded-full overflow-hidden ${isDark ? "bg-white/10" : "bg-slate-200"}`}>
         <motion.div
           className="h-full bg-linear-to-r from-brand-pink to-pink-city rounded-full"
           initial={{ width: "0%" }}
@@ -806,7 +808,9 @@ function LiveJourneyOverlay({
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 15 }}
-      className="absolute inset-0 bg-[#070b14] z-30 flex flex-col min-h-0 text-white p-3.5"
+      className={`absolute inset-0 z-30 flex flex-col min-h-0 p-3.5 transition-colors duration-300 ${
+        isDark ? "bg-[#070b14] text-white" : "bg-white text-slate-800"
+      }`}
     >
       {/* Live tracking state banner */}
       <div className="flex justify-between items-center mb-3">
@@ -816,18 +820,20 @@ function LiveJourneyOverlay({
             LIVE JOURNEY
           </span>
         </div>
-        <span className="text-[8px] bg-white/10 px-2 py-0.5 rounded-full font-bold">
+        <span className={`text-[8px] px-2 py-0.5 rounded-full font-bold ${
+          isDark ? "bg-white/10 text-white" : "bg-slate-100 text-slate-700 border border-slate-200"
+        }`}>
           GPS Tracking
         </span>
       </div>
 
       <div className="space-y-0.5">
-        <h3 className="text-xs font-black tracking-tight">Towards Badi Chaupar</h3>
+        <h3 className={`text-xs font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>Towards Badi Chaupar</h3>
         <p className="text-[9.5px] text-brand-pink font-bold">{getStationText()}</p>
       </div>
 
       {/* Progress bar line */}
-      <div className="w-full h-1 bg-white/10 rounded-full mt-3 overflow-hidden">
+      <div className={`w-full h-1 rounded-full mt-3 overflow-hidden ${isDark ? "bg-white/10" : "bg-slate-100"}`}>
         <motion.div
           className="h-full bg-brand-pink rounded-full"
           animate={{ width: `${getProgress()}%` }}
@@ -847,27 +853,33 @@ function LiveJourneyOverlay({
             key={stop.name}
             className={`flex items-center justify-between p-2 rounded-xl transition-all duration-300 ${
               stop.passed
-                ? "bg-white/5 border border-white/10"
+                ? isDark
+                  ? "bg-white/5 border border-white/10"
+                  : "bg-slate-50 border border-slate-200 shadow-xs"
                 : "opacity-35 bg-transparent border border-transparent"
             }`}
           >
             <div className="flex items-center space-x-2.5">
               <div
                 className={`w-4 h-4 rounded-full flex items-center justify-center text-[8px] font-extrabold ${
-                  stop.passed ? "bg-brand-pink text-white" : "bg-white/20 text-white/50"
+                  stop.passed
+                    ? "bg-brand-pink text-white"
+                    : isDark
+                    ? "bg-white/20 text-white/50"
+                    : "bg-slate-200 text-slate-500"
                 }`}
               >
                 {stop.passed ? <Check className="w-2.5 h-2.5" /> : idx + 1}
               </div>
-              <span className="text-[9px] font-bold">{stop.name}</span>
+              <span className={`text-[9px] font-bold ${isDark ? "text-white" : "text-slate-900"}`}>{stop.name}</span>
             </div>
             <span
               className={`text-[7.5px] font-bold uppercase tracking-widest ${
                 stop.passed && idx === 3
-                  ? "text-emerald-400"
+                  ? "text-emerald-500 font-extrabold"
                   : stop.passed
-                  ? "text-slate-400"
-                  : "text-slate-500"
+                  ? isDark ? "text-slate-400" : "text-slate-500"
+                  : isDark ? "text-slate-500" : "text-slate-400"
               }`}
             >
               {stop.passed && idx === 3 ? "Arrived" : stop.status}
@@ -883,22 +895,26 @@ function LiveJourneyOverlay({
             initial={{ opacity: 0, y: -40, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -40, scale: 0.95 }}
-            className="absolute top-12 left-3 right-3 bg-slate-900/95 border border-brand-pink/35 shadow-lg shadow-brand-pink/20 rounded-xl p-2.5 flex items-center space-x-3 z-40"
+            className={`absolute top-12 left-3 right-3 rounded-xl p-2.5 flex items-center space-x-3 z-40 border ${
+              isDark
+                ? "bg-slate-900/95 border-brand-pink/35 text-white shadow-lg shadow-brand-pink/20"
+                : "bg-white border-brand-pink/30 text-slate-900 shadow-xl shadow-brand-pink/15"
+            }`}
           >
             <div className="w-7 h-7 bg-brand-pink/15 text-brand-pink rounded-lg flex items-center justify-center shrink-0">
               <Vibrate className="w-4 h-4 animate-bounce" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-1">
-                <span className="text-[7px] text-white/50 font-bold uppercase tracking-widest">
+                <span className={`text-[7px] font-bold uppercase tracking-widest ${isDark ? "text-white/50" : "text-slate-400"}`}>
                   Arriving Alert
                 </span>
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-pink" />
               </div>
-              <p className="text-[9.5px] font-black text-white leading-tight">
+              <p className={`text-[9.5px] font-black leading-tight ${isDark ? "text-white" : "text-slate-900"}`}>
                 Railway Station
               </p>
-              <p className="text-[7.5px] text-slate-400 font-semibold truncate">
+              <p className={`text-[7.5px] font-semibold truncate ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                 Interchange for Indian Railways
               </p>
             </div>
@@ -913,10 +929,14 @@ function LiveJourneyOverlay({
             initial={{ opacity: 0, y: 80 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 80 }}
-            className="absolute bottom-12 left-3.5 right-3.5 bg-slate-900 border border-white/10 shadow-2xl rounded-2xl p-3 z-40 space-y-2.5"
+            className={`absolute bottom-12 left-3.5 right-3.5 border rounded-2xl p-3 z-40 space-y-2.5 ${
+              isDark
+                ? "bg-slate-900 border-white/10 text-white shadow-2xl"
+                : "bg-white border-slate-200 text-slate-900 shadow-2xl"
+            }`}
           >
             <div className="flex items-center justify-between">
-              <span className="text-[7px] text-white/50 font-bold uppercase tracking-widest">
+              <span className={`text-[7px] font-bold uppercase tracking-widest ${isDark ? "text-white/50" : "text-slate-400"}`}>
                 Destination Arrived
               </span>
               <span className="flex items-center space-x-0.5 text-brand-pink text-[7.5px] font-bold uppercase">
@@ -925,7 +945,7 @@ function LiveJourneyOverlay({
               </span>
             </div>
 
-            <div className="flex items-center space-x-3 bg-white/5 p-2 rounded-xl">
+            <div className={`flex items-center space-x-3 p-2 rounded-xl ${isDark ? "bg-white/5" : "bg-slate-50 border border-slate-100"}`}>
               <div className="relative w-8 h-8 rounded-lg overflow-hidden shrink-0">
                 <Image
                   src="/images/hawa_mahal.jpg"
@@ -936,8 +956,8 @@ function LiveJourneyOverlay({
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-[9px] font-extrabold text-white">Hawa Mahal Guide</p>
-                <p className="text-[7.5px] text-slate-400 font-medium">
+                <p className={`text-[9px] font-extrabold ${isDark ? "text-white" : "text-slate-900"}`}>Hawa Mahal Guide</p>
+                <p className={`text-[7.5px] font-medium ${isDark ? "text-slate-400" : "text-slate-500"}`}>
                   5 min walk • Pink Line Gateway
                 </p>
               </div>
@@ -948,8 +968,12 @@ function LiveJourneyOverlay({
       </AnimatePresence>
 
       {/* Finish Journey Trigger Button */}
-      <button className="w-full mt-3 py-2 bg-white/10 hover:bg-white/15 text-white border border-white/10 rounded-xl text-[9px] font-bold flex items-center justify-center space-x-1 shadow-sm transition-all cursor-pointer">
-        <Check className="w-3.5 h-3.5 text-emerald-400" />
+      <button className={`w-full mt-3 py-2 border rounded-xl text-[9px] font-bold flex items-center justify-center space-x-1 shadow-sm transition-all cursor-pointer ${
+        isDark
+          ? "bg-white/10 hover:bg-white/15 text-white border-white/10"
+          : "bg-slate-100 hover:bg-slate-200 text-slate-800 border-slate-200"
+      }`}>
+        <Check className="w-3.5 h-3.5 text-emerald-500 font-extrabold" />
         <span>Finish Journey</span>
       </button>
     </motion.div>
