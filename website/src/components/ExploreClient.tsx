@@ -93,8 +93,8 @@ export default function ExploreClient({ initialAttractions, language }: ExploreC
         </div>
 
         {/* Filter categories */}
-        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap">
+        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 shrink-0">
+          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap shrink-0">
             <Filter className="w-4 h-4" />
             <span>{isEn ? "Category:" : "श्रेणी:"}</span>
           </div>
@@ -102,10 +102,10 @@ export default function ExploreClient({ initialAttractions, language }: ExploreC
             <button
               key={type}
               onClick={() => setSelectedType(type)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold border capitalize transition-all cursor-pointer ${
+              className={`px-4 py-2 rounded-xl text-xs font-semibold border capitalize transition-all cursor-pointer whitespace-nowrap shrink-0 ${
                 selectedType === type
-                  ? "bg-brand-pink border-brand-pink text-white"
-                  : "border-light-border dark:border-white/5 hover:border-brand-pink/40 text-foreground"
+                  ? "bg-brand-pink border-brand-pink text-white shadow-sm"
+                  : "border-light-border dark:border-white/5 hover:border-brand-pink/40 text-foreground bg-white/50 dark:bg-navy-card/50"
               }`}
             >
               {type === "all" ? (isEn ? "All Places" : "सभी स्थान") : type}

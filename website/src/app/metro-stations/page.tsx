@@ -94,14 +94,14 @@ export default function StationsDirectory() {
         </div>
 
         {/* Filter buttons */}
-        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-1 md:pb-0">
-          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap">
+        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 shrink-0">
+          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap shrink-0">
             <Filter className="w-4 h-4" />
             <span>{isEn ? "Filter Type:" : "फ़िल्टर प्रकार:"}</span>
           </div>
           <button
             onClick={() => setFilterType("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               filterType === "all"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
@@ -111,7 +111,7 @@ export default function StationsDirectory() {
           </button>
           <button
             onClick={() => setFilterType("Elevated")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               filterType === "Elevated"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
@@ -121,7 +121,7 @@ export default function StationsDirectory() {
           </button>
           <button
             onClick={() => setFilterType("Underground")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
               filterType === "Underground"
                 ? "bg-brand-pink border-brand-pink text-white"
                 : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
