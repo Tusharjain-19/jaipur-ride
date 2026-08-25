@@ -47,7 +47,7 @@ const translations: TranslationDict = {
   statsDownloads: { en: "App Downloads", hi: "ऐप डाउनलोड" },
   statsActiveUsers: { en: "Monthly Active Users", hi: "मासिक सक्रिय उपयोगकर्ता" },
   statsStations: { en: "Metro Stations Covered", hi: "मेट्रो स्टेशन" },
-  statsAttractions: { en: "Tourist Places Mapped", hi: "पर्यटन स्थल" },
+  statsAttractions: { en: "Mapped Places", hi: "मैप्ड पर्यटन स्थल" },
 
   // Journey Planner
   plannerTitle: { en: "Jaipur Metro Route Simulator", hi: "जयपुर मेट्रो मार्ग सिम्युलेटर" },
