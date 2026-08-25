@@ -1055,21 +1055,3 @@ export default function Home() {
     </div>
   );
 }
-
-function T_STATION(name: string): string {
-  // Simple fallback translation helper
-  const stationTranslations: Record<string, string> = {
-    "Mansarovar": "मानसरोवर",
-    "New Aatish Market": "न्यू आतिश मार्केट",
-    "Vivek Vihar": "विवेक विहार",
-    "Shyam Nagar": "श्याम नगर",
-    "Ram Nagar": "राम नगर",
-    "Civil Lines": "सिविल लाइन्स",
-    "Railway Station": "रेलवे स्टेशन",
-    "Sindhi Camp": "सिंधी कैंप",
-    "Chandpole": "चांदपोल",
-    "Chhoti Chaupar": "छोटी चौपड़",
-    "Badi Chaupar": "बड़ी चौपड़"
-  };
-  return stationTranslations[name] || name;
-}

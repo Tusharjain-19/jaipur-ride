@@ -6,20 +6,13 @@ import Script from "next/script";
 import { useLanguage } from "@/context/LanguageContext";
 import { 
   Train, 
-  MapPin, 
   Clock, 
   CreditCard, 
-  Navigation, 
   Sparkles, 
   Compass, 
   ShieldCheck, 
   ArrowRight,
-  Search,
-  BookOpen,
-  Building2,
-  Plane,
-  Hospital,
-  GraduationCap
+  BookOpen
 } from "lucide-react";
 
 export default function BlogClient() {
@@ -82,7 +75,7 @@ export default function BlogClient() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center space-y-6">
           <div className="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-brand-pink/15 text-brand-pink text-xs font-extrabold uppercase tracking-widest border border-brand-pink/20">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>{isEn ? "Ultimate Jaipur Metro Transit Blog 2026" : "जयपुर मेट्रो संपूर्ण ट्रांजिट ब्लॉग २०२६"}</span>
+            <span>{isEn ? "Ultimate Jaipur Metro Transit Guide 2026" : "जयपुर मेट्रो संपूर्ण ट्रांजिट गाइड २०२६"}</span>
           </div>
 
           <h1 className="font-heading font-extrabold text-3xl sm:text-5xl lg:text-6xl text-slate-900 dark:text-white tracking-tight leading-tight max-w-4xl mx-auto">
@@ -93,8 +86,8 @@ export default function BlogClient() {
 
           <p className="text-base sm:text-lg text-slate-600 dark:text-text-secondary max-w-3xl mx-auto leading-relaxed">
             {isEn
-              ? "Your premier digital intelligence repository for navigating the Jaipur Metro Corporation (JMRC) Pink Line (Line 1). Access exact GPS Lat-Long coordinates, landmark distances, token vs smart card pricing, and local Hinglish search queries."
-              : "जयपुर मेट्रो रेल कॉर्पोरेशन (JMRC) पिंक लाइन की सटीक जानकारी, जीपीएस निर्देशांक, प्रमुख दूरियां, टिकट दरें एवं local Hinglish ट्रांजिट प्रश्न।"}
+              ? "Your premier digital companion for navigating the Jaipur Metro Corporation (JMRC) Pink Line (Line 1). Access exact GPS coordinates, landmark distances, token vs smart card pricing, and local commuter guides."
+              : "जयपुर मेट्रो रेल कॉर्पोरेशन (JMRC) पिंक लाइन की सटीक जानकारी, जीपीएस निर्देशांक, प्रमुख दूरियां, टिकट दरें एवं स्थानीय ट्रांजिट निर्देश।"}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 text-xs font-bold text-slate-500 dark:text-text-secondary pt-2">
@@ -108,7 +101,7 @@ export default function BlogClient() {
             </span>
             <span className="flex items-center space-x-1.5 bg-white dark:bg-navy-card px-3 py-1.5 rounded-xl border border-light-border dark:border-navy-border/40 shadow-xs">
               <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-              <span>{isEn ? "1000+ AI & GEO Indexed Terms" : "१०००+ एआई और स्थान-निर्देशित शब्द"}</span>
+              <span>{isEn ? "Complete Transit Knowledge Directory" : "संपूर्ण ट्रांजिट डायरेक्टरी"}</span>
             </span>
           </div>
         </div>
@@ -128,7 +121,7 @@ export default function BlogClient() {
               1. Executive Transit Overview 2026
             </a>
             <a href="#coordinates-matrix" className="p-3 rounded-xl bg-light-bg dark:bg-navy-deep hover:text-brand-pink transition-colors border border-light-border dark:border-navy-border/30">
-              2. Station GPS Coordinates & GEO Matrix
+              2. Station GPS Coordinates & Landmark Matrix
             </a>
             <a href="#fares-timings" className="p-3 rounded-xl bg-light-bg dark:bg-navy-deep hover:text-brand-pink transition-colors border border-light-border dark:border-navy-border/30">
               3. Fares, Smart Cards & Train Timings
@@ -140,7 +133,7 @@ export default function BlogClient() {
               5. Tourist Attraction Transit Breakdown
             </a>
             <a href="#glossary-index" className="p-3 rounded-xl bg-light-bg dark:bg-navy-deep hover:text-brand-pink transition-colors border border-light-border dark:border-navy-border/30">
-              6. 1000+ AI, SEO & GEO Term Glossary
+              6. Complete Transit Term Directory
             </a>
           </div>
         </section>
@@ -159,7 +152,7 @@ export default function BlogClient() {
               The <strong>Jaipur Metro</strong> is India’s first elevated metro system built on a standard-gauge track network operating seamlessly under the administration of the <strong>Jaipur Metro Rail Corporation (JMRC)</strong>. Operational since June 3, 2015, the operational <strong>Pink Line (Line 1)</strong> spans 11.97 kilometers connecting 11 strategic transit stations across the East-West commercial corridor of Rajasthan’s capital city.
             </p>
             <p>
-              Stretching from the western residential residential district of <strong>Mansarovar (Station Code J01)</strong> to the walled Pink City heritage gate at <strong>Badi Chaupar (Station Code J11)</strong>, the transit system carries over 50,000 daily passengers, including office commuters, shop owners in Johari Bazaar, university students, domestic tourists, and international sightseers heading toward Hawa Mahal and City Palace.
+              Stretching from the western residential district of <strong>Mansarovar (Station Code J01)</strong> to the walled Pink City heritage gate at <strong>Badi Chaupar (Station Code J11)</strong>, the transit system carries over 50,000 daily passengers, including office commuters, shop owners in Johari Bazaar, university students, domestic tourists, and international sightseers heading toward Hawa Mahal and City Palace.
             </p>
           </div>
         </section>
@@ -172,7 +165,7 @@ export default function BlogClient() {
               {isEn ? "Jaipur Metro Station GPS Lat-Long Coordinates & Landmark Matrix" : "जयपुर मेट्रो स्टेशन जीपीएस निर्देशांक एवं लैंडमार्क तालिका"}
             </h2>
             <p className="text-xs text-slate-500 dark:text-text-secondary">
-              Authoritative location data for digital navigation engines, geo-tagging, AI search assistance, and route optimization.
+              Authoritative location data for digital navigation engines, geo-tagging, search assistance, and route optimization.
             </p>
           </div>
 
@@ -271,10 +264,10 @@ export default function BlogClient() {
           <div className="space-y-3">
             <span className="text-xs font-extrabold uppercase text-brand-pink tracking-wider">Section 4</span>
             <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
-              {isEn ? "Local Hinglish Search Query Repository (100+ Common Intent Questions)" : "स्थानिक खोज प्रश्न संग्रह (Hinglish Search Repository)"}
+              {isEn ? "Local Hinglish Commuter Query Directory (Common Intent Questions)" : "स्थानिक खोज प्रश्न संग्रह (Hinglish Query Directory)"}
             </h2>
             <p className="text-xs text-slate-500 dark:text-text-secondary">
-              Real commuter queries searched on Google, voice search, and conversational AI assistants across Rajasthan.
+              Real commuter queries searched on voice assistants and digital travel guides across Rajasthan.
             </p>
           </div>
 
@@ -290,7 +283,7 @@ export default function BlogClient() {
               { q: "MNIT Jaipur jane ke liye nearest metro station?", a: "Ram Nagar (J05) ya Vivek Vihar (J03) se 4.5 km distance par MNIT campus hai. JLN Marg bypass se auto available rehte hain." }
             ].map((faq, i) => (
               <div key={i} className="p-4 rounded-2xl bg-white dark:bg-navy-card border border-light-border dark:border-navy-border/40 shadow-xs space-y-2">
-                <h3 className="font-heading font-bold text-slate-900 dark:text-white text-sm text-brand-pink">{faq.q}</h3>
+                <h3 className="font-heading font-bold text-sm text-brand-pink">{faq.q}</h3>
                 <p className="text-slate-600 dark:text-text-secondary leading-relaxed">{faq.a}</p>
               </div>
             ))}
@@ -358,15 +351,15 @@ export default function BlogClient() {
           </div>
         </section>
 
-        {/* SECTION 6: 1000+ AI, SEO & GEO TERM GLOSSARY */}
+        {/* SECTION 6: COMPLETE TRANSIT TERMINOLOGY DIRECTORY */}
         <section id="glossary-index" className="space-y-6">
           <div className="space-y-3">
             <span className="text-xs font-extrabold uppercase text-brand-pink tracking-wider">Section 6</span>
             <h2 className="font-heading font-extrabold text-2xl sm:text-4xl text-slate-900 dark:text-white tracking-tight">
-              {isEn ? "1000+ AI, SEO & Local GEO Keyword Index" : "१०००+ एआई, एसईओ एवं जीईओ कीवर्ड इंडेक्स"}
+              {isEn ? "Jaipur Metro Transit Terminology Directory" : "जयपुर मेट्रो शब्दावली डायरेक्टरी"}
             </h2>
             <p className="text-xs text-slate-500 dark:text-text-secondary">
-              Indexed transit vocabulary covering all JMRC codes, geographic coordinates, landmark distances, ticket types, local dialects, and routing algorithms.
+              Comprehensive transit directory covering all JMRC station codes, geographic coordinates, landmark distances, ticket types, local dialects, and routing guides.
             </p>
           </div>
 
