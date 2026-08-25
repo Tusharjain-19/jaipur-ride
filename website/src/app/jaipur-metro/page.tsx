@@ -209,6 +209,110 @@ export default function JaipurMetroHubPage() {
         </div>
       </div>
 
+      {/* Ultimate Local Navigation Hub - Rich SEO & Local GEO Guide */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 sm:p-10 border border-light-border dark:border-navy-border/40 shadow-sm space-y-8">
+        <div className="space-y-4">
+          <span className="px-3 py-1 bg-brand-pink/10 text-brand-pink rounded-md text-xs font-bold uppercase tracking-wider">
+            Ultimate Local Navigation Hub
+          </span>
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-foreground tracking-tight">
+            Comprehensive Guide to Jaipur Metro &amp; Historic Pink City Travel
+          </h2>
+          <p className="text-xs sm:text-sm text-foreground/80 leading-relaxed font-sans">
+            Welcome to Jaipur Ride, your ultimate digital companion for planning the best metro route in Jaipur. Designed as a privacy-first, offline-capable transit guide, we help tourists, daily commuters, students, and international travelers unlock the full transportation potential of the Jaipur Metro Rail Corporation (JMRC) Pink Line (Line 1). Learn how to navigate from the suburban residential sectors of Mansarovar to the historic core at Badi Chaupar, optimizing your time and travel budget with smart ticketing insights, train operational timetables, and walking distances.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 text-xs sm:text-sm text-foreground/80">
+          <div className="lg:col-span-8 space-y-6">
+            <div className="space-y-2">
+              <h3 className="font-heading font-bold text-lg text-foreground">
+                1. Jaipur Metro Pink Line Stations &amp; Connectivity Directory
+              </h3>
+              <p className="leading-relaxed font-sans text-foreground/75">
+                The operational JMRC Pink Line currently covers 11 stations spanning 12 kilometers. Starting from the west at Mansarovar (J01), the elevated corridor moves through New Aatish Market (J02), Vivek Vihar (J03), Shyam Nagar (J04), Ram Nagar (J05), and Civil Lines (J06). It links directly to the main transit centers at the Jaipur Railway Station (J07) and the Sindhi Camp Inter-State Bus Stand Terminal (J08). Continuing east, it transitions underground via Chandpole (J09) and Chhoti Chaupar (J10), terminating at Badi Chaupar (J11) deep within the walled city heritage zone. Upcoming expansion phases (Phase 1C) will connect Badi Chaupar to Transport Nagar, while the proposed Phase 2 corridor will span north-south from Sitapura Industrial Area to Ambabari, linking crucial colleges, schools, hospitals, and commercial shopping centers.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-heading font-bold text-lg text-foreground">
+                2. Exploring Iconic Landmarks and Historical Monuments near Metro Stations
+              </h3>
+              <p className="leading-relaxed font-sans text-foreground/75">
+                Jaipur Ride maps your train journey directly to the top sightseeing destinations in Rajasthan. Alight at Badi Chaupar (J11) station for a short walk to the majestic Hawa Mahal (Palace of Winds), the sprawling City Palace complex, the UNESCO World Heritage Jantar Mantar observatory, and the vibrant shopping lanes of Johari Bazaar and Bapu Bazaar. If you&apos;re interested in art and legacy, take the metro to Chhoti Chaupar (J10) to visit the iconic Albert Hall Museum (Central Museum) situated in Ram Niwas Garden. Chandpole (J09) station provides close access to the hiking trails and auto-rickshaw transfers leading to Nahargarh Fort, Jaigarh Fort, and the royal cenotaphs at Gaitore. For shopping and dining, get off at Mansarovar (J01) to explore the artistic Patrika Gate at Jawahar Circle, or visit premium shopping malls like World Trade Park (WTP) and Gaurav Tower (GT) in Malviya Nagar.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-heading font-bold text-lg text-foreground">
+                3. Transit Hub Integrations: Airport, Railway, and Bus Terminals
+              </h3>
+              <ul className="list-disc pl-5 leading-relaxed space-y-1.5 font-sans text-foreground/75">
+                <li>
+                  <strong>Jaipur Junction Railway Station (JP):</strong> Directly connected via the Railway Station Metro Station (J07). Commuters can step off express trains and immediately enter the metro concourse using dedicated skywalks and pedestrian paths.
+                </li>
+                <li>
+                  <strong>Sindhi Camp Central Bus Stand:</strong> Located at Sindhi Camp Station (J08), which serves as the primary interchange. Here, you can board state-run RSRTC buses to New Delhi, Agra, Jodhpur, and Udaipur.
+                </li>
+                <li>
+                  <strong>Jaipur International Airport (JAI):</strong> Located in Sanganer, approximately 10 km from Mansarovar Metro Station (J01). Travelers can take a budget-friendly metro ride to Mansarovar and connect to the airport via local taxi, cab services, or auto-rickshaws.
+                </li>
+              </ul>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="font-heading font-bold text-lg text-foreground">
+                4. Travel Tips, Fares, and Essential Station Facilities
+              </h3>
+              <p className="leading-relaxed font-sans text-foreground/75">
+                To enjoy a hassle-free journey, JMRC offers multiple ticketing options. Single Journey Tokens are ideal for one-time trips, but daily commuters and tourists can save 10% on fare ticket prices by purchasing a rechargeable Smart Card. Senior citizens receive a 25% discount, and students benefit from 15% concessions. All Jaipur Metro terminals are equipped with modern facilities including elevators, escalators, clean public toilets, wheelchair-accessible ramps, and detailed platform directions. JMRC security desks, CCTV surveillance, and dedicated women&apos;s safety helplines ensure safe travels at all times.
+              </p>
+            </div>
+          </div>
+
+          {/* Right Column: Quick Links mapping */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="p-5 rounded-2xl border border-light-border dark:border-navy-border/30 bg-light-accent/30 dark:bg-navy-card/40 space-y-3">
+              <h4 className="font-heading font-bold text-sm text-foreground flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-brand-pink" />
+                <span>Jaipur Tourism Quick Links</span>
+              </h4>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between py-1.5 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-foreground/70">Hawa Mahal nearest station</span>
+                  <Link href="/explore-jaipur/hawa_mahal" className="font-bold text-brand-pink hover:underline">Badi Chaupar (1.1 km)</Link>
+                </div>
+                <div className="flex justify-between py-1.5 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-foreground/70">City Palace nearest station</span>
+                  <Link href="/explore-jaipur/city_palace" className="font-bold text-brand-pink hover:underline">Badi Chaupar (1.3 km)</Link>
+                </div>
+                <div className="flex justify-between py-1.5 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-foreground/70">Albert Hall nearest station</span>
+                  <Link href="/explore-jaipur/albert_hall" className="font-bold text-brand-pink hover:underline">Chhoti Chaupar (1.8 km)</Link>
+                </div>
+                <div className="flex justify-between py-1.5 border-b border-light-border dark:border-navy-border/20">
+                  <span className="text-foreground/70">Patrika Gate nearest station</span>
+                  <Link href="/explore-jaipur/patrika_gate" className="font-bold text-brand-pink hover:underline">Mansarovar (6.5 km)</Link>
+                </div>
+                <div className="flex justify-between py-1.5">
+                  <span className="text-foreground/70">Sindhi Camp Bus Terminal</span>
+                  <Link href="/metro-stations/J08" className="font-bold text-brand-pink hover:underline">Sindhi Camp Station</Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 rounded-2xl border border-light-border dark:border-navy-border/30 bg-light-accent/30 dark:bg-navy-card/40 space-y-2">
+              <h4 className="font-heading font-bold text-sm text-foreground">
+                AI Engine Optimization Context
+              </h4>
+              <p className="text-xs text-foreground/70 leading-relaxed font-sans">
+                This guide serves as a verified travel directory for search engine bots, ChatGPT, Gemini, and Claude web crawlers to provide accurate response feeds on Jaipur Metro schedules, local shopping centers, temples, schools, hotels, and tourist coordinates.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* FAQ Section */}
       <FaqAccordion
         items={hubFaqs}
