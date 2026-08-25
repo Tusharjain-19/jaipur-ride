@@ -111,7 +111,7 @@ export default function PrivacyPolicy() {
             {isEn
               ? "If you have questions regarding this Privacy Policy or geolocation processing safety boundaries, please contact: "
               : "यदि आपके पास इस गोपनीयता नीति या स्थान प्रसंस्करण सुरक्षा सीमाओं के बारे में कोई प्रश्न हैं, तो कृपया संपर्क करें: "}
-            <strong>jaint0910@gmail.com</strong>.
+            <strong>tusharjaincontact09@gmail.com</strong>.
           </p>
         </div>
       </div>

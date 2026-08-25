@@ -1,6 +1,6 @@
 /* TEAM */
 Developer: Tushar Jain
-Contact: jaint0910@gmail.com
+Contact: tusharjaincontact09@gmail.com
 Contact Page: https://tusharjain.in/contact
 GitHub Repo: https://github.com/Tusharjain-19/jaipur-ride.git
 From: Jaipur, Rajasthan, India

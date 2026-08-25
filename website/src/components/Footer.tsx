@@ -74,8 +74,8 @@ export default function Footer() {
             <div className="space-y-1 text-xs text-slate-400">
               <div>
                 <strong>{isEn ? "Email Support:" : "ईमेल समर्थन:"}</strong>{" "}
-                <a href="mailto:jaint0910@gmail.com" className="text-brand-pink hover:underline">
-                  jaint0910@gmail.com
+                <a href="mailto:tusharjaincontact09@gmail.com" className="text-brand-pink hover:underline">
+                  tusharjaincontact09@gmail.com
                 </a>
               </div>
               <div>
