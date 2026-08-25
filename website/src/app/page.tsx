@@ -238,6 +238,24 @@ export default function Home() {
     }
   }, []);
 
+  const featuredIds = ["hawa_mahal", "city_palace", "amer_fort", "jal_mahal", "jantar_mantar", "patrika_gate"];
+  const stationNamesMap: Record<string, { en: string; hi: string }> = {
+    "J01": { en: "Mansarovar", hi: "मानसरोवर" },
+    "J02": { en: "New Aatish Market", hi: "न्यू आतिश मार्केट" },
+    "J03": { en: "Vivek Vihar", hi: "विवेक विहार" },
+    "J04": { en: "Shyam Nagar", hi: "श्याम नगर" },
+    "J05": { en: "Ram Nagar", hi: "राम नगर" },
+    "J06": { en: "Civil Lines", hi: "सिविल लाइन्स" },
+    "J07": { en: "Railway Station", hi: "रेलवे स्टेशन" },
+    "J08": { en: "Sindhi Camp", hi: "सिंधी कैंप" },
+    "J09": { en: "Chandpole", hi: "चांदपोल" },
+    "J10": { en: "Chhoti Chaupar", hi: "छोटी चौपड़" },
+    "J11": { en: "Badi Chaupar", hi: "बड़ी चौपड़" }
+  };
+  const featuredAttractions = featuredIds
+    .map((id) => tourismData.find((att) => att.id === id))
+    .filter(Boolean);
+
   const testimonials = [
     {
       content: "Your commute won't feel like a maze. 🌀 With the JaipurRide App, everything you need is in one place! Trip Planner to find the route. Details like public convenience, ticket counter, lift access, escalator, checking the availability of a taxi stand, auto-rickshaw and bus stands near metro stations, divyang-friendly features and parking availability and directions to metro stations. New! Explore nearby monuments. No more confusion. Just seamless travel, doorstep to destination.",
@@ -755,48 +773,76 @@ export default function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tourismData.slice(11, 14).map((att, idx) => (
-            <motion.div
-              key={att.id}
-              initial={{ opacity: 0, y: 15 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1 }}
-              className="bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 overflow-hidden shadow-md hover:shadow-lg flex flex-col justify-between group"
-            >
-              <div className="relative h-60 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
-                <Image
-                  src={att.image}
-                  alt={att.name}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                />
-              </div>
-              <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center text-xs">
-                    <span className="px-2.5 py-0.5 rounded-full bg-brand-pink/10 text-brand-pink font-semibold">
-                      {isEn ? att.type : att.typeHi}
-                    </span>
-                    <span className="text-slate-400 dark:text-text-secondary">{att.entry_fee}</span>
-                  </div>
-                  <h3 className="font-heading font-bold text-xl text-slate-900 dark:text-white">
-                    {isEn ? att.name : att.nameHi}
-                  </h3>
-                  <p className="text-xs text-slate-500 dark:text-text-secondary leading-relaxed font-sans line-clamp-2">
-                    {isEn ? att.summary : att.summaryHi}
-                  </p>
-                </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredAttractions.map((att, idx) => {
+            if (!att) return null;
+            const stationInfo = stationNamesMap[att.stationId] || { en: att.stationId, hi: att.stationId };
+            const stationDisplayName = isEn ? stationInfo.en : stationInfo.hi;
+            const walkText = att.walk_time_min
+              ? `${att.distance_km} km (${att.walk_time_min} ${isEn ? "min walk" : "मिनट पैदल"})`
+              : `${att.distance_km} km (${att.approx_drive_time_min || 15} ${isEn ? "min drive" : "मिनट ड्राइव"})`;
 
-                <div className="pt-4 border-t border-light-border dark:border-navy-border/20 text-xs flex justify-between items-center text-slate-400 dark:text-text-secondary font-semibold">
-                  <span className="flex items-center space-x-1"><MapPin className="w-3.5 h-3.5 text-brand-pink" /> <span>{isEn ? att.stationId : T_STATION(att.stationId)}</span></span>
-                  <span>{att.walk_time_min ? `${att.walk_time_min} ${isEn ? "min walk" : "मिनट पैदल"}` : `${att.approx_drive_time_min} ${isEn ? "min drive" : "मिनट ड्राइव"}`}</span>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+            return (
+              <motion.div
+                key={att.id}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: idx * 0.08 }}
+              >
+                <Link
+                  href={`/explore-jaipur/${att.id}`}
+                  className="bg-white dark:bg-navy-card rounded-3xl border border-light-border dark:border-navy-border/40 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group h-full cursor-pointer hover:-translate-y-1"
+                >
+                  <div className="relative h-56 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                    <Image
+                      src={att.image}
+                      alt={att.name}
+                      fill
+                      className="object-cover group-hover:scale-108 transition-transform duration-700"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-transparent to-black/20" />
+                    
+                    {/* Top Badges */}
+                    <div className="absolute top-3.5 left-3.5 right-3.5 flex justify-between items-center text-[10px] font-bold">
+                      <span className="px-2.5 py-1 rounded-full bg-white/90 dark:bg-slate-900/90 text-brand-pink backdrop-blur-md shadow-sm uppercase tracking-wider">
+                        {isEn ? att.type : att.typeHi}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-full bg-black/60 text-white backdrop-blur-md">
+                        {att.entry_fee}
+                      </span>
+                    </div>
+
+                    {/* Station overlay badge */}
+                    <div className="absolute bottom-3 left-3.5 right-3.5 text-white flex items-center space-x-1.5 text-xs font-bold">
+                      <MapPin className="w-3.5 h-3.5 text-brand-pink shrink-0" />
+                      <span className="truncate">{stationDisplayName} Metro ({att.stationId})</span>
+                    </div>
+                  </div>
+
+                  <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                    <div className="space-y-1.5">
+                      <h3 className="font-heading font-extrabold text-lg text-slate-900 dark:text-white group-hover:text-brand-pink transition-colors">
+                        {isEn ? att.name : att.nameHi}
+                      </h3>
+                      <p className="text-xs text-slate-500 dark:text-text-secondary leading-relaxed font-sans line-clamp-2">
+                        {isEn ? att.summary : att.summaryHi}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-light-border dark:border-navy-border/20 text-xs flex items-center justify-between font-semibold text-slate-500 dark:text-text-secondary">
+                      <span className="text-brand-pink font-bold text-[11px]">{walkText}</span>
+                      <span className="inline-flex items-center space-x-1 text-brand-pink group-hover:translate-x-1 transition-transform font-bold text-xs">
+                        <span>{isEn ? "Travel Guide" : "दिशा-निर्देश"}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
