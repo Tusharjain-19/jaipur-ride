@@ -40,10 +40,10 @@ export default function ContactPage() {
   const onSubmit = async (data: FeedbackFormValues) => {
     setSubmitError(null);
     try {
+      // Primary: Google Form linked to Spreadsheet 1iW0u7JWi_O0TYaHu4PzWBIp7BXPYjd6qxBbaaTQs_nI
       const formUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeOctJoiOgVLzt18pNkMihlSjO1BxUKsq40Nqxsr6zc-QOvlg/formResponse";
       const formData = new URLSearchParams();
       
-      // Google Form Entry IDs extracted from forms.gle/yRXyMuhEdd8G8KVH8
       formData.append("entry.1365438817", data.name);
       formData.append("entry.2038720898", data.email);
       
@@ -54,16 +54,41 @@ export default function ContactPage() {
       
       formData.append("entry.278843534", data.message);
 
-      // no-cors is used because Google Form formResponse does not support CORS requests.
-      // Opaque response status 0 is expected and handled as a success.
-      await fetch(formUrl, {
-        method: "POST",
-        mode: "no-cors",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-      });
+      // Post to Google Form (linked directly to Google Sheet 1iW0u7JWi_O0TYaHu4PzWBIp7BXPYjd6qxBbaaTQs_nI)
+      const requests = [
+        fetch(formUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: formData.toString(),
+        })
+      ];
+
+      // Secondary: Optional Google Apps Script Web App endpoint if specified
+      const scriptUrl = process.env.NEXT_PUBLIC_GOOGLE_SHEET_WEBAPP_URL;
+      if (scriptUrl) {
+        requests.push(
+          fetch(scriptUrl, {
+            method: "POST",
+            mode: "no-cors",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name: data.name,
+              email: data.email,
+              feedbackType: mappedType,
+              message: data.message,
+              timestamp: new Date().toISOString(),
+              spreadsheetId: "1iW0u7JWi_O0TYaHu4PzWBIp7BXPYjd6qxBbaaTQs_nI"
+            }),
+          })
+        );
+      }
+
+      await Promise.allSettled(requests);
 
       setIsSubmitted(true);
       reset();
