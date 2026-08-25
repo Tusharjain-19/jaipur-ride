@@ -239,35 +239,122 @@ export default function StationsDirectory() {
         </div>
       )}
 
-      {/* Station Coordinates Matrix Table for Local SEO */}
-      <div className="bg-white dark:bg-navy-dark rounded-3xl p-8 border border-light-border dark:border-navy-border/40 shadow-sm space-y-6 mt-12">
-        <h2 className="font-heading font-extrabold text-2xl text-foreground">
-          {isEn ? "Jaipur Metro Stations Geo Coordinates Matrix" : "जयपुर मेट्रो स्टेशन भौगोलिक निर्देशांक (Geo Coordinates)"}
-        </h2>
-        <p className="text-xs text-foreground/70 leading-relaxed font-sans">
-          Exact latitude and longitude coordinates for all 11 active Jaipur Metro Pink Line stations from Mansarovar (J01) to Badi Chaupar (J11).
-        </p>
+      {/* SEO & Local GEO Transit Directory */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 sm:p-10 border border-light-border dark:border-navy-border/40 shadow-xl space-y-8 mt-12">
+        <div className="text-center space-y-3 max-w-3xl mx-auto">
+          <span className="px-3.5 py-1 rounded-full bg-brand-pink/10 text-brand-pink text-xs font-extrabold uppercase tracking-wider">
+            {isEn ? "SEO & Local GEO Transit Directory" : "जयपुर मेट्रो स्थानिक सूचना मार्गदर्शिका"}
+          </span>
+          <h2 className="font-heading font-extrabold text-2xl sm:text-3xl text-foreground tracking-tight">
+            {isEn ? "Jaipur Metro Station Coordinates & Landmark Distances" : "जयपुर मेट्रो स्टेशन निर्देशांक एवं प्रमुख स्थल दूरियां"}
+          </h2>
+          <p className="text-xs sm:text-sm text-foreground/75 leading-relaxed font-sans">
+            {isEn
+              ? "Exact GPS Lat-Long coordinates, fare calculations, walking distances, and landmark transit guides for Jaipur Metro Pink Line."
+              : "जयपुर मेट्रो पिंक लाइन के लिए सटीक जीपीएस अक्षांश-देशांतर निर्देशांक, किराया गणना, पैदल मार्ग और प्रमुख स्थल गाइड।"}
+          </p>
+        </div>
+
+        {/* Coordinates Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-xs font-sans">
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Mansarovar Metro Station (J01)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.8794444, 75.7500000</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: ISKCON Temple (3.8 km), JECRC / Sitapura (11.5 km), Jaipur Airport (9.8 km)</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Badi Chaupar Metro Station (J11)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.9229600, 75.8268140</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: Hawa Mahal (300m / 4 min walk), City Palace (500m), Jal Mahal (3.8 km), Amer Fort (7.2 km)</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Jaipur Railway Station Metro (J07)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.9186111, 75.7900000</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: Raj Mandir Cinema (1.19 km), Hawa Mahal (4 stops, ₹12 ticket), Platform Skywalk</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Sindhi Camp Metro Station (J08)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.9225000, 75.7997222</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: ISBT Bus Terminal, GT Mall (7.5 km), Patrika Gate (8.5 km), Ajmeri Gate (2.2 km)</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Chandpole Metro Station (J09)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.9261111, 75.8088889</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: Govind Dev Ji Temple (1.8 km), Nahargarh Fort Hike, SMS Hospital (2.8 km)</p>
+          </div>
+          <div className="p-4 rounded-2xl bg-light-accent/40 dark:bg-navy-card/60 border border-light-border dark:border-navy-border/30 space-y-1.5">
+            <span className="font-bold text-brand-pink block font-heading text-sm">Chhoti Chaupar Metro Station (J10)</span>
+            <p className="text-foreground/70">GPS Coordinates: <strong className="text-foreground font-mono">26.9247222, 75.8180556</strong></p>
+            <p className="text-foreground/70">Nearest Landmarks: Albert Hall Museum (Ram Niwas Garden), Tripolia Bazaar, Chandpole Gate</p>
+          </div>
+        </div>
+
+        {/* Quick Route Lookup Matrix Table */}
         <div className="overflow-x-auto rounded-2xl border border-light-border dark:border-navy-border/20">
           <table className="w-full text-left text-xs font-sans border-collapse">
             <thead>
               <tr className="bg-light-accent/50 dark:bg-navy-card border-b border-light-border dark:border-navy-border/30 font-heading font-bold text-foreground">
-                <th className="p-3">Station Code</th>
-                <th className="p-3">Station Name</th>
-                <th className="p-3">Latitude (Lat)</th>
-                <th className="p-3">Longitude (Lon)</th>
-                <th className="p-3">Structure Type</th>
+                <th className="p-3">Origin &amp; Destination Top Queries</th>
+                <th className="p-3">Nearest Metro Station</th>
+                <th className="p-3">Distance &amp; Transit Time</th>
+                <th className="p-3">Token &amp; Smart Card Fare</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-light-border dark:divide-navy-border/20 text-foreground/80">
-              {stations.map((st) => (
-                <tr key={st.id}>
-                  <td className="p-3 font-bold text-brand-pink">{st.code}</td>
-                  <td className="p-3 font-semibold">{st.name} ({st.nameHi})</td>
-                  <td className="p-3 font-mono">{st.location.lat}</td>
-                  <td className="p-3 font-mono">{st.location.lon}</td>
-                  <td className="p-3">{st.type}</td>
-                </tr>
-              ))}
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Railway Station to Hawa Mahal</td>
+                <td className="p-3">Badi Chaupar (J11)</td>
+                <td className="p-3">4 Stops (10 min train + 300m / 4 min walk)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹12 Token / ₹10.80 Smart Card</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Railway Station to Raj Mandir Cinema</td>
+                <td className="p-3">Railway Station (J07) / Sindhi Camp (J08)</td>
+                <td className="p-3">1.19 km (15 min walk or 5 min auto)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹10 Token / ₹9.00 Smart Card</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Badi Chaupar to Hawa Mahal</td>
+                <td className="p-3">Badi Chaupar (J11)</td>
+                <td className="p-3">300 meters (4 min walk via Badi Chaupar Gate)</td>
+                <td className="p-3 text-emerald-500 font-bold">Direct Walk / ₹6 Local Token</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Badi Chaupar to Jal Mahal / Nearest Station</td>
+                <td className="p-3">Badi Chaupar (J11)</td>
+                <td className="p-3">3.8 km (10-12 min via Amer Road bus/auto)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹18 Metro + Feeder ₹10-15</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Mansarovar to ISKCON Temple Distance</td>
+                <td className="p-3">Mansarovar (J01)</td>
+                <td className="p-3">3.8 km (10-12 min auto/cab via VT Road)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹18 Full Line / Feeder ₹15</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">MNIT Jaipur Nearest Metro Station</td>
+                <td className="p-3">Ram Nagar (J05) / Vivek Vihar (J03)</td>
+                <td className="p-3">4.5 km (12 min drive via JLN Marg)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹12 Metro + Feeder Auto</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Nearest Metro to JECRC University / Sitapura</td>
+                <td className="p-3">Mansarovar (J01)</td>
+                <td className="p-3">11.5 km (20-25 min via Tonk Road)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹18 Metro + RSRTC Bus</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Nearest Metro to SMS Hospital Jaipur</td>
+                <td className="p-3">Chandpole (J09) / Badi Chaupar (J11)</td>
+                <td className="p-3">2.8 km (8-10 min auto via Sawai Mansingh Road)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹12 Metro + ₹20 Auto</td>
+              </tr>
+              <tr>
+                <td className="p-3 font-semibold text-foreground">Nearest Metro to Jaipur Airport (JAI)</td>
+                <td className="p-3">Mansarovar (J01)</td>
+                <td className="p-3">9.8 km (20 min cab via Sanganer)</td>
+                <td className="p-3 text-emerald-500 font-bold">₹18 Metro + Taxi Feeder</td>
+              </tr>
             </tbody>
           </table>
         </div>
