@@ -78,41 +78,43 @@ export default function ExploreClient({ initialAttractions, language }: ExploreC
   return (
     <div className="space-y-8">
       {/* Filters and Search Panel */}
-      <div className="glass-panel rounded-3xl p-6 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
-        
-        {/* Search */}
-        <div className="relative w-full md:max-w-md">
-          <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/45" />
-          <input
-            type="text"
-            placeholder={isEn ? "Search attractions (e.g. Hawa Mahal, Amer Fort)..." : "आकर्षण खोजें (जैसे हवा महल, आमेर किला)..."}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-light-accent dark:bg-navy-card/85 border border-light-border dark:border-white/5 rounded-xl text-sm focus:outline-none focus:border-brand-pink transition-colors text-foreground"
-          />
-        </div>
-
-        {/* Filter categories */}
-        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 shrink-0">
-          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap shrink-0">
-            <Filter className="w-4 h-4" />
-            <span>{isEn ? "Category:" : "श्रेणी:"}</span>
+      <div className="glass-panel rounded-3xl p-6 shadow-xl space-y-4 overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between min-w-0">
+          
+          {/* Search */}
+          <div className="relative w-full lg:w-80 shrink-0">
+            <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/45" />
+            <input
+              type="text"
+              placeholder={isEn ? "Search attractions (e.g. Hawa Mahal, Amer Fort)..." : "आकर्षण खोजें (जैसे हवा महल, आमेर किला)..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-light-accent dark:bg-navy-card/85 border border-light-border dark:border-white/5 rounded-xl text-sm focus:outline-none focus:border-brand-pink transition-colors text-foreground"
+            />
           </div>
-          {types.map((type) => (
-            <button
-              key={type}
-              onClick={() => setSelectedType(type)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold border capitalize transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-                selectedType === type
-                  ? "bg-brand-pink border-brand-pink text-white shadow-sm"
-                  : "border-light-border dark:border-white/5 hover:border-brand-pink/40 text-foreground bg-white/50 dark:bg-navy-card/50"
-              }`}
-            >
-              {type === "all" ? (isEn ? "All Places" : "सभी स्थान") : type}
-            </button>
-          ))}
-        </div>
 
+          {/* Filter categories */}
+          <div className="flex items-center space-x-2 w-full overflow-x-auto pb-1 pt-1 min-w-0 scrollbar-none">
+            <div className="flex items-center space-x-1.5 text-xs font-bold text-foreground/60 mr-2 whitespace-nowrap shrink-0">
+              <Filter className="w-4 h-4 text-brand-pink" />
+              <span>{isEn ? "Category:" : "श्रेणी:"}</span>
+            </div>
+            {types.map((type) => (
+              <button
+                key={type}
+                onClick={() => setSelectedType(type)}
+                className={`px-4 py-2 rounded-xl text-xs font-semibold border capitalize transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                  selectedType === type
+                    ? "bg-brand-pink border-brand-pink text-white shadow-md shadow-brand-pink/20"
+                    : "border-light-border dark:border-white/5 hover:border-brand-pink/40 text-foreground bg-white/50 dark:bg-navy-card/50"
+                }`}
+              >
+                {type === "all" ? (isEn ? "All Places" : "सभी स्थान") : type}
+              </button>
+            ))}
+          </div>
+
+        </div>
       </div>
 
       {/* Attraction Cards Grid */}

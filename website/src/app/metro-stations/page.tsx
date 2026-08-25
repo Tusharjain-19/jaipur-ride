@@ -79,58 +79,60 @@ export default function StationsDirectory() {
       </div>
 
       {/* Filter and Search Panel */}
-      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none mb-8 flex flex-col md:flex-row gap-4 items-center justify-between">
-        
-        {/* Search */}
-        <div className="relative w-full md:max-w-md">
-          <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/45" />
-          <input
-            type="text"
-            placeholder={isEn ? "Search stations (e.g. Mansarovar, Chandpole)..." : "स्टेशन खोजें (जैसे मानसरोवर, चांदपोल)..."}
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-11 pr-4 py-3 bg-light-accent dark:bg-navy-card border border-light-border dark:border-navy-border/40 rounded-xl text-sm focus:outline-none focus:border-brand-pink transition-colors text-foreground"
-          />
-        </div>
-
-        {/* Filter buttons */}
-        <div className="flex items-center space-x-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 shrink-0">
-          <div className="flex items-center space-x-1.5 text-xs text-foreground/50 mr-2 whitespace-nowrap shrink-0">
-            <Filter className="w-4 h-4" />
-            <span>{isEn ? "Filter Type:" : "फ़िल्टर प्रकार:"}</span>
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none mb-8 space-y-4 overflow-hidden">
+        <div className="flex flex-col lg:flex-row gap-4 items-center justify-between min-w-0">
+          
+          {/* Search */}
+          <div className="relative w-full lg:w-80 shrink-0">
+            <Search className="absolute left-4 top-3.5 h-5 w-5 text-foreground/45" />
+            <input
+              type="text"
+              placeholder={isEn ? "Search stations (e.g. Mansarovar, Chandpole)..." : "स्टेशन खोजें (जैसे मानसरोवर, चांदपोल)..."}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full pl-11 pr-4 py-3 bg-light-accent dark:bg-navy-card border border-light-border dark:border-navy-border/40 rounded-xl text-sm focus:outline-none focus:border-brand-pink transition-colors text-foreground"
+            />
           </div>
-          <button
-            onClick={() => setFilterType("all")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-              filterType === "all"
-                ? "bg-brand-pink border-brand-pink text-white"
-                : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
-            }`}
-          >
-            {isEn ? "All Stations" : "सभी स्टेशन"}
-          </button>
-          <button
-            onClick={() => setFilterType("Elevated")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-              filterType === "Elevated"
-                ? "bg-brand-pink border-brand-pink text-white"
-                : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
-            }`}
-          >
-            {isEn ? "Elevated" : "एलिवेटेड"}
-          </button>
-          <button
-            onClick={() => setFilterType("Underground")}
-            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
-              filterType === "Underground"
-                ? "bg-brand-pink border-brand-pink text-white"
-                : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground"
-            }`}
-          >
-            {isEn ? "Underground" : "भूमिगत"}
-          </button>
-        </div>
 
+          {/* Filter buttons */}
+          <div className="flex items-center space-x-2 w-full overflow-x-auto pb-1 pt-1 min-w-0 scrollbar-none">
+            <div className="flex items-center space-x-1.5 text-xs font-bold text-foreground/60 mr-2 whitespace-nowrap shrink-0">
+              <Filter className="w-4 h-4 text-brand-pink" />
+              <span>{isEn ? "Filter Type:" : "फ़िल्टर प्रकार:"}</span>
+            </div>
+            <button
+              onClick={() => setFilterType("all")}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                filterType === "all"
+                  ? "bg-brand-pink border-brand-pink text-white shadow-md shadow-brand-pink/20"
+                  : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground bg-light-accent/60 dark:bg-navy-card/60"
+              }`}
+            >
+              {isEn ? "All Stations" : "सभी स्टेशन"}
+            </button>
+            <button
+              onClick={() => setFilterType("Elevated")}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                filterType === "Elevated"
+                  ? "bg-brand-pink border-brand-pink text-white shadow-md shadow-brand-pink/20"
+                  : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground bg-light-accent/60 dark:bg-navy-card/60"
+              }`}
+            >
+              {isEn ? "Elevated" : "एलिवेटेड"}
+            </button>
+            <button
+              onClick={() => setFilterType("Underground")}
+              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer whitespace-nowrap shrink-0 ${
+                filterType === "Underground"
+                  ? "bg-brand-pink border-brand-pink text-white shadow-md shadow-brand-pink/20"
+                  : "border-light-border dark:border-navy-border/40 hover:border-brand-pink/40 text-foreground bg-light-accent/60 dark:bg-navy-card/60"
+              }`}
+            >
+              {isEn ? "Underground" : "भूमिगत"}
+            </button>
+          </div>
+
+        </div>
       </div>
 
       {/* Grid List */}
