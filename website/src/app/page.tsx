@@ -515,7 +515,7 @@ export default function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
               <p className="font-heading font-extrabold text-3xl sm:text-5xl text-brand-pink tracking-tight">
-                1.25k+
+                1.3k+
               </p>
               <p className="text-xs sm:text-sm text-slate-500 dark:text-text-secondary font-bold uppercase tracking-wider">{t("statsDownloads")}</p>
             </div>
