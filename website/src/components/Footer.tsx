@@ -24,6 +24,7 @@ export default function Footer() {
   ];
 
   const seoGuides = [
+    { href: "/blog", label: isEn ? "Jaipur Transit Blog" : "जयपुर ट्रांजिट ब्लॉग" },
     { href: "/jaipur-metro", label: isEn ? "Jaipur Metro Hub" : "जयपुर मेट्रो हब" },
     { href: "/jaipur-metro-route", label: isEn ? "Pink Line Route & Map" : "पिंक लाइन रूट और नक्शा" },
     { href: "/jaipur-metro-fare", label: isEn ? "Ticket Prices & Fares" : "टिकट किराया सूची" },
