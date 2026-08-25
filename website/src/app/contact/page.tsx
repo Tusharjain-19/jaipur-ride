@@ -147,7 +147,7 @@ export default function ContactPage() {
 
       {/* 2. FORM INTERACTIVE COL */}
       <div className="lg:col-span-7">
-        <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 lg:p-8 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none relative min-h-[450px]">
+        <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 lg:p-8 border border-light-border dark:border-navy-border/40 shadow-xl shadow-slate-200/50 dark:shadow-none relative min-h-112.5">
           <AnimatePresence mode="wait">
             {!isSubmitted ? (
               <motion.form

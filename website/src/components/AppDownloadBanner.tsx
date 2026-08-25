@@ -91,7 +91,7 @@ export default function AppDownloadBanner() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleDismiss}
-              className="shrink-0 flex items-center space-x-1.5 px-3.5 py-2.5 bg-gradient-to-r from-brand-pink to-rose-500 hover:from-rose-500 hover:to-brand-pink text-white rounded-2xl text-xs font-extrabold shadow-lg shadow-brand-pink/40 active:scale-95 transition-all duration-200 cursor-pointer"
+              className="shrink-0 flex items-center space-x-1.5 px-3.5 py-2.5 bg-linear-to-r from-brand-pink to-rose-500 hover:from-rose-500 hover:to-brand-pink text-white rounded-2xl text-xs font-extrabold shadow-lg shadow-brand-pink/40 active:scale-95 transition-all duration-200 cursor-pointer"
             >
               <Image
                 src="/assets/icons/google-play.svg"
