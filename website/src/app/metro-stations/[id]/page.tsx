@@ -58,20 +58,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   }
 
   return {
-    title: `${station.name} Metro Station Jaipur Coordinates, Timings & Route Guide`,
-    description: `Complete guide for ${station.name} Metro Station (JMRC Pink Line). GPS Coordinates: ${station.location.lat}, ${station.location.lon}. Timings: ${station.timings.firstTrain} AM to ${station.timings.lastTrain} PM. Check platform directions & facilities.`,
+    title: `${station.name} Metro Station Jaipur: Timings, Route & Facilities`,
+    description: `Complete guide for ${station.name} Metro Station (${station.code}) on Pink Line Jaipur. Timings: ${station.timings.firstTrain} AM to ${station.timings.lastTrain} PM. Check platform directions, facilities, coordinates & nearby tourist places.`,
     keywords: [
-      `"${station.name.toLowerCase()} metro station" jaipur coordinates`,
-      `${station.name.toLowerCase()} metro station coordinates jaipur`,
-      `${station.name} metro station timings`,
-      `${station.name} metro route map`,
-      `${station.name} station facilities`,
-      `nearest metro to ${station.name} Jaipur`,
-      `${station.name} metro lat long ${station.location.lat} ${station.location.lon}`,
-      `best metro app jaipur`,
-      `jaipur metro app`,
-      `jaipur metro best app`,
-      `Jaipur metro line stations JMRC`
+      `${station.name} metro station`,
+      `${station.name} metro station jaipur`,
+      `${station.name} metro station timing`,
+      `${station.name} metro station route`,
+      `${station.name} metro station facilities`,
+      `places near ${station.name} metro station`,
+      `Jaipur Metro Pink Line`
     ],
     robots: {
       index: true,
@@ -86,8 +82,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       canonical: `https://jaipurride.vercel.app/metro-stations/${station.id}`,
     },
     openGraph: {
-      title: `${station.name} Metro Station Jaipur Coordinates, Timings & Map`,
-      description: `${station.name} Metro Station (Code: ${station.code}). Lat: ${station.location.lat}, Lon: ${station.location.lon}. Operational timings ${station.timings.firstTrain} to ${station.timings.lastTrain}.`,
+      title: `${station.name} Metro Station Jaipur: Timings, Route & Facilities`,
+      description: `${station.name} Metro Station (Code: ${station.code}). Operational timings: ${station.timings.firstTrain} AM to ${station.timings.lastTrain} PM. Coordinates: ${station.location.lat}, ${station.location.lon}.`,
       url: `https://jaipurride.vercel.app/metro-stations/${station.id}`,
     }
   };
@@ -105,15 +101,15 @@ export default async function StationDetails({ params }: { params: Promise<{ id:
   // Filter tourist attractions near this station
   const attractions = (tourismData as Attraction[]).filter((a) => a.stationId === station.id);
 
-  // JSON-LD Schema Markup
-  const schemaMarkup = {
+  // JSON-LD SubwayStation Schema
+  const subwaySchema = {
     "@context": "https://schema.org",
     "@type": "SubwayStation",
     "@id": `https://jaipurride.vercel.app/metro-stations/${station.id}`,
     "name": `${station.name} Metro Station`,
     "alternateName": `${station.nameHi} मेट्रो स्टेशन`,
     "identifier": station.code,
-    "description": `JMRC Pink Line subway station in Jaipur. Features facilities like ${station.facilities.join(", ")}. Connectivity: ${station.connectivity.join(", ")}.`,
+    "description": `${station.name} Metro Station is a ${station.type.toLowerCase()} station on Jaipur Metro Pink Line with ${station.platforms} platforms. Features: ${station.facilities.join(", ")}.`,
     "geo": {
       "@type": "GeoCoordinates",
       "latitude": station.location.lat,
@@ -133,11 +129,49 @@ export default async function StationDetails({ params }: { params: Promise<{ id:
     }
   };
 
+  // JSON-LD FAQPage Schema for station page
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": `What is the first and last train time at ${station.name} Metro Station?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `The first train arrives at ${station.name} Metro Station at ${station.timings.firstTrain} AM and the last train departs at ${station.timings.lastTrain} PM daily.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `What facilities are available at ${station.name} Metro Station?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": `${station.name} Metro Station offers facilities including ${station.facilities.join(", ")}.`
+        }
+      },
+      {
+        "@type": "Question",
+        "name": `Which tourist places are near ${station.name} Metro Station?`,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": attractions.length > 0 
+            ? `Popular places near ${station.name} Metro Station include ${attractions.map(a => a.name).join(", ")}.`
+            : `${station.name} Metro Station provides convenient transit connections to Jaipur's major hubs.`
+        }
+      }
+    ]
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(subwaySchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <StationDetailsClient station={station} attractions={attractions} />
     </>

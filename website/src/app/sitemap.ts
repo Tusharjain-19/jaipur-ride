@@ -8,6 +8,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = [
     { route: "", priority: 1.0, freq: "daily" as const },
+    { route: "/jaipur-metro", priority: 1.0, freq: "daily" as const },
+    { route: "/jaipur-metro-fare", priority: 0.9, freq: "daily" as const },
+    { route: "/jaipur-metro-timings", priority: 0.9, freq: "daily" as const },
+    { route: "/jaipur-metro-route", priority: 0.9, freq: "daily" as const },
+    { route: "/jaipur-metro-tourist-places", priority: 0.9, freq: "daily" as const },
     { route: "/journey-planner", priority: 0.9, freq: "daily" as const },
     { route: "/fare-calculator", priority: 0.9, freq: "daily" as const },
     { route: "/timings", priority: 0.9, freq: "daily" as const },

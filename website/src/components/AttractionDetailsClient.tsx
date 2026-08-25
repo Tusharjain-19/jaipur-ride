@@ -4,7 +4,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useLanguage } from "@/context/LanguageContext";
-import { ArrowLeft, Ticket, Clock, MapPin, Compass, ExternalLink, Train, ChevronRight, HelpCircle, Route } from "lucide-react";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import AnswerFirstBox from "@/components/AnswerFirstBox";
+import { Ticket, Clock, MapPin, Compass, ExternalLink, Train, ChevronRight, HelpCircle, Route } from "lucide-react";
 
 interface Station {
   id: string;
@@ -44,6 +46,11 @@ interface AttractionDetailsClientProps {
 export default function AttractionDetailsClient({ attraction, station, related }: AttractionDetailsClientProps) {
   const { language } = useLanguage();
   const isEn = language === "en";
+
+  const breadcrumbs = [
+    { name: isEn ? "Explore Jaipur" : "एक्सप्लोर जयपुर", url: "/explore-jaipur" },
+    { name: isEn ? attraction.name : attraction.nameHi, url: `/explore-jaipur/${attraction.id}` }
+  ];
 
   const T_STATION = (name: string): string => {
     const stationTranslations: Record<string, string> = {
@@ -108,7 +115,7 @@ export default function AttractionDetailsClient({ attraction, station, related }
       : `मेट्रो स्टेशन के बाहर से ऑटो-रिक्शा या कैब लें (~${attraction.approx_drive_distance_km} किमी, ${attraction.approx_drive_time_min} मिनट) ${attraction.nameHi} तक।`;
   };
 
-  const buildRouteSteps = (fromId: string, fromLabel: { en: string; hi: string }) => {
+  const buildRouteSteps = (fromId: string) => {
     const stops = getStopCount(fromId);
     const direction = getDirection(fromId);
 
@@ -155,8 +162,8 @@ export default function AttractionDetailsClient({ attraction, station, related }
     return steps;
   };
 
-  const routeFromRailway = buildRouteSteps("J07", { en: "Jaipur Railway Station", hi: "जयपुर रेलवे स्टेशन" });
-  const routeFromSindhiCamp = buildRouteSteps("J08", { en: "Sindhi Camp Bus Stand", hi: "सिंधी कैंप बस स्टैंड" });
+  const routeFromRailway = buildRouteSteps("J07");
+  const routeFromSindhiCamp = buildRouteSteps("J08");
 
   const airportRoute = (() => {
     const steps: { en: string; hi: string }[] = [];
@@ -185,18 +192,18 @@ export default function AttractionDetailsClient({ attraction, station, related }
   })();
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 space-y-8">
-      
-      {/* Back button */}
-      <div>
-        <Link
-          href="/explore-jaipur"
-          className="inline-flex items-center space-x-2 text-sm font-semibold text-foreground/60 hover:text-brand-pink transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>{isEn ? "Back to Explore Directory" : "एक्सप्लोर निर्देशिका पर वापस जाएँ"}</span>
-        </Link>
-      </div>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 space-y-8">
+      <Breadcrumbs items={breadcrumbs} />
+
+      {/* Answer First Summary Box for AEO */}
+      <AnswerFirstBox
+        title={isEn ? `Nearest Metro to ${attraction.name}` : `${attraction.nameHi} का निकटतम मेट्रो स्टेशन`}
+        content={
+          isEn
+            ? `The nearest metro station to ${attraction.name} is ${station?.name || attraction.stationId} Metro Station on the Pink Line (${attraction.distance_km} km away). ${attraction.walk_time_min ? `Walk time: ~${attraction.walk_time_min} minutes.` : `Drive time: ~${attraction.approx_drive_time_min} minutes.`}`
+            : `${attraction.nameHi} का निकटतम मेट्रो स्टेशन पिंक लाइन पर ${station?.nameHi || attraction.stationId} मेट्रो स्टेशन (${attraction.distance_km} किमी दूर) है।`
+        }
+      />
 
       {/* Main Attraction Header Card */}
       <div className="bg-white dark:bg-navy-dark border border-light-border dark:border-navy-border/40 rounded-3xl overflow-hidden shadow-xl">

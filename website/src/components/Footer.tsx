@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import Logo from "@/components/Logo";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { Train, Info, Heart, ArrowRight, ShieldCheck, Download, Users, Signal } from "lucide-react";
@@ -24,12 +23,12 @@ export default function Footer() {
     { href: "/features", label: t("navFeatures") },
   ];
 
-  const stationHubs = [
-    { href: "/metro-stations/J01", name: isEn ? "Mansarovar (J01)" : "मानसरोवर (J01)" },
-    { href: "/metro-stations/J06", name: isEn ? "Railway Station (J06)" : "रेलवे स्टेशन (J06)" },
-    { href: "/metro-stations/J07", name: isEn ? "Sindhi Camp (J07)" : "सिंधी कैंप (J07)" },
-    { href: "/metro-stations/J09", name: isEn ? "Chandpole (J09)" : "चांदपोल (J09)" },
-    { href: "/metro-stations/J11", name: isEn ? "Badi Chaupar (J11)" : "बड़ी चौपड़ (J11)" },
+  const seoGuides = [
+    { href: "/jaipur-metro", label: isEn ? "Jaipur Metro Hub" : "जयपुर मेट्रो हब" },
+    { href: "/jaipur-metro-route", label: isEn ? "Pink Line Route & Map" : "पिंक लाइन रूट और नक्शा" },
+    { href: "/jaipur-metro-fare", label: isEn ? "Ticket Prices & Fares" : "टिकट किराया सूची" },
+    { href: "/jaipur-metro-timings", label: isEn ? "First & Last Train Timings" : "ट्रेन का समय सारणी" },
+    { href: "/jaipur-metro-tourist-places", label: isEn ? "Tourist Places By Metro" : "मेट्रो से घूमने की जगह" },
   ];
 
   const infoLinks = [
@@ -118,17 +117,17 @@ export default function Footer() {
           <div className="lg:col-span-2">
             <h3 className="font-heading font-bold text-xs uppercase tracking-widest text-slate-200 mb-5 flex items-center space-x-2">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-pink"></span>
-              <span>{isEn ? "Major Hubs" : "मुख्य स्टेशन"}</span>
+              <span>{isEn ? "Metro Guides" : "मेट्रो गाइड"}</span>
             </h3>
             <ul className="space-y-3">
-              {stationHubs.map((link) => (
+              {seoGuides.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     className="text-sm text-slate-400 hover:text-white transition-colors flex items-center space-x-1 group"
                   >
                     <ArrowRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-brand-pink" />
-                    <span>{link.name}</span>
+                    <span>{link.label}</span>
                   </Link>
                 </li>
               ))}

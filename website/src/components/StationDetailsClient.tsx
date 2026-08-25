@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import AnswerFirstBox from "@/components/AnswerFirstBox";
 import {
   Train,
   Clock,
@@ -15,7 +17,9 @@ import {
   Activity,
   ArrowLeft,
   Copy,
-  HelpCircle
+  HelpCircle,
+  Ticket,
+  Navigation
 } from "lucide-react";
 
 interface Station {
@@ -65,6 +69,11 @@ export default function StationDetailsClient({ station, attractions }: StationDe
   const { language, t } = useLanguage();
   const [copied, setCopied] = useState(false);
   const isEn = language === "en";
+
+  const breadcrumbs = [
+    { name: isEn ? "Metro Stations" : "मेट्रो स्टेशन", url: "/metro-stations" },
+    { name: isEn ? station.name : station.nameHi, url: `/metro-stations/${station.id}` }
+  ];
 
   const translateFacility = (f: string) => {
     if (isEn) return f;
@@ -223,17 +232,18 @@ export default function StationDetailsClient({ station, attractions }: StationDe
   const commuteList = getCommuteDistances();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 space-y-12">
-      {/* Breadcrumb / Back button */}
-      <div>
-        <Link
-          href="/metro-stations"
-          className="inline-flex items-center space-x-2 text-sm font-semibold text-brand-pink hover:underline"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          <span>{isEn ? "Back to Stations Directory" : "स्टेशन निर्देशिका पर वापस जाएँ"}</span>
-        </Link>
-      </div>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 space-y-8">
+      <Breadcrumbs items={breadcrumbs} />
+
+      {/* Answer First Summary Box for AEO */}
+      <AnswerFirstBox
+        title={isEn ? `${station.name} Metro Station Summary` : `${station.nameHi} मेट्रो स्टेशन सारांश`}
+        content={
+          isEn
+            ? `${station.name} (${station.code}) is an operational ${station.type.toLowerCase()} station on Jaipur Metro Pink Line with ${station.platforms} platforms. First train: ${station.timings.firstTrain} AM, last train: ${station.timings.lastTrain} PM.`
+            : `${station.nameHi} (${station.code}) जयपुर मेट्रो पिंक लाइन पर स्थित एक ${station.type === 'Elevated' ? 'एलिवेटेड' : 'भूमिगत'} स्टेशन है। पहली ट्रेन सुबह ${station.timings.firstTrain} बजे और अंतिम ट्रेन रात ${station.timings.lastTrain} बजे चलती है।`
+        }
+      />
 
       {/* Header Info Banner */}
       <div 
@@ -616,6 +626,43 @@ export default function StationDetailsClient({ station, attractions }: StationDe
               </p>
             </div>
           </details>
+        </div>
+      </div>
+
+      {/* Related Jaipur Metro Guides Internal Linking Section */}
+      <div className="bg-white dark:bg-navy-dark rounded-3xl p-6 lg:p-8 border border-light-border dark:border-navy-border/40 shadow-sm space-y-4">
+        <h2 className="font-heading font-extrabold text-xl text-foreground">
+          {isEn ? "Related Jaipur Metro Travel Guides" : "संबंधित जयपुर मेट्रो ट्रैवल गाइड"}
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-semibold">
+          <Link
+            href="/jaipur-metro-route"
+            className="p-4 rounded-2xl border border-light-border dark:border-navy-border/30 hover:border-brand-pink bg-light-accent/20 dark:bg-navy-card/20 text-foreground hover:text-brand-pink transition-all flex items-center justify-between"
+          >
+            <span>{isEn ? "Pink Line Route & Map" : "पिंक लाइन रूट और नक्शा"}</span>
+            <Navigation className="w-4 h-4 text-brand-pink" />
+          </Link>
+          <Link
+            href="/jaipur-metro-fare"
+            className="p-4 rounded-2xl border border-light-border dark:border-navy-border/30 hover:border-brand-pink bg-light-accent/20 dark:bg-navy-card/20 text-foreground hover:text-brand-pink transition-all flex items-center justify-between"
+          >
+            <span>{isEn ? "Ticket Fares & Smart Card" : "टिकट किराया और स्मार्ट कार्ड"}</span>
+            <Ticket className="w-4 h-4 text-brand-pink" />
+          </Link>
+          <Link
+            href="/jaipur-metro-timings"
+            className="p-4 rounded-2xl border border-light-border dark:border-navy-border/30 hover:border-brand-pink bg-light-accent/20 dark:bg-navy-card/20 text-foreground hover:text-brand-pink transition-all flex items-center justify-between"
+          >
+            <span>{isEn ? "Train Timings Schedule" : "ट्रेन का समय सारणी"}</span>
+            <Clock className="w-4 h-4 text-brand-pink" />
+          </Link>
+          <Link
+            href="/jaipur-metro-tourist-places"
+            className="p-4 rounded-2xl border border-light-border dark:border-navy-border/30 hover:border-brand-pink bg-light-accent/20 dark:bg-navy-card/20 text-foreground hover:text-brand-pink transition-all flex items-center justify-between"
+          >
+            <span>{isEn ? "Tourist Places By Metro" : "मेट्रो द्वारा पर्यटन स्थल"}</span>
+            <Compass className="w-4 h-4 text-brand-pink" />
+          </Link>
         </div>
       </div>
     </div>

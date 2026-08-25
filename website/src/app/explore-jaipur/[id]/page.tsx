@@ -46,22 +46,14 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   return {
     title: `Nearest Metro Station to ${attraction.name} (Distance & Route)`,
-    description: `Find the nearest metro station to ${attraction.name} in Jaipur. Closest JMRC station is ${station?.name} (${attraction.distance_km} km away). Get routes, directions, entry fees, and travel timings.`,
+    description: `Nearest metro station to ${attraction.name} in Jaipur is ${station?.name} Metro Station (${attraction.distance_km} km away). Check metro route from Jaipur Railway Station, timings & ticket prices.`,
     keywords: [
       `nearest metro station to ${attraction.name.toLowerCase()}`,
       `${attraction.name.toLowerCase()} nearest metro station`,
-      `${attraction.name.toLowerCase()} distance from my location`,
       `how to reach ${attraction.name.toLowerCase()} by metro`,
       `${attraction.name} jaipur metro route`,
-      `nearest metro to ${attraction.name.toLowerCase()}`,
-      `distance to ${attraction.name.toLowerCase()} from metro station`,
       `jaipur me metro se ${attraction.name.toLowerCase()} kaise jaye`,
-      `how to reach ${attraction.name} by train`,
-      `best metro app jaipur`,
-      `jaipur metro app`,
-      `jaipur metro best app`,
-      `Jaipur sightseeing nearest station`,
-      `Jaipur metro tourism guide`
+      `Jaipur Metro Pink Line`
     ],
     robots: {
       index: true,
@@ -76,8 +68,8 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       canonical: `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
     },
     openGraph: {
-      title: `Nearest Metro Station to ${attraction.name} & Travel Guide`,
-      description: `Complete travel guide for visiting ${attraction.name} using Jaipur Metro Pink Line. Nearest station: ${station?.name}.`,
+      title: `Nearest Metro Station to ${attraction.name} (Distance & Route)`,
+      description: `Travel guide for visiting ${attraction.name} using Jaipur Metro. Nearest station: ${station?.name} (${attraction.distance_km} km).`,
       url: `https://jaipurride.vercel.app/explore-jaipur/${attraction.id}`,
     }
   };

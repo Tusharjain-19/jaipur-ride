@@ -12,27 +12,17 @@ interface ThemeContextProps {
 const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>("dark"); // Default to dark for premium styling
+  const [theme, setTheme] = useState<Theme>("light"); // Default to light mode
 
   useEffect(() => {
-    // Check local storage or system preference
+    // Check local storage or default to light mode
     const savedTheme = localStorage.getItem("jaipur-ride-theme") as Theme;
-    if (savedTheme === "light" || savedTheme === "dark") {
-      setTheme(savedTheme);
-      if (savedTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+    if (savedTheme === "dark") {
+      setTheme("dark");
+      document.documentElement.classList.add("dark");
     } else {
-      // Default to system preference or dark
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      setTheme(systemTheme);
-      if (systemTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
+      setTheme("light");
+      document.documentElement.classList.remove("dark");
     }
   }, []);
 
