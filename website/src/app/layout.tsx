@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SeoCrawlerIndex from "@/components/SeoCrawlerIndex";
 import AppDownloadBanner from "@/components/AppDownloadBanner";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -123,7 +124,9 @@ export default function RootLayout({
         <meta name="keywords" content="Jaipur Ride, best metro app jaipur, best metro app, jaipur metro best app, jaipur metro app, geo map jaipur metro, route planner" />
         <link rel="alternate" href="https://jaipurmetro.xyz" hrefLang="hi-IN" />
         <link rel="alternate" href="https://jaipurride.vercel.app" hrefLang="en-IN" />
-        <script
+        <Script
+          id="theme-initializer"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               try {
@@ -138,7 +141,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-light-bg dark:bg-navy-deep text-foreground font-sans selection:bg-brand-pink/30 selection:text-brand-pink">
+      <body suppressHydrationWarning className="min-h-full flex flex-col bg-light-bg dark:bg-navy-deep text-foreground font-sans selection:bg-brand-pink/30 selection:text-brand-pink">
         <Providers>
           <Navbar />
           <main className="flex-1 w-full">{children}</main>
@@ -147,8 +150,10 @@ export default function RootLayout({
           <AppDownloadBanner />
         </Providers>
         <Analytics />
-        <script
+        <Script
+          id="json-ld-layout"
           type="application/ld+json"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </body>

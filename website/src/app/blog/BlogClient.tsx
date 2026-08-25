@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import Script from "next/script";
 import { useLanguage } from "@/context/LanguageContext";
 import { 
   Train, 
@@ -419,8 +420,10 @@ export default function BlogClient() {
 
       </main>
 
-      <script
+      <Script
+        id="json-ld-blog"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
       />
     </div>

@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Script from "next/script";
 import { motion } from "framer-motion";
 import statistics from "@/data/statistics.json";
 import faqData from "@/data/faq.json";
@@ -1045,8 +1046,10 @@ export default function Home() {
         </div>
       </section>
 
-      <script
+      <Script
+        id="json-ld-home"
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaMarkup) }}
       />
     </div>
