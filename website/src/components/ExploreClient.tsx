@@ -118,9 +118,9 @@ export default function ExploreClient({ initialAttractions, language }: ExploreC
       {/* Attraction Cards Grid */}
       {filteredAttractions.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredAttractions.map((att) => (
+          {filteredAttractions.map((att, idx) => (
             <div
-              key={att.id}
+              key={`${att.id}-${idx}`}
               className="bento-card glass-panel rounded-3xl overflow-hidden shadow-lg flex flex-col justify-between group"
             >
               {/* Image Banner */}

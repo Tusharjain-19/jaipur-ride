@@ -798,7 +798,7 @@
     "descriptionHi": "Jawaharlal Nehru Marg, Jhalana Doongri, Jaipur, Rajasthan 302017, India पर स्थित, Civil Lines मेट्रो स्टेशन से लगभग 6.8 किमी।"
   },
   {
-    "id": "sms_hospital",
+    "id": "sms_hospital_2",
     "name": "SMS Hospital (Sawai Man Singh Hospital)",
     "nameHi": "SMS Hospital (Sawai Man Singh Hospital)",
     "type": "Hospital",
@@ -819,7 +819,7 @@
     "descriptionHi": "Jawaharlal Nehru Marg, C Scheme, Ashok Nagar, Jaipur, Rajasthan 302004, India पर स्थित, Civil Lines मेट्रो स्टेशन से लगभग 8.1 किमी।"
   },
   {
-    "id": "patrika_gate",
+    "id": "patrika_gate_2",
     "name": "Patrika Gate (Jawahar Circle)",
     "nameHi": "Patrika Gate (Jawahar Circle)",
     "type": "Monument",
@@ -924,7 +924,7 @@
     "descriptionHi": "भारत के सबसे सुंदर रेलवे स्टेशनों में से एक, जिसमें राजपूत-मुगल शैली की वास्तुकला और गुलाबी बलुआ पत्थर का मुखौटा है।"
   },
   {
-    "id": "jaipur_junction_heritage",
+    "id": "jaipur_junction_heritage_2",
     "name": "Jaipur Junction Railway Station",
     "nameHi": "Jaipur Junction Railway Station",
     "type": "Railway Station",
@@ -1113,7 +1113,7 @@
     "descriptionHi": "Ram Niwas Garden, Ashok Nagar, Jaipur, Rajasthan 302004, India पर स्थित, Sindhi Camp मेट्रो स्टेशन से लगभग 2 किमी।"
   },
   {
-    "id": "sindhi_camp_bus",
+    "id": "sindhi_camp_bus_2",
     "name": "Sindhi Camp Bus Terminal",
     "nameHi": "Sindhi Camp Bus Terminal",
     "type": "Bus Terminal",
