@@ -468,14 +468,73 @@ export default function Home() {
               </div>
             </motion.div>
 
-            {/* Right Column: Real Mobile App Preview Card using PhoneMockup */}
+            {/* Right Column: Real Mobile App Preview Card using PhoneMockup with SaaS Ad Floating Badges */}
             <motion.div 
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="lg:col-span-5 flex justify-center py-2 lg:-mt-14 lg:mb-0 relative"
+              className="lg:col-span-5 flex justify-center py-4 lg:-mt-14 lg:mb-0 relative group"
             >
-              <div className="absolute -inset-8 bg-brand-pink/5 blur-[80px] rounded-full pointer-events-none"></div>
+              {/* Soft ambient glow background */}
+              <div className="absolute -inset-10 bg-linear-to-tr from-brand-pink/20 via-pink-city/15 to-brand-pink-dark/20 blur-[90px] rounded-full pointer-events-none"></div>
+
+              {/* Floating SaaS Callout Badge 1: Top Left */}
+              <motion.div
+                initial={{ opacity: 0, y: 15, x: -10 }}
+                animate={{ opacity: 1, y: [0, -8, 0], x: 0 }}
+                transition={{
+                  y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                  opacity: { duration: 0.5, delay: 0.3 }
+                }}
+                className="absolute top-8 -left-2 sm:-left-8 z-30 bg-white/90 dark:bg-navy-card/90 backdrop-blur-md border border-light-border dark:border-navy-border/50 px-3.5 py-2 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none hidden sm:flex items-center space-x-2 pointer-events-none"
+              >
+                <div className="w-6 h-6 rounded-lg bg-emerald-500/15 text-emerald-500 flex items-center justify-center font-bold text-xs">
+                  ⚡
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold text-foreground leading-none">100% Offline DB</p>
+                  <p className="text-[8px] text-foreground/60 font-semibold leading-tight">Zero Network Needed</p>
+                </div>
+              </motion.div>
+
+              {/* Floating SaaS Callout Badge 2: Top Right */}
+              <motion.div
+                initial={{ opacity: 0, y: -15, x: 10 }}
+                animate={{ opacity: 1, y: [0, 8, 0], x: 0 }}
+                transition={{
+                  y: { duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 },
+                  opacity: { duration: 0.5, delay: 0.4 }
+                }}
+                className="absolute top-16 -right-2 sm:-right-8 z-30 bg-white/90 dark:bg-navy-card/90 backdrop-blur-md border border-light-border dark:border-navy-border/50 px-3.5 py-2 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none hidden sm:flex items-center space-x-2 pointer-events-none"
+              >
+                <div className="w-6 h-6 rounded-lg bg-brand-pink/15 text-brand-pink flex items-center justify-center font-bold text-xs">
+                  🎟️
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold text-foreground leading-none">Smart Fare Calculator</p>
+                  <p className="text-[8px] text-brand-pink font-bold leading-tight">Save 10% - 20%</p>
+                </div>
+              </motion.div>
+
+              {/* Floating SaaS Callout Badge 3: Bottom Right */}
+              <motion.div
+                initial={{ opacity: 0, y: 15, x: 10 }}
+                animate={{ opacity: 1, y: [0, -6, 0], x: 0 }}
+                transition={{
+                  y: { duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1 },
+                  opacity: { duration: 0.5, delay: 0.5 }
+                }}
+                className="absolute bottom-12 -right-2 sm:-right-6 z-30 bg-white/90 dark:bg-navy-card/90 backdrop-blur-md border border-light-border dark:border-navy-border/50 px-3.5 py-2 rounded-2xl shadow-xl shadow-slate-200/50 dark:shadow-none hidden sm:flex items-center space-x-2 pointer-events-none"
+              >
+                <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-500 flex items-center justify-center font-bold text-xs">
+                  🔔
+                </div>
+                <div>
+                  <p className="text-[10px] font-extrabold text-foreground leading-none">GPS Vibration Alert</p>
+                  <p className="text-[8px] text-foreground/60 font-semibold leading-tight">Proximity Reminder</p>
+                </div>
+              </motion.div>
+
               <PhoneMockup />
             </motion.div>
 

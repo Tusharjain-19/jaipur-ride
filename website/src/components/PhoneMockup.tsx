@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useTheme } from "@/context/ThemeContext";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -79,9 +80,14 @@ const STATIONS = [
 ];
 
 export default function PhoneMockup() {
+  const { theme: siteTheme } = useTheme();
   const [simStep, setSimStep] = useState<SimStep>("plan-idle");
-  const [simTheme, setSimTheme] = useState<"light" | "dark">("dark");
+  const [simTheme, setSimTheme] = useState<"light" | "dark">("light");
   const [statusBarTime, setStatusBarTime] = useState("08:00");
+
+  useEffect(() => {
+    setSimTheme(siteTheme);
+  }, [siteTheme]);
 
   // Keep simulated time updated
   useEffect(() => {
@@ -232,12 +238,14 @@ export default function PhoneMockup() {
       </div>
 
       {/* 2. STATS BAR (iOS styled) */}
-      <div className="absolute top-0 left-0 right-0 z-40 px-5 pt-1.5 pb-1 flex items-center justify-between text-[9px] font-semibold text-white pointer-events-none bg-slate-950/20 backdrop-blur-[2px]">
+      <div className={`absolute top-0 left-0 right-0 z-40 px-5 pt-1.5 pb-1 flex items-center justify-between text-[9px] font-semibold pointer-events-none transition-colors duration-300 ${
+        isDark ? "text-white bg-slate-950/20" : "text-slate-800 bg-slate-100/70"
+      } backdrop-blur-[2px]`}>
         <span>{statusBarTime}</span>
         <div className="flex items-center space-x-1">
-          <Signal className="w-2.5 h-2.5 text-white fill-white/80" />
-          <Wifi className="w-2.5 h-2.5 text-white" />
-          <BatteryFull className="w-3.5 h-2 text-white" />
+          <Signal className={`w-2.5 h-2.5 ${isDark ? "text-white fill-white/80" : "text-slate-800 fill-slate-800/80"}`} />
+          <Wifi className={`w-2.5 h-2.5 ${isDark ? "text-white" : "text-slate-800"}`} />
+          <BatteryFull className={`w-3.5 h-2 ${isDark ? "text-white" : "text-slate-800"}`} />
         </div>
       </div>
 
