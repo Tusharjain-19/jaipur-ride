@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLanguage } from "@/context/LanguageContext";
 import { Train, Info, Heart, ArrowRight, ShieldCheck, Download, Users, Signal, Star } from "lucide-react";
+import GooglePreferredSource from "@/components/GooglePreferredSource";
 
 export default function Footer() {
   const { t, language } = useLanguage();
@@ -185,19 +186,9 @@ export default function Footer() {
                 </div>
               </div>
 
-              {/* Google Preferred Source Widget & Link */}
+              {/* Google Preferred Source Widget */}
               <div className="pt-2">
-                <a
-                  href="https://www.google.com/preferences/source?q=https://jaipurride.vercel.app"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full inline-flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-slate-200 bg-navy-card/80 hover:bg-navy-card border border-navy-border/60 hover:border-brand-pink/50 rounded-xl transition-all group"
-                  title={isEn ? "Add Jaipur Ride to Google Preferred Sources" : "जयपुर राइड को गूगल प्रेफर्ड सोर्स में जोड़ें"}
-                >
-                  <Star className="w-3.5 h-3.5 text-amber-400 fill-amber-400 group-hover:scale-110 transition-transform" />
-                  <span>{isEn ? "Google Preferred Source" : "गूगल प्रेफर्ड सोर्स"}</span>
-                </a>
-                <div className="g-preferred-source hidden" data-site="https://jaipurride.vercel.app"></div>
+                <GooglePreferredSource variant="button" theme="dark" domain="jaipurride.vercel.app" />
               </div>
             </div>
           </div>

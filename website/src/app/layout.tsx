@@ -125,6 +125,12 @@ export default function RootLayout({
         <link rel="alternate" href="https://jaipurmetro.xyz" hrefLang="hi-IN" />
         <link rel="alternate" href="https://jaipurride.vercel.app" hrefLang="en-IN" />
         <Script
+          id="google-preferred-sources-lib"
+          src="https://www.gstatic.com/s2/preferred-sources/v1/preferred-sources.js"
+          strategy="afterInteractive"
+          async
+        />
+        <Script
           id="theme-initializer"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
