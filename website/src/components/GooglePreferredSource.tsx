@@ -76,7 +76,7 @@ export default function GooglePreferredSource({
   }
 
   return (
-    <div className="w-full my-6 p-5 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-amber-500/20 shadow-lg relative overflow-hidden group">
+    <div className="w-full my-6 p-5 rounded-2xl bg-linear-to-r from-slate-900 via-slate-900/90 to-slate-950 border border-amber-500/20 shadow-lg relative overflow-hidden group">
       <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-amber-500/10 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-all pointer-events-none" />
       
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 relative z-10">
@@ -101,7 +101,7 @@ export default function GooglePreferredSource({
           href={followLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 shadow-md hover:shadow-amber-500/10 hover:scale-[1.02] transition-all"
+          className="shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl font-bold text-xs sm:text-sm bg-linear-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-slate-950 shadow-md hover:shadow-amber-500/10 hover:scale-[1.02] transition-all"
           data-site={targetUrl}
           data-theme={theme}
           data-return-url={returnUrl}
